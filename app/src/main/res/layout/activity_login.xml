@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="UI.LoginActivity"
+    android:padding="28dp">
+
+    <TextView
+        android:id="@+id/textLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/raleway_black"
+        android:padding="18dp"
+        android:text="@string/app_name"
+        android:textColor="@color/colorAccent"
+        android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/textGetStarted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textLogo"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/open_sans_semibold"
+        android:text="@string/getStarted"
+        android:textColor="@color/colorAccent"
+        android:textSize="22sp"
+        android:paddingBottom="14dp"/>
+
+    <TextView
+        android:id="@+id/descLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textGetStarted"
+        android:fontFamily="@font/open_sans"
+        android:text="@string/descLogin"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        android:paddingBottom="28dp"/>
+
+    <TextView
+        android:id="@+id/editMobile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/descLogin"
+        android:fontFamily="@font/open_sans_light"
+        android:text="@string/descMobile"
+        android:textColor="@color/colorAccent"
+        android:paddingBottom="1dp"/>
+
+    <RelativeLayout
+        android:id="@+id/loginContainer"
+        android:layout_below="@+id/editMobile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.hbb20.CountryCodePicker
+            android:id="@+id/countryCodeHolder"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            app:ccp_defaultNameCode="IN"
+            app:ccp_textSize="18sp"
+            app:ccp_autoDetectCountry="true"
+            android:layout_centerVertical="true"/>
+
+        <EditText
+            android:id="@+id/loginInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/countryCodeHolder"
+            android:hint="@string/mobileHint"
+            android:textSize="18sp"
+            android:fontFamily="@font/open_sans_semibold"
+            android:inputType="phone"
+            android:maxLength="10"
+            android:layout_centerVertical="true" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/loginBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/loginContainer"
+        android:layout_marginTop="20dp"
+        android:text="@string/loginBtnText"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:textSize="18sp"
+        android:background="@drawable/login_btn_background"
+        android:textColor="#FFF"
+        android:textAllCaps="false"
+        android:fontFamily="@font/open_sans_semibold"/>
+
+    <TextView
+        android:id="@+id/or"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loginBtn"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:text="or"
+        android:textColor="@color/colorAccent"
+        android:fontFamily="@font/open_sans"/>
+
+    <Button
+        android:id="@+id/facebookLoginBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/or"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/other_login_btn_background"
+        android:text="@string/ctnwithfb"
+        android:textAllCaps="false"
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp"
+        android:fontFamily="@font/open_sans_semibold"
+        android:drawableLeft="@drawable/fb_logo"
+        android:gravity="left|center"
+        android:drawablePadding="6dp"/>
+
+    <Button
+        android:id="@+id/googleLoginBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/facebookLoginBtn"
+        android:layout_marginTop="11dp"
+        android:background="@drawable/other_login_btn_background"
+        android:text="@string/ctnwithgoogle"
+        android:textAllCaps="false"
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp"
+        android:fontFamily="@font/open_sans_semibold"
+        android:drawableLeft="@drawable/google_logo"
+        android:gravity="left|center"
+        android:drawablePadding="6dp"/>
+
+    <Button
+        android:id="@+id/emailLoginBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/googleLoginBtn"
+        android:layout_marginTop="11dp"
+        android:background="@drawable/other_login_btn_background"
+        android:text="@string/ctnwithemail"
+        android:textAllCaps="false"
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp"
+        android:fontFamily="@font/open_sans_semibold"
+        android:drawableLeft="@drawable/email_logo"
+        android:gravity="left|center"
+        android:drawablePadding="6dp"/>
+
+    <TextView
+        android:id="@+id/terms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/termsandconditions"
+        android:textAlignment="center"
+        android:textSize="13sp"
+        android:textColor="@color/colorAccent"
+        android:fontFamily="@font/open_sans"/>
+
+
+</RelativeLayout>

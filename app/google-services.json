@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "141548708414-48ddo1352gs2184gn7aq47gt0pc5opfs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.munche",
+            "certificate_hash": "294a31fc3ca09c710839df1d12fdf105b18ecba3"
+          }
+        },
+        {
           "client_id": "141548708414-7qvo72ialh6p25jpsd7a78jkk2gkvcpq.apps.googleusercontent.com",
           "client_type": 3
         }
