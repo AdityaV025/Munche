@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "141548708414",
+    "firebase_url": "https://munche-be7a5.firebaseio.com",
+    "project_id": "munche-be7a5",
+    "storage_bucket": "munche-be7a5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:141548708414:android:309bdbb2acbe03daf0a76f",
+        "android_client_info": {
+          "package_name": "com.example.munche"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "141548708414-7qvo72ialh6p25jpsd7a78jkk2gkvcpq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCn1TG3tWq6NQnZjhizIp3129AjQBa39lg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "141548708414-7qvo72ialh6p25jpsd7a78jkk2gkvcpq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
