@@ -9,4 +9,7 @@
     <string name="ctnwithgoogle">Continue with Google</string>
     <string name="ctnwithemail">Continue with Email</string>
     <string name="termsandconditions">By Continuing. you agree to our terms of Service Privacy Policy and Content Policy</string>
+    <string name="textOtpVer">OTP Verification</string>
+    <string name="userNum">Enter the OTP sent to</string>
+    <string name="moreYourself">Tell us a bit more about Yourself</string>
 </resources>

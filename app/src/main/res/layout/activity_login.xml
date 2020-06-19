@@ -62,7 +62,6 @@
             android:id="@+id/countryCodeHolder"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            app:ccp_defaultNameCode="IN"
             app:ccp_textSize="18sp"
             app:ccp_autoDetectCountry="true"
             android:layout_centerVertical="true"/>
@@ -82,7 +81,7 @@
     </RelativeLayout>
 
     <Button
-        android:id="@+id/loginBtn"
+        android:id="@+id/sendOtpBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/loginContainer"
@@ -100,7 +99,7 @@
         android:id="@+id/or"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/loginBtn"
+        android:layout_below="@+id/sendOtpBtn"
         android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
         android:text="or"
@@ -165,6 +164,5 @@
         android:textSize="13sp"
         android:textColor="@color/colorAccent"
         android:fontFamily="@font/open_sans"/>
-
 
 </RelativeLayout>

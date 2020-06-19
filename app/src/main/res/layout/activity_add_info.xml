@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="UI.AddInfoActivity"
+    android:padding="30dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/moreYourself"
+        android:textColor="@color/colorAccent"
+        android:textSize="22sp"
+        android:textAlignment="center"
+        android:fontFamily="@font/open_sans_semibold"/>
+
+    <EditText
+        android:id="@+id/userName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/userinfo_background"
+        android:inputType="textPersonName"
+        android:hint="Name *"
+        android:textSize="19sp"
+        android:textColor="@color/colorAccent"
+        android:fontFamily="@font/open_sans"/>
+
+    <EditText
+        android:id="@+id/userEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/userinfo_background"
+        android:inputType="textEmailAddress"
+        android:hint="Email *"
+        android:textSize="19sp"
+        android:textColor="@color/colorAccent"
+        android:fontFamily="@font/open_sans"/>
+
+    <Button
+        android:id="@+id/addInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:layout_marginTop="35dp"
+        android:textAllCaps="false"
+        android:background="@drawable/login_btn_background"
+        android:fontFamily="@font/open_sans_semibold"
+        android:textColor="@color/white"
+        android:textSize="20sp"/>
+
+</LinearLayout>
