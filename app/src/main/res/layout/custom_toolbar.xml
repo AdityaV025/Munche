@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar
+    android:id="@+id/customToolBar"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    app:contentInsetLeft="0dp"
+    app:contentInsetStart="0dp"
+    android:elevation="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:id="@+id/userLocationNickName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Delivering To"
+            android:textSize="20sp"
+            android:fontFamily="@font/open_sans_semibold"
+            android:textColor="@color/colorAccent"/>
+
+        <TextView
+            android:id="@+id/userLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Location Of The User"
+            android:fontFamily="@font/open_sans"
+            android:layout_below="@id/userLocationNickName"/>
+
+    </RelativeLayout>
+
+</androidx.appcompat.widget.Toolbar>
