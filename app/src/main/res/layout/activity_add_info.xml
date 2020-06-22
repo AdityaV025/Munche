@@ -43,6 +43,33 @@
         android:textColor="@color/colorAccent"
         android:fontFamily="@font/open_sans"/>
 
+    <EditText
+        android:id="@+id/userAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/userinfo_background"
+        android:inputType="textPostalAddress"
+        android:hint="Address *"
+        android:textSize="19sp"
+        android:textColor="@color/colorAccent"
+        android:fontFamily="@font/open_sans"/>
+
+    <Button
+        android:id="@+id/getLocationBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Use My Current Location"
+        android:layout_marginTop="35dp"
+        android:textAllCaps="false"
+        android:background="@drawable/current_location_background"
+        android:fontFamily="@font/open_sans_semibold"
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp"
+        android:drawableStart="@drawable/current_location"
+        android:gravity="left|center"
+        android:drawablePadding="6dp"/>
+
     <Button
         android:id="@+id/addInfo"
         android:layout_width="match_parent"
