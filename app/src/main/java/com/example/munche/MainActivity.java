@@ -1,5 +1,6 @@
 package com.example.munche;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -11,15 +12,24 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 
 import Fragments.ExploreFragment;
 import Fragments.FavouriteFragment;
@@ -32,21 +42,23 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseUser mCurrentUser;
-    private Button mSignOut;
     private List<Address> addresses;
     private Geocoder geocoder;
     private GPSTracker gpsTracker;
-    private String address,city,state,country,postalCode,knownName,subLocality,subAdminArea;
+    private String address,city,state,country,postalCode,knownName,subLocality,subAdminArea,uid;
     private Toolbar mToolbar;
+    private FirebaseFirestore db;
+    private FirebaseUser firebaseUser;
+    private double latitude,longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        init();
         checkPermission();
         getLocation();
-        init();
         setToolBarLocation();
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
@@ -56,12 +68,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void init() {
         mAuth = FirebaseAuth.getInstance();
+        firebaseUser = mAuth.getCurrentUser();
         mCurrentUser = mAuth.getCurrentUser();
-        mSignOut = findViewById(R.id.signOutBtn);
-        mSignOut.setOnClickListener(view -> {
-            mAuth.signOut();
-            sendUserToLogin();
-        });
+        db = FirebaseFirestore.getInstance();
     }
 
     private void checkPermission() {
@@ -77,8 +86,8 @@ public class MainActivity extends AppCompatActivity {
     private void getLocation() {
         gpsTracker = new GPSTracker(MainActivity.this);
         if(gpsTracker.canGetLocation()){
-            double latitude = gpsTracker.getLatitude();
-            double longitude = gpsTracker.getLongitude();
+           latitude = gpsTracker.getLatitude();
+           longitude = gpsTracker.getLongitude();
 
             geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
 
@@ -138,6 +147,10 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         if (mCurrentUser == null) {
             sendUserToLogin();
+        }else {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentContainer, new RestaurantFragment())
+                    .commit();
         }
     }
 
@@ -149,4 +162,9 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        gpsTracker.stopUsingGPS();
+    }
 }

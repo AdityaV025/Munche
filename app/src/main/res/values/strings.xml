@@ -12,4 +12,5 @@
     <string name="textOtpVer">OTP Verification</string>
     <string name="userNum">Enter the OTP sent to</string>
     <string name="moreYourself">Tell us a bit more about Yourself</string>
+    <string name="logOutText">Log Out</string>
 </resources>

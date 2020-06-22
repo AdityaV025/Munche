@@ -50,9 +50,9 @@ public class OtpActivity extends AppCompatActivity {
             @Override
             public void onOTPComplete(String otp) {
 
-                otp = mOtpText.getOTP();
-                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mAuthVerificationId, otp);
-                signInWithPhoneAuthCredential(credential);
+//                otp = mOtpText.getOTP();
+//                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mAuthVerificationId, otp);
+//                signInWithPhoneAuthCredential(credential);
             }
         });
 
