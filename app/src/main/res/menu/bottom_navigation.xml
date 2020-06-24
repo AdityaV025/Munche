@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/nav_restaurants"
-        android:icon="@drawable/restaurant_icon"
+        android:icon="@drawable/ic_baseline_restaurant_24"
         android:title="Restaurants" />
     <item
         android:id="@+id/nav_explore"
-        android:icon="@drawable/explore_icon"
-        android:title="Explore" />
+        android:icon="@drawable/ic_baseline_search_24"
+        android:title="Search" />
     <item
         android:id="@+id/nav_favourites"
-        android:icon="@drawable/favourite_icon"
+        android:icon="@drawable/ic_baseline_favorite_24"
         android:title="Favourites" />
 
     <item
         android:id="@+id/nav_profile"
-        android:icon="@drawable/profile_icon"
+        android:icon="@drawable/ic_baseline_person_24"
         android:title="My Profile" />
 </menu>

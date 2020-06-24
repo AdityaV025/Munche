@@ -1,40 +1,30 @@
 package com.example.munche;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
+import android.os.Build;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
-
 import Fragments.ExploreFragment;
 import Fragments.FavouriteFragment;
 import Fragments.MyProfileFragment;
 import Fragments.RestaurantFragment;
 import UI.LoginActivity;
-import Utils.GPSTracker;
 
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseUser mCurrentUser;
-    private String address;
-    private Toolbar mToolbar;
     private FirebaseFirestore db;
     private FirebaseUser firebaseUser;
 
@@ -43,28 +33,28 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        changeStatusBarColor();
         init();
-        setToolBarLocation();
-
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
     }
 
     private void init() {
-        address = getIntent().getStringExtra("ADDRESS");
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
         mCurrentUser = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
     }
 
-    private void setToolBarLocation() {
-        mToolbar = findViewById(R.id.customToolBar);
-        setSupportActionBar(mToolbar);
-//        getSupportActionBar().setTitle(null);
-        TextView textView = findViewById(R.id.userLocation);
-        textView.setText(address);
+    private void changeStatusBarColor() {
+        Window window = this.getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(ContextCompat.getColor(this,R.color.white));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -89,6 +79,14 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             };
 
+    private void sendUserToLogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -99,14 +97,6 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.fragmentContainer, new RestaurantFragment())
                     .commit();
         }
-    }
-
-    private void sendUserToLogin() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
     }
 
     @Override

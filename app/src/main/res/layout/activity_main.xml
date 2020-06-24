@@ -8,14 +8,10 @@
     tools:context=".MainActivity"
     android:background="@color/white">
 
-    <include layout="@layout/custom_toolbar"
-        android:id="@+id/toolBar"/>
-
     <FrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolBar"
         android:layout_above="@id/bottom_navigation"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

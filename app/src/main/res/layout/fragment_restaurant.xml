@@ -4,6 +4,9 @@
     android:layout_height="match_parent"
     tools:context="Fragments.RestaurantFragment">
 
+    <include layout="@layout/custom_toolbar"
+        android:id="@+id/toolBar"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
