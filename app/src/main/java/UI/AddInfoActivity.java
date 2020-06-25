@@ -8,7 +8,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -23,6 +27,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import Utils.ChangeStatusBarColor;
 import Utils.GPSTracker;
 
 public class AddInfoActivity extends AppCompatActivity {
@@ -35,12 +40,15 @@ public class AddInfoActivity extends AppCompatActivity {
     private List<Address> addresses;
     private Geocoder geocoder;
     private GPSTracker gpsTracker;
+//    private ChangeStatusBarColor StatusBarColor = new ChangeStatusBarColor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_info);
 
+//        StatusBarColor.changestatusbarcolor();
+        changestatusbarcolor();
         init();
         checkPermission();
         getLocation();
@@ -67,6 +75,10 @@ public class AddInfoActivity extends AppCompatActivity {
                 userData.put("latitude", latitude);
                 userData.put("longitude",longitude);
                 userData.put("address", finalAddress);
+                userData.put("knownname", knownName);
+                userData.put("sublocality", subLocality);
+                userData.put("city", city);
+                userData.put("postalcode", postalCode);
 
                 db.collection("UserList").document(uid).set(userData).addOnSuccessListener(o -> {
 
@@ -77,15 +89,10 @@ public class AddInfoActivity extends AppCompatActivity {
                     finish();
 
                 }).addOnFailureListener(e -> {
-
                     Toast.makeText(this, "Something went Wrong!", Toast.LENGTH_SHORT).show();
-
                 });
-
             }
-
         });
-
     }
 
     private void checkPermission() {
@@ -135,6 +142,17 @@ public class AddInfoActivity extends AppCompatActivity {
         mUserAddress = findViewById(R.id.userAddress);
         mGetLocationBtn = findViewById(R.id.getLocationBtn);
     }
+
+    private void changestatusbarcolor() {
+        Window window = this.getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.white));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+    }
+
 
     @Override
     protected void onDestroy() {

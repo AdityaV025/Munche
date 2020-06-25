@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white"
+    android:background="@color/colorPrimary"
     app:contentInsetLeft="0dp"
     app:contentInsetStart="0dp">
 
@@ -21,8 +21,8 @@
             android:layout_height="wrap_content"
             android:text="Delivering To"
             android:textSize="20sp"
-            android:fontFamily="@font/open_sans_semibold"
-            android:textColor="@color/colorAccent"/>
+            android:fontFamily="@font/open_sans_bold"
+            android:textColor="@color/lightWhite"/>
 
         <TextView
             android:id="@+id/userLocation"
@@ -30,7 +30,8 @@
             android:layout_height="wrap_content"
             android:text="Location Of The User"
             android:fontFamily="@font/open_sans"
-            android:layout_below="@id/userLocationNickName"/>
+            android:layout_below="@id/userLocationNickName"
+            android:textColor="@color/lightWhite"/>
 
     </RelativeLayout>
 

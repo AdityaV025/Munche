@@ -63,5 +63,4 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
         startActivity(intent);
         requireActivity().finish();
     }
-
 }

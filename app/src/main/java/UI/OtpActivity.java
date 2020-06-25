@@ -1,9 +1,14 @@
 package UI;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -21,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.installations.FirebaseInstallationsRegistrar;
 
+import Utils.ChangeStatusBarColor;
 import in.aabhasjindal.otptextview.OTPListener;
 import in.aabhasjindal.otptextview.OtpTextView;
 
@@ -31,12 +37,15 @@ public class OtpActivity extends AppCompatActivity {
     private String mAuthVerificationId, phoneNum;
     private OtpTextView mOtpText;
     private Button mVerifyBtn;
+//    private ChangeStatusBarColor StatusBarColor = new ChangeStatusBarColor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otp);
 
+//        StatusBarColor.changestatusbarcolor();
+        changestatusbarcolor();
         init();
         mAuthVerificationId = getIntent().getStringExtra("AuthCredentials");
         phoneNum = getIntent().getStringExtra("PhoneNumber");
@@ -74,6 +83,17 @@ public class OtpActivity extends AppCompatActivity {
         mOtpText = findViewById(R.id.otpView);
         mVerifyBtn = findViewById(R.id.verifyOTP);
     }
+
+    private void changestatusbarcolor() {
+        Window window = this.getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.white));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+    }
+
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential)

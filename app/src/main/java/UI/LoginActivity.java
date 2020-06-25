@@ -2,12 +2,16 @@ package UI;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -25,6 +29,8 @@ import com.hbb20.CountryCodePicker;
 
 import java.util.concurrent.TimeUnit;
 
+import Utils.ChangeStatusBarColor;
+
 public class LoginActivity extends AppCompatActivity {
 
     private Button mSendOtpBtn, mLoginWithFbBtn, mLoginWithGoogleBtn, mLoginWithEmailBtn;
@@ -33,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser mCurrentUser;
     private String finalPhoneNumber;
+//    private ChangeStatusBarColor StatusBarColor = new ChangeStatusBarColor();
 
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallBacks;
 
@@ -41,6 +48,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+//        StatusBarColor.changestatusbarcolor();
+        changestatusbarcolor();
         initialiseViews();
         mSendOtpBtn.setOnClickListener(view -> {
             String phoneNumber = mNumberText.getText().toString();
@@ -112,6 +121,17 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    private void changestatusbarcolor() {
+        Window window = this.getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.white));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+    }
+
 
     @Override
     protected void onStart() {
