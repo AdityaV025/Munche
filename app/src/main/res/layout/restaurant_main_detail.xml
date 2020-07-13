@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        app:cardCornerRadius="10dp"
+        android:layout_margin="17dp"
+        app:cardElevation="5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/resImage"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:src="@drawable/restaurant_image_placeholder"
+                android:scaleType="centerCrop"/>
+
+            <TextView
+                android:id="@+id/resName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cafe Coffee Day"
+                android:layout_below="@+id/resImage"
+                android:layout_marginTop="11dp"
+                android:layout_marginStart="11dp"
+                android:textSize="19sp"
+                android:textColor="@color/colorAccent"
+                android:fontFamily="@font/open_sans_semibold"/>
+
+            <TextView
+                android:id="@+id/resCuisine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/resName"
+                android:text="Barista,Sandwiches"
+                android:layout_marginStart="11dp"
+                android:layout_marginTop="1dp"
+                android:textSize="13sp"
+                android:fontFamily="@font/open_sans"
+                android:textColor="@color/gray"/>
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_below="@+id/resCuisine"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="11dp"
+                android:theme="@style/RatingBar"
+                android:numStars="5"
+                android:rating="4"/>
+
+            <TextView
+                android:id="@+id/ratingAggregate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/resCuisine"
+                android:layout_toEndOf="@+id/ratingBar"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="5dp"
+                android:text="4.5"
+                android:textColor="@color/gray"
+                android:textSize="12sp"
+                android:fontFamily="@font/open_sans"/>
+
+            <TextView
+                android:id="@+id/average_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ratingBar"
+                android:layout_marginStart="11dp"
+                android:layout_marginTop="4dp"
+                android:text="\u20B9200 per person | "
+                android:textSize="13sp"
+                android:textColor="@color/gray"
+                android:fontFamily="@font/open_sans"/>
+
+            <TextView
+                android:id="@+id/average_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="45 Mins"
+                android:layout_below="@+id/ratingBar"
+                android:layout_toEndOf="@+id/average_price"
+                android:textSize="13sp"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/open_sans"
+                android:textColor="@color/gray"
+                android:layout_marginBottom="11dp"/>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
