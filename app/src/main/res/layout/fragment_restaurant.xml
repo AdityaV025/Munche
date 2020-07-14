@@ -1,11 +1,41 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="Fragments.RestaurantFragment">
 
-    <include layout="@layout/custom_toolbar"
-        android:id="@+id/toolBar"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-</RelativeLayout>
+        <include layout="@layout/custom_toolbar"
+            android:id="@+id/toolBar"/>
+
+        <TextView
+            android:id="@+id/trendingTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/trending"
+            android:layout_below="@+id/toolBar"
+            android:layout_marginTop="50dp"
+            android:layout_marginStart="12dp"
+            android:textColor="@color/colorAccent"
+            android:fontFamily="@font/open_sans_bold"
+            android:textSize="23sp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/restaurant_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/trendingTextView"
+            android:layout_marginTop="7dp"
+            android:clipToPadding="false"
+            android:paddingStart="12dp"
+            android:paddingEnd="23dp"/>
+
+    </RelativeLayout>
+
+</ScrollView>
+

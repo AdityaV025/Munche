@@ -1,26 +1,43 @@
 package Fragments;
 
-import android.app.ProgressDialog;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
+import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.munche.R;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.annotations.NotNull;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 
 import java.util.Objects;
+
+import Models.RestaurantDetail;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class RestaurantFragment extends Fragment {
 
@@ -30,6 +47,9 @@ public class RestaurantFragment extends Fragment {
     private FirebaseUser mCurrentUser;
     private FirebaseFirestore db;
     private String address;
+    private FirestoreRecyclerAdapter<RestaurantDetail, RestaurantItemViewHolder> restaurantAdapter;
+    LinearLayoutManager linearLayoutManager;
+    private RecyclerView mRestaurantRecyclerView;
 
     public RestaurantFragment() {
         // Required empty public constructor
@@ -38,9 +58,10 @@ public class RestaurantFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_restaurant, container, false);
+        view = inflater.inflate(R.layout.fragment_restaurant, container, false);
         init(view);
         fetchLocation(view);
+        getRestaurantDetails();
 
         return view;
     }
@@ -51,13 +72,17 @@ public class RestaurantFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         mToolbar = view.findViewById(R.id.customToolBar);
         ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(mToolbar);
+        mRestaurantRecyclerView = view.findViewById(R.id.restaurant_recyclerView);
+        linearLayoutManager = new LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false);
+        mRestaurantRecyclerView.setLayoutManager(linearLayoutManager);
+        mRestaurantRecyclerView.setHasFixedSize(true);
     }
 
     private void fetchLocation(View view) {
         if (mCurrentUser != null) {
             DocumentReference docRef = db.collection("UserList").document(mCurrentUser.getUid());
             docRef.get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
                     DocumentSnapshot documentSnapshot = task.getResult();
                     assert documentSnapshot != null;
                     address = String.valueOf(documentSnapshot.get("address"));
@@ -67,5 +92,53 @@ public class RestaurantFragment extends Fragment {
             });
         }
     }
+
+    private void getRestaurantDetails() {
+        Query query = db.collection("RestaurantList");
+        FirestoreRecyclerOptions<RestaurantDetail> menuItemModel = new FirestoreRecyclerOptions.Builder<RestaurantDetail>()
+                .setQuery(query, RestaurantDetail.class)
+                .build();
+        restaurantAdapter = new FirestoreRecyclerAdapter<RestaurantDetail, RestaurantItemViewHolder>(menuItemModel) {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onBindViewHolder(@NonNull RestaurantItemViewHolder holder, int position, @NotNull RestaurantDetail model) {
+
+                holder.mRestaurantName.setText(model.getRestaurant_name());
+                Glide.with(requireActivity())
+                        .load(model.getRestaurant_spotimage())
+                        .into(holder.mRestaurantSpotImage);
+            }
+            @NotNull
+            @Override
+            public RestaurantItemViewHolder onCreateViewHolder(@NotNull ViewGroup group, int i) {
+                View view = LayoutInflater.from(group.getContext())
+                        .inflate(R.layout.restaurant_main_detail, group, false);
+                return new RestaurantItemViewHolder(view);
+            }
+            @Override
+            public void onError(@NonNull @NotNull FirebaseFirestoreException e) {
+                Log.e("error", Objects.requireNonNull(e.getMessage()));
+            }
+        };
+        restaurantAdapter.startListening();
+        SnapHelper helper = new LinearSnapHelper();
+        helper.attachToRecyclerView(mRestaurantRecyclerView);
+        restaurantAdapter.notifyDataSetChanged();
+        mRestaurantRecyclerView.setAdapter(restaurantAdapter);
+
+    }
+
+    public static class RestaurantItemViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.resName)
+        TextView mRestaurantName;
+        @BindView(R.id.resImage)
+        ImageView mRestaurantSpotImage;
+
+        public RestaurantItemViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
+
 
 }
