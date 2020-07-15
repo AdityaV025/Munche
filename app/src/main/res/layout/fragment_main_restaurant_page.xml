@@ -1,0 +1,56 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="Fragments.MainRestaurantPageFragment">
+
+    <include layout="@layout/main_restaurant_toolbar"
+        android:id="@+id/mainResToolBar"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/mainResToolBar"
+        android:padding="13dp">
+
+        <TextView
+            android:id="@+id/mainResName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Biryani Blues"
+            android:textColor="@color/colorAccent"
+            android:fontFamily="@font/open_sans_semibold"
+            android:textSize="19sp"/>
+
+        <TextView
+            android:id="@+id/mainResCuisine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mainResName"
+            android:text="Biryani, Fast Food"
+            android:textColor="@color/gray"
+            android:fontFamily="@font/open_sans"/>
+
+        <TextView
+            android:id="@+id/mainResAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mainResCuisine"
+            android:text="Sector 50  \u2022  "
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/gray"/>
+
+        <TextView
+            android:id="@+id/mainResDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mainResCuisine"
+            android:layout_toEndOf="@+id/mainResAddress"
+            android:text="1.4 Kms"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/gray"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

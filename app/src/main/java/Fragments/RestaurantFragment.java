@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -101,16 +103,33 @@ public class RestaurantFragment extends Fragment {
         restaurantAdapter = new FirestoreRecyclerAdapter<RestaurantDetail, RestaurantItemViewHolder>(menuItemModel) {
             @SuppressLint("SetTextI18n")
             @Override
-            public void onBindViewHolder(@NonNull RestaurantItemViewHolder holder, int position, @NotNull RestaurantDetail model) {
+            public void onBindViewHolder(@NonNull RestaurantItemViewHolder holder, int position, @NonNull RestaurantDetail model) {
 
                 holder.mRestaurantName.setText(model.getRestaurant_name());
+                String RUID = model.getRestaurant_uid();
                 Glide.with(requireActivity())
                         .load(model.getRestaurant_spotimage())
                         .into(holder.mRestaurantSpotImage);
+                holder.mAveragePrice.setText("\u20B9" +  model.getAverage_price() + " Per Person | ");
+
+                holder.itemView.setOnClickListener(view -> {
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("RUID",RUID);
+                    Fragment fragment = new MainRestaurantPageFragment();
+                    fragment.setArguments(bundle);
+                    FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.fragmentContainer, fragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+
+                });
+
             }
-            @NotNull
+            @NonNull
             @Override
-            public RestaurantItemViewHolder onCreateViewHolder(@NotNull ViewGroup group, int i) {
+            public RestaurantItemViewHolder onCreateViewHolder(@NonNull ViewGroup group, int i) {
                 View view = LayoutInflater.from(group.getContext())
                         .inflate(R.layout.restaurant_main_detail, group, false);
                 return new RestaurantItemViewHolder(view);
@@ -133,6 +152,8 @@ public class RestaurantFragment extends Fragment {
         TextView mRestaurantName;
         @BindView(R.id.resImage)
         ImageView mRestaurantSpotImage;
+        @BindView(R.id.average_price)
+        TextView mAveragePrice;
 
         public RestaurantItemViewHolder(View itemView) {
             super(itemView);
