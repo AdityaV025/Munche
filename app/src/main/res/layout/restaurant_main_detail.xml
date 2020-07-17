@@ -84,7 +84,7 @@
                 android:fontFamily="@font/open_sans"/>
 
             <TextView
-                android:id="@+id/average_distance"
+                android:id="@+id/average_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="45 Mins"

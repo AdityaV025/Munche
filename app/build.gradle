@@ -58,6 +58,7 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
     implementation 'com.github.bumptech.glide:glide:4.11.0' //Glide Image Loading
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0' //Annotation Processor
+    implementation 'com.github.travijuu:numberpicker:1.0.7'//NumberPicker
 
 }
 apply plugin: 'com.google.gms.google-services'

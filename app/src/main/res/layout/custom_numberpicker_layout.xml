@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="80dp"
+    android:layout_height="32dp"
+    android:orientation="horizontal"
+    android:background="@drawable/menu_item_add_btn_background"
+    android:weightSum="3">
+
+    <Button
+        android:id="@+id/decrement"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:text="-"
+        android:fontFamily="@font/open_sans"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_weight="1"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/display"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="1"
+        android:gravity="center"
+        android:textColor="@color/colorAccent"
+        android:fontFamily="@font/open_sans"/>
+
+    <Button
+        android:id="@+id/increment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@null"
+        android:text="+"
+        android:fontFamily="@font/open_sans"
+        android:textColor="@color/colorPrimaryDark"
+        android:gravity="center"/>
+
+
+</LinearLayout>

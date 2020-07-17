@@ -1,6 +1,7 @@
 package Fragments;
 
 import android.annotation.SuppressLint;
+import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -104,27 +105,52 @@ public class RestaurantFragment extends Fragment {
             @SuppressLint("SetTextI18n")
             @Override
             public void onBindViewHolder(@NonNull RestaurantItemViewHolder holder, int position, @NonNull RestaurantDetail model) {
+                if (mCurrentUser != null) {
+                    DocumentReference docRef = db.collection("UserList").document(mCurrentUser.getUid());
+                    docRef.get().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot documentSnapshot = task.getResult();
+                            assert documentSnapshot != null;
+                            Double mUserLat = (Double) documentSnapshot.get("latitude");
+                            Double mUserLong = (Double) documentSnapshot.get("longitude");
+                            Double mResLat = model.getLatitude();
+                            Double mResLong = model.getLongitude();
+                            Location userLocation = new Location("");
+                            userLocation.setLatitude(mUserLat);
+                            userLocation.setLongitude(mUserLong);
+                            Location restaurantLocation = new Location("");
+                            restaurantLocation.setLatitude(mResLat);
+                            restaurantLocation.setLongitude(mResLong);
 
-                holder.mRestaurantName.setText(model.getRestaurant_name());
-                String RUID = model.getRestaurant_uid();
-                Glide.with(requireActivity())
-                        .load(model.getRestaurant_spotimage())
-                        .into(holder.mRestaurantSpotImage);
-                holder.mAveragePrice.setText("\u20B9" +  model.getAverage_price() + " Per Person | ");
+                            float distanceInMeters = userLocation.distanceTo(restaurantLocation)/1000;
+                            int AvgDrivingSpeedPerKm = 100;
+                            int estimatedDriveTimeInMinutes = (int) (distanceInMeters / AvgDrivingSpeedPerKm);
+                            String deliveryTime = String.valueOf(estimatedDriveTimeInMinutes);
+                            holder.mRestaurantName.setText(model.getRestaurant_name());
+                            String RUID = model.getRestaurant_uid();
+                            holder.mAverageDeliveryTime.setText(deliveryTime + " Mins");
 
-                holder.itemView.setOnClickListener(view -> {
+                            Glide.with(requireActivity())
+                                    .load(model.getRestaurant_spotimage())
+                                    .into(holder.mRestaurantSpotImage);
+                            holder.mAveragePrice.setText("\u20B9" +  model.getAverage_price() + " Per Person | ");
 
-                    Bundle bundle = new Bundle();
-                    bundle.putString("RUID",RUID);
-                    Fragment fragment = new MainRestaurantPageFragment();
-                    fragment.setArguments(bundle);
-                    FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.fragmentContainer, fragment);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
+                            holder.itemView.setOnClickListener(view -> {
 
-                });
+                                Bundle bundle = new Bundle();
+                                bundle.putString("RUID",RUID);
+                                Fragment fragment = new MainRestaurantPageFragment();
+                                fragment.setArguments(bundle);
+                                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                fragmentTransaction.replace(R.id.fragmentContainer, fragment);
+                                fragmentTransaction.addToBackStack(null);
+                                fragmentTransaction.commit();
+
+                            });
+                        }
+                    });
+                }
 
             }
             @NonNull
@@ -154,6 +180,8 @@ public class RestaurantFragment extends Fragment {
         ImageView mRestaurantSpotImage;
         @BindView(R.id.average_price)
         TextView mAveragePrice;
+        @BindView(R.id.average_time)
+        TextView mAverageDeliveryTime;
 
         public RestaurantItemViewHolder(View itemView) {
             super(itemView);
