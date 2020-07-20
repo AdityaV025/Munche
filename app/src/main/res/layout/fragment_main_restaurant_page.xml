@@ -1,4 +1,4 @@
-<ScrollView
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -22,7 +22,6 @@
                 android:id="@+id/mainResName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Biryani Blues"
                 android:textColor="@color/colorAccent"
                 android:fontFamily="@font/open_sans_semibold"
                 android:textSize="19sp"/>
@@ -34,7 +33,8 @@
                 android:layout_below="@+id/mainResName"
                 android:text="Biryani, Fast Food"
                 android:textColor="@color/gray"
-                android:fontFamily="@font/open_sans"/>
+                android:fontFamily="@font/open_sans_light"
+                android:textSize="13sp"/>
 
             <TextView
                 android:id="@+id/mainResAddress"
@@ -42,8 +42,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/mainResCuisine"
                 android:text="Sector 50  \u2022  "
-                android:fontFamily="@font/open_sans"
-                android:textColor="@color/gray"/>
+                android:fontFamily="@font/open_sans_light"
+                android:textColor="@color/gray"
+                android:textSize="13sp"/>
 
             <TextView
                 android:id="@+id/mainResDistance"
@@ -51,17 +52,18 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/mainResCuisine"
                 android:layout_toEndOf="@+id/mainResAddress"
-                android:text="1.4 Kms"
-                android:fontFamily="@font/open_sans"
-                android:textColor="@color/gray"/>
+                android:fontFamily="@font/open_sans_light"
+                android:textColor="@color/gray"
+                android:textSize="13sp"/>
 
-            <View
+            <ImageView
                 android:id="@+id/divider"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/grey"
-                android:layout_below="@+id/mainResDistance"
-                android:layout_marginTop="21dp"/>
+                android:layout_height="5dp"
+                android:src="@drawable/dotted_divider"
+                android:layerType="software"
+                android:layout_below="@id/mainResDistance"
+                android:layout_marginTop="7dp" />
 
             <LinearLayout
                 android:id="@+id/restaurantSpecsContainer"
@@ -87,7 +89,6 @@
                     android:id="@+id/restaurantDeliveryTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="45 Mins"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:fontFamily="@font/open_sans"
@@ -98,7 +99,6 @@
                     android:id="@+id/restaurantAvgPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="\u20b9450/Person"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:fontFamily="@font/open_sans"
@@ -107,16 +107,25 @@
 
             </LinearLayout>
 
+            <ImageView
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="21dp"
+                android:src="@drawable/dotted_divider"
+                android:layerType="software"
+                android:layout_below="@id/restaurantSpecsContainer"
+                android:layout_marginTop="7dp" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/menuItemRecylerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/restaurantSpecsContainer"
+                android:layout_below="@+id/divider2"
                 android:layout_marginTop="12dp"/>
 
         </RelativeLayout>
 
     </RelativeLayout>
 
-</ScrollView>
+</androidx.core.widget.NestedScrollView>
 

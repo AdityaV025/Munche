@@ -122,16 +122,17 @@ public class RestaurantFragment extends Fragment {
                             restaurantLocation.setLatitude(mResLat);
                             restaurantLocation.setLongitude(mResLong);
 
-                            float distanceInMeters = userLocation.distanceTo(restaurantLocation)/1000;
-                            int AvgDrivingSpeedPerKm = 100;
+                            int distanceInMeters = (int) (userLocation.distanceTo(restaurantLocation));
+                            int AvgDrivingSpeedPerKm = 666;
                             int estimatedDriveTimeInMinutes = (int) (distanceInMeters / AvgDrivingSpeedPerKm);
                             String deliveryTime = String.valueOf(estimatedDriveTimeInMinutes);
                             holder.mRestaurantName.setText(model.getRestaurant_name());
                             String RUID = model.getRestaurant_uid();
-                            holder.mAverageDeliveryTime.setText(deliveryTime + " Mins");
+                            holder.mAverageDeliveryTime.setText(deliveryTime + " mins");
 
                             Glide.with(requireActivity())
                                     .load(model.getRestaurant_spotimage())
+                                    .placeholder(R.drawable.vector_utensil_background)
                                     .into(holder.mRestaurantSpotImage);
                             holder.mAveragePrice.setText("\u20B9" +  model.getAverage_price() + " Per Person | ");
 
@@ -139,6 +140,10 @@ public class RestaurantFragment extends Fragment {
 
                                 Bundle bundle = new Bundle();
                                 bundle.putString("RUID",RUID);
+                                bundle.putString("NAME", model.getRestaurant_name());
+                                bundle.putString("DISTANCE", String.valueOf(distanceInMeters/1000));
+                                bundle.putString("TIME", deliveryTime);
+                                bundle.putString("PRICE", model.getAverage_price());
                                 Fragment fragment = new MainRestaurantPageFragment();
                                 fragment.setArguments(bundle);
                                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();

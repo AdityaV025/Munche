@@ -8,13 +8,13 @@
         android:id="@+id/foodMark"
         android:layout_width="13dp"
         android:layout_height="13dp"
-        android:layout_marginStart="19dp"
+        android:layout_marginStart="13dp"
         android:layout_marginTop="19dp"
         android:src="@drawable/veg_symbol"/>
 
     <TextView
         android:id="@+id/menuItemName"
-        android:layout_width="wrap_content"
+        android:layout_width="230dp"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/foodMark"
         android:layout_marginTop="15dp"
@@ -22,7 +22,8 @@
         android:text="Paneer Biryani"
         android:textSize="15sp"
         android:textColor="@color/colorAccent"
-        android:fontFamily="@font/open_sans_semibold"/>
+        android:fontFamily="@font/open_sans_semibold"
+        android:layout_marginEnd="10dp"/>
 
     <TextView
         android:id="@+id/menuItemCategory"
@@ -52,29 +53,29 @@
 
     <Button
         android:id="@+id/addMenuItemBtn"
-        android:layout_width="80dp"
+        android:layout_width="65dp"
         android:layout_height="32dp"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="19dp"
-        android:layout_marginEnd="19dp"
+        android:layout_marginEnd="13dp"
         android:text="Add +"
         android:textAllCaps="false"
         android:fontFamily="@font/open_sans"
         android:background="@drawable/menu_item_add_btn_background"
         android:textColor="@color/colorAccent"
-        android:visibility="visible"/>
+        android:visibility="visible"
+        android:textSize="12sp"/>
 
-    <com.travijuu.numberpicker.library.NumberPicker
-        android:id="@+id/menuItem_NumberPicker"
-        android:layout_width="80dp"
-        android:layout_height="32dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="19dp"
-        android:layout_marginEnd="19dp"
-        app:custom_layout="@layout/custom_numberpicker_layout"
-        android:focusable="false"
-        app:min="1"
-        app:max="10"
-        android:visibility="gone"/>
+<!--    <com.travijuu.numberpicker.library.NumberPicker-->
+<!--        android:id="@+id/menuItem_NumberPicker"-->
+<!--        android:layout_width="80dp"-->
+<!--        android:layout_height="32dp"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:layout_marginTop="19dp"-->
+<!--        android:layout_marginEnd="19dp"-->
+<!--        app:custom_layout="@layout/custom_numberpicker_layout"-->
+<!--        app:min="1"-->
+<!--        app:max="10"-->
+<!--        android:visibility="invisible"/>-->
 
 </RelativeLayout>
