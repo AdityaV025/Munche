@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.example.munche.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -28,7 +29,6 @@ import com.google.firebase.database.annotations.NotNull;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
-import com.travijuu.numberpicker.library.NumberPicker;
 
 import java.util.Objects;
 
@@ -120,8 +120,19 @@ public class MainRestaurantPageFragment extends Fragment {
                 holder.itemView.setOnClickListener(v -> {
                 });
                 holder.mItemAddBtn.setOnClickListener(view -> {
-                    Toast.makeText(getContext(), model.getPrice(), Toast.LENGTH_SHORT).show();
+                    holder.mItemAddBtn.setVisibility(View.GONE);
+                    holder.mQtyPicker.setVisibility(View.VISIBLE);
+                    holder.mQtyPicker.setRange(0,200);
+                    holder.mQtyPicker.setNumber("1");
                 });
+
+                holder.mQtyPicker.setOnValueChangeListener((view, oldValue, newValue) -> {
+                    if(newValue <= 0) {
+                        holder.mQtyPicker.setVisibility(View.GONE);
+                        holder.mItemAddBtn.setVisibility(View.VISIBLE);
+                    }
+                });
+
             }
             @NotNull
             @Override
@@ -152,6 +163,8 @@ public class MainRestaurantPageFragment extends Fragment {
         TextView mItemCategory;
         @BindView(R.id.addMenuItemBtn)
         Button mItemAddBtn;
+        @BindView(R.id.quantityPicker)
+        ElegantNumberButton mQtyPicker;
 
         public MenuItemHolder(View itemView) {
             super(itemView);
