@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -27,7 +28,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import Utils.ChangeStatusBarColor;
 import Utils.GPSTracker;
 
 public class AddInfoActivity extends AppCompatActivity {
@@ -40,14 +40,12 @@ public class AddInfoActivity extends AppCompatActivity {
     private List<Address> addresses;
     private Geocoder geocoder;
     private GPSTracker gpsTracker;
-//    private ChangeStatusBarColor StatusBarColor = new ChangeStatusBarColor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_info);
 
-//        StatusBarColor.changestatusbarcolor();
         changestatusbarcolor();
         init();
         checkPermission();
@@ -95,6 +93,14 @@ public class AddInfoActivity extends AppCompatActivity {
         });
     }
 
+    private void init() {
+        mUserName = findViewById(R.id.userName);
+        mUserEmail = findViewById(R.id.userEmail);
+        mSaveInfoBtn = findViewById(R.id.addInfo);
+        mUserAddress = findViewById(R.id.userAddress);
+        mGetLocationBtn = findViewById(R.id.getLocationBtn);
+    }
+
     private void checkPermission() {
         try {
             if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
@@ -119,28 +125,23 @@ public class AddInfoActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-            city = addresses.get(0).getLocality();
-            state = addresses.get(0).getAdminArea();
-            country = addresses.get(0).getCountryName();
-            postalCode = addresses.get(0).getPostalCode();
-            knownName = addresses.get(0).getFeatureName();
-            subLocality = addresses.get(0).getSubLocality();
-            subAdminArea = addresses.get(0).getSubAdminArea();
+            if (addresses != null && addresses.size() > 0){
+                address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                city = addresses.get(0).getLocality();
+                state = addresses.get(0).getAdminArea();
+                country = addresses.get(0).getCountryName();
+                postalCode = addresses.get(0).getPostalCode();
+                knownName = addresses.get(0).getFeatureName();
+                subLocality = addresses.get(0).getSubLocality();
+                subAdminArea = addresses.get(0).getSubAdminArea();
 
-            finalAddress = knownName + ", " + subLocality +  ", " + city + ", " + postalCode;
+                finalAddress = knownName + ", " + subLocality +  ", " + city + ", " + postalCode;
+
+            }
 
         }else{
             gpsTracker.showSettingsAlert();
         }
-    }
-
-    private void init() {
-        mUserName = findViewById(R.id.userName);
-        mUserEmail = findViewById(R.id.userEmail);
-        mSaveInfoBtn = findViewById(R.id.addInfo);
-        mUserAddress = findViewById(R.id.userAddress);
-        mGetLocationBtn = findViewById(R.id.getLocationBtn);
     }
 
     private void changestatusbarcolor() {
@@ -152,7 +153,6 @@ public class AddInfoActivity extends AppCompatActivity {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
     }
-
 
     @Override
     protected void onDestroy() {

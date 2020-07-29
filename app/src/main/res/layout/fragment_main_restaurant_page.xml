@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="Fragments.MainRestaurantPageFragment">
+    tools:context="Fragments.MainRestaurantPageFragment"
+    android:id="@+id/content1">
 
     <RelativeLayout
         android:layout_width="match_parent"

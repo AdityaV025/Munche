@@ -1,6 +1,7 @@
 package Fragments;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,12 +26,26 @@ import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.example.munche.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.annotations.NotNull;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import Models.RestaurantMenuItems;
@@ -47,6 +63,7 @@ public class MainRestaurantPageFragment extends Fragment {
     private FirestoreRecyclerAdapter<RestaurantMenuItems, MenuItemHolder> adapter;
     LinearLayoutManager linearLayoutManager;
     private RecyclerView mMenuItemRecyclerView;
+    private NestedScrollView mRootView;
 
     public MainRestaurantPageFragment() {
         // Required empty public constructor
@@ -73,6 +90,8 @@ public class MainRestaurantPageFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     private void init() {
+
+    mRootView = (NestedScrollView) view.findViewById(R.id.content1);
     db = FirebaseFirestore.getInstance();
     mToolBar = view.findViewById(R.id.mainResToolBar);
     mResNameToolBar = view.findViewById(R.id.restaurantTitleToolbar);
@@ -119,18 +138,22 @@ public class MainRestaurantPageFragment extends Fragment {
                 holder.mItemPrice.setText("\u20B9 " + model.getPrice());
                 holder.itemView.setOnClickListener(v -> {
                 });
-                holder.mItemAddBtn.setOnClickListener(view -> {
-                    holder.mItemAddBtn.setVisibility(View.GONE);
-                    holder.mQtyPicker.setVisibility(View.VISIBLE);
-                    holder.mQtyPicker.setRange(0,200);
-                    holder.mQtyPicker.setNumber("1");
-                });
 
+                String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+
+                holder.mItemAddBtn.setOnClickListener(view -> {
+
+                    String selectedItemName = holder.mItemName.getText().toString();
+                    addItemToCart(selectedItemName,model,uid);
+
+
+                });
                 holder.mQtyPicker.setOnValueChangeListener((view, oldValue, newValue) -> {
                     if(newValue <= 0) {
                         holder.mQtyPicker.setVisibility(View.GONE);
                         holder.mItemAddBtn.setVisibility(View.VISIBLE);
                     }
+
                 });
 
             }
@@ -149,6 +172,47 @@ public class MainRestaurantPageFragment extends Fragment {
         adapter.startListening();
         adapter.notifyDataSetChanged();
         mMenuItemRecyclerView.setAdapter(adapter);
+
+    }
+
+    private void addItemToCart(String selectedItemName, RestaurantMenuItems model, String uid){
+
+        Map<String ,String> cartItemMap = new HashMap<>();
+        cartItemMap.put("select_name", selectedItemName);
+        cartItemMap.put("select_price", model.getPrice());
+        cartItemMap.put("select_specification", model.getSpecification());
+        cartItemMap.put("item_count", "1");
+        db.collection("UserList").document(uid).collection("CartItems")
+                .document(selectedItemName).
+                set(cartItemMap)
+                .addOnSuccessListener(aVoid -> {
+
+                    db.collection("UserList").document(uid).collection("CartItems").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                            if (task.isSuccessful()){
+                                int count = 0;
+                                for (DocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                    count++;
+                                }
+                                Snackbar snackbar = Snackbar
+                                        .make(mRootView, "Added " + count + " items", Snackbar.LENGTH_INDEFINITE)
+                                        .setAction("UNDO", view -> {
+                                            Snackbar snackbar1 = Snackbar.make(mRootView, "Message is restored!", Snackbar.LENGTH_SHORT);
+                                            snackbar1.dismiss();
+                                        });
+                                snackbar.show();
+
+                            }
+
+                        }
+                    });
+
+                    Toast.makeText(getContext(), "Added Item Successfully", Toast.LENGTH_SHORT).show();
+                }).addOnFailureListener(e -> {
+            Toast.makeText(getContext(), "Adding Item Failed", Toast.LENGTH_SHORT).show();
+        });
 
     }
 

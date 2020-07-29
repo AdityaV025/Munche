@@ -73,6 +73,7 @@
         android:layout_marginTop="19dp"
         app:textColor="@color/white"
         app:textSize="6sp"
+        app:backGroundColor="@color/colorPrimary"
         app:backgroundDrawable="@drawable/menu_item_add_btn_background"
         android:visibility="gone"/>
 
