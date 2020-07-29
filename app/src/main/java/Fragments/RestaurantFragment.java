@@ -1,6 +1,7 @@
 package Fragments;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -27,6 +28,7 @@ import com.bumptech.glide.Glide;
 import com.example.munche.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.annotations.NotNull;
@@ -41,6 +43,7 @@ import java.util.Objects;
 import Models.RestaurantDetail;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ru.nikartm.support.ImageBadgeView;
 
 public class RestaurantFragment extends Fragment {
 
@@ -53,6 +56,7 @@ public class RestaurantFragment extends Fragment {
     private FirestoreRecyclerAdapter<RestaurantDetail, RestaurantItemViewHolder> restaurantAdapter;
     LinearLayoutManager linearLayoutManager;
     private RecyclerView mRestaurantRecyclerView;
+    private ImageBadgeView mImageBadgeView;
 
     public RestaurantFragment() {
         // Required empty public constructor
@@ -64,6 +68,7 @@ public class RestaurantFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_restaurant, container, false);
         init(view);
         fetchLocation(view);
+        getItemsInCartNo();
         getRestaurantDetails();
 
         return view;
@@ -79,6 +84,7 @@ public class RestaurantFragment extends Fragment {
         linearLayoutManager = new LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false);
         mRestaurantRecyclerView.setLayoutManager(linearLayoutManager);
         mRestaurantRecyclerView.setHasFixedSize(true);
+        mImageBadgeView = view.findViewById(R.id.imageBadgeView);
     }
 
     private void fetchLocation(View view) {
@@ -94,6 +100,27 @@ public class RestaurantFragment extends Fragment {
                 }
             });
         }
+    }
+
+    private void getItemsInCartNo() {
+        db.collection("UserList").document(mCurrentUser.getUid()).collection("CartItems").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                int count = 0;
+                for (DocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                    count++;
+                }
+                mImageBadgeView.setBadgeValue(count);
+
+                mImageBadgeView.setOnClickListener(view -> {
+                    if (mImageBadgeView.getBadgeValue() != 0){
+                        sendUserToCheckOut();
+                    }else {
+                        sendUserToEmptyCart();
+                    }
+                });
+
+            }
+        });
     }
 
     private void getRestaurantDetails() {
@@ -194,5 +221,22 @@ public class RestaurantFragment extends Fragment {
         }
     }
 
+    private void sendUserToCheckOut() {
+        Fragment fragment = new CartItemFragment();
+        FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragmentContainer, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    private void sendUserToEmptyCart() {
+        Fragment fragment = new EmptyCartFragment();
+        FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragmentContainer, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
 
 }

@@ -1,0 +1,39 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="Fragments.EmptyCartFragment">
+
+    <ImageView
+        android:id="@+id/emptyCartImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/empty_cart_image"/>
+
+    <TextView
+        android:id="@+id/emptyCartText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/emptyCartImg"
+
+        android:text="@string/your_cart_is_empty"
+        android:textSize="19sp"
+        android:textColor="@color/gray"
+        android:fontFamily="@font/open_sans_semibold"/>
+
+    <TextView
+        android:id="@+id/addItemText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Add items in your cart to Continue"
+        android:layout_below="@+id/emptyCartText"
+        android:layout_marginTop="7dp"
+        android:fontFamily="@font/open_sans"
+        android:textSize="15sp"
+        android:textColor="@color/gray"/>
+
+</RelativeLayout>

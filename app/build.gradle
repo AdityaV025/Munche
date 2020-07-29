@@ -59,6 +59,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.11.0' //Glide Image Loading
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0' //Annotation Processor
     implementation 'com.cepheuen.elegant-number-button:lib:1.0.2'//NumberPicker
+    implementation 'com.github.nikartm:image-support:1.0.5' //ItemBadge Count
 
 }
 apply plugin: 'com.google.gms.google-services'

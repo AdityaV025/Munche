@@ -187,26 +187,23 @@ public class MainRestaurantPageFragment extends Fragment {
                 set(cartItemMap)
                 .addOnSuccessListener(aVoid -> {
 
-                    db.collection("UserList").document(uid).collection("CartItems").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    db.collection("UserList").document(uid).collection("CartItems").get().addOnCompleteListener(task -> {
 
-                            if (task.isSuccessful()){
-                                int count = 0;
-                                for (DocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                    count++;
-                                }
-                                Snackbar snackbar = Snackbar
-                                        .make(mRootView, "Added " + count + " items", Snackbar.LENGTH_INDEFINITE)
-                                        .setAction("UNDO", view -> {
-                                            Snackbar snackbar1 = Snackbar.make(mRootView, "Message is restored!", Snackbar.LENGTH_SHORT);
-                                            snackbar1.dismiss();
-                                        });
-                                snackbar.show();
-
+                        if (task.isSuccessful()){
+                            int count = 0;
+                            for (DocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                count++;
                             }
+                            Snackbar snackbar = Snackbar
+                                    .make(mRootView, "Added " + count + " items", Snackbar.LENGTH_INDEFINITE)
+                                    .setAction("UNDO", view -> {
+                                        Snackbar snackbar1 = Snackbar.make(mRootView, "Message is restored!", Snackbar.LENGTH_SHORT);
+                                        snackbar1.dismiss();
+                                    });
+                            snackbar.show();
 
                         }
+
                     });
 
                     Toast.makeText(getContext(), "Added Item Successfully", Toast.LENGTH_SHORT).show();

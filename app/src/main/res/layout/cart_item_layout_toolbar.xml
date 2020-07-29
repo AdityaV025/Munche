@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.appbar.AppBarLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/cartBackBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/back_arrow"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp" />
+
+            <TextView
+                android:id="@+id/confirmOrderText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="9dp"
+                android:layout_centerVertical="true"
+                android:textColor="@color/colorAccent"
+                android:textSize="19sp"
+                android:fontFamily="@font/open_sans_semibold"
+                android:layout_toEndOf="@+id/cartBackBtn"
+                android:text="Confirm Order"/>
+
+        </RelativeLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+</com.google.android.material.appbar.AppBarLayout>

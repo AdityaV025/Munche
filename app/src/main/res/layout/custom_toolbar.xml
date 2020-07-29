@@ -28,10 +28,26 @@
             android:id="@+id/userLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Location Of The User"
+            android:text="getting location ..."
             android:fontFamily="@font/open_sans"
             android:layout_below="@id/userLocationNickName"
             android:textColor="@color/lightWhite"/>
+
+        <ru.nikartm.support.ImageBadgeView
+            android:id="@+id/imageBadgeView"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:src="@drawable/cart_icon"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="21dp"
+            app:ibv_badgeTextSize="9sp"
+            app:ibv_fixedBadgeRadius="7dp"
+            app:ibv_badgeTextStyle="bold"
+            app:ibv_badgeTextColor="#ffffff"
+            app:ibv_badgeColor="@color/colorAccent"
+            app:ibv_badgePosition="top_right"
+            app:ibv_maxBadgeValue="99"/>
 
     </RelativeLayout>
 
