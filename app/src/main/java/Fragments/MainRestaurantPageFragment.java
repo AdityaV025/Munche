@@ -37,6 +37,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.annotations.NotNull;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
@@ -201,13 +202,18 @@ public class MainRestaurantPageFragment extends Fragment {
                                         snackbar1.dismiss();
                                     });
                             snackbar.show();
-
                         }
-
                     });
-
-                    Toast.makeText(getContext(), "Added Item Successfully", Toast.LENGTH_SHORT).show();
                 }).addOnFailureListener(e -> {
+        });
+
+        Map<String, Object> resNameMap = new HashMap<>();
+        resNameMap.put("restaurant_cart_name", mResName);
+        resNameMap.put("restaurant_cart_uid", mRestaurantUid);
+
+        db.collection("UserList").document(uid).update(resNameMap).addOnSuccessListener(aVoid -> {
+            Toast.makeText(getContext(), "Added Item Successfully", Toast.LENGTH_SHORT).show();
+        }).addOnFailureListener(e -> {
             Toast.makeText(getContext(), "Adding Item Failed", Toast.LENGTH_SHORT).show();
         });
 

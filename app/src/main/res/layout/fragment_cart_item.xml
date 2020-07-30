@@ -1,11 +1,42 @@
-<RelativeLayout
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="Fragments.CartItemFragment">
 
-    <include layout="@layout/cart_item_layout_toolbar"
-        android:id="@+id/cartItemToolBar"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</RelativeLayout>
+        <include layout="@layout/cart_item_layout_toolbar"
+            android:id="@+id/cartItemToolBar"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cartItemToolBar"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/restaurantCartName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Haldirams"
+                android:fontFamily="@font/open_sans_bold"
+                android:textColor="@color/colorAccent"
+                android:textSize="17sp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/cartItemRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/restaurantCartName"
+                android:layout_marginTop="11dp"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</androidx.core.widget.NestedScrollView>
+
