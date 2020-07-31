@@ -21,7 +21,10 @@ import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.example.munche.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.annotations.NotNull;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -29,6 +32,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import Models.CartItemDetail;
@@ -48,6 +53,8 @@ public class CartItemFragment extends Fragment {
     private ImageView mCartBackBtn;
     private String USER_LIST = "UserList";
     private String CART_ITEMS = "CartItems";
+    private String itemCount;
+    private BottomSheetBehavior mBottomSheetBehavior;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,6 +80,9 @@ public class CartItemFragment extends Fragment {
         mCartItemRecylerView = view.findViewById(R.id.cartItemRecyclerView);
         linearLayoutManager = new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false);
         mCartItemRecylerView.setLayoutManager(linearLayoutManager);
+        itemCount = Objects.requireNonNull(getArguments()).getString("ITEM_COUNT");
+        View bottomSheet = view.findViewById(R.id.bottomSheet);
+        mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
     }
 
     private void setRestaurantName() {
@@ -100,7 +110,7 @@ public class CartItemFragment extends Fragment {
         itemAdapter = new FirestoreRecyclerAdapter<CartItemDetail, CartItemHolder>(cartItemModel) {
             @SuppressLint("SetTextI18n")
             @Override
-            protected void onBindViewHolder(@NonNull CartItemHolder holder, int i, @NonNull CartItemDetail model) {
+            protected void onBindViewHolder(@NonNull CartItemHolder holder, int item, @NonNull CartItemDetail model) {
 
                 String specImage = model.getSelect_specification();
                 if (specImage.equals("Veg")){
@@ -111,10 +121,31 @@ public class CartItemFragment extends Fragment {
                             .load(R.drawable.non_veg_symbol).into(holder.mFoodMarkImg);
                 }
                 holder.mItemCartName.setText(model.getSelect_name());
-                holder.mItemCartPrice.setText("\u20b9 " + model.getSelect_price());
                 String itemCount = model.getItem_count();
-                holder.mQtyPicker.setRange(0,100);
                 holder.mQtyPicker.setNumber(itemCount);
+                int getItemPrice = Integer.parseInt(model.getSelect_price());
+                int getItemCount = Integer.parseInt(model.getItem_count());
+                int finalPrice = getItemPrice * getItemCount;
+                holder.mItemCartPrice.setText("\u20b9 " + finalPrice);
+
+                holder.mQtyPicker.setOnValueChangeListener((view, oldValue, newValue) -> {
+
+                    String updatedPrice = String.valueOf(newValue * Integer.parseInt(model.getSelect_price()));
+                    holder.mItemCartPrice.setText("\u20b9 " + updatedPrice);
+
+                    Map<String, Object> updatedPriceMap = new HashMap<>();
+                    updatedPriceMap.put("item_count", String.valueOf(newValue));
+
+                    db.collection(USER_LIST)
+                            .document(uid)
+                            .collection(CART_ITEMS)
+                            .document(model.getSelect_name())
+                            .update(updatedPriceMap)
+                            .addOnCompleteListener(task ->
+                                    Log.d("SUCCESS", "SUCESSSSSSS"));
+
+                });
+                calculateTotalPrice();
             }
 
             @NonNull
@@ -122,6 +153,7 @@ public class CartItemFragment extends Fragment {
             public CartItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.cart_items_layout, parent, false);
+
                 return new CartItemHolder(view);
             }
             @Override
@@ -150,6 +182,23 @@ public class CartItemFragment extends Fragment {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    private void calculateTotalPrice() {
+        mCartItemRecylerView.postDelayed(() -> {
+            if (Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(0)).itemView.findViewById(R.id.itemPriceCart) != null){
+                int totPrice = 0;
+                for (int i = 0; i < Objects.requireNonNull(mCartItemRecylerView.getAdapter()).getItemCount() ; i++){
+                    TextView textView = Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(i)).itemView.findViewById(R.id.itemPriceCart);
+                    String priceText = textView.getText().toString().replace("\u20b9 " , "");
+                    int price = Integer.parseInt(priceText);
+                    totPrice = price + totPrice;
+                }
+                Log.d("TOTPRICE", String.valueOf(totPrice));
+
+            }
+
+        },5);
     }
 
 }

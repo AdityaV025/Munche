@@ -111,9 +111,10 @@ public class RestaurantFragment extends Fragment {
                 }
                 mImageBadgeView.setBadgeValue(count);
 
+                int finalCount = count;
                 mImageBadgeView.setOnClickListener(view -> {
                     if (mImageBadgeView.getBadgeValue() != 0){
-                        sendUserToCheckOut();
+                        sendUserToCheckOut(finalCount);
                     }else {
                         sendUserToEmptyCart();
                     }
@@ -221,8 +222,11 @@ public class RestaurantFragment extends Fragment {
         }
     }
 
-    private void sendUserToCheckOut() {
+    private void sendUserToCheckOut(int finalCount) {
         Fragment fragment = new CartItemFragment();
+        Bundle args = new Bundle();
+        args.putString("ITEM_COUNT", String.valueOf(finalCount));
+        fragment.setArguments(args);
         FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragmentContainer, fragment);
