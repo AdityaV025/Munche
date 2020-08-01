@@ -13,9 +13,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="UI.AddInfoActivity"></activity>
+        <activity android:name=".MainRestaurantPageActivity"></activity>
+        <activity android:name=".EmptyCartActivity" />
+        <activity android:name=".CartItemActivity" />
+        <activity android:name="UI.AddInfoActivity" />
         <activity android:name="UI.OtpActivity" />
-        <activity android:name="UI.LoginActivity"></activity>
+        <activity android:name="UI.LoginActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".CartItemActivity">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context="Fragments.CartItemFragment"
+        android:id="@+id/viewContainer">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include layout="@layout/cart_item_layout_toolbar"
+                android:id="@+id/cartItemToolBar"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cartItemToolBar"
+                android:padding="12dp">
+
+                <TextView
+                    android:id="@+id/restaurantCartName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Haldirams"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="17sp"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/cartItemRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/restaurantCartName"
+                    android:layout_marginTop="11dp"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/bottom_sheet_behavior"
+        android:id="@+id/bottomSheet"
+        android:padding="21dp"
+        android:elevation="10dp"
+        android:background="@color/white"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:id="@+id/deliveringAtText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delivering at"
+            android:fontFamily="@font/open_sans_semibold"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/userDeliveryAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/deliveringAtText"
+            android:text="F-238, Sector - 40, Noida, 201303"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/gray"
+            android:layout_marginTop="1dp"/>
+
+        <TextView
+            android:id="@+id/changeAddressText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="Change"
+            android:textColor="@color/colorPrimaryDark"
+            android:fontFamily="@font/open_sans_bold"
+            android:textSize="15sp"/>
+
+        <View
+            android:id="@+id/cartDivider"
+            android:layout_width="match_parent"
+            android:layout_height="0.2dp"
+            android:background="@color/grey"
+            android:layout_below="@+id/userDeliveryAddress"
+            android:layout_marginTop="13dp"
+            android:layout_marginBottom="13dp"/>
+
+        <TextView
+            android:id="@+id/totSavingsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cartDivider"
+            android:text="You Save \u20b925"
+            android:fontFamily="@font/open_sans_semibold"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/payAmountBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cartDivider"
+            android:layout_alignParentEnd="true"
+            android:text="Pay \u20b9245"
+            android:fontFamily="@font/open_sans_bold"
+            android:background="@drawable/pay_button_amt"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:textAllCaps="false"/>
+
+    </RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

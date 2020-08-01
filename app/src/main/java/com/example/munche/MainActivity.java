@@ -15,6 +15,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Objects;
+
 import Fragments.ExploreFragment;
 import Fragments.FavouriteFragment;
 import Fragments.MyProfileFragment;
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseUser mCurrentUser;
     private FirebaseFirestore db;
     private FirebaseUser firebaseUser;
+    private BottomNavigationView bottomNav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +38,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         init();
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
-
     }
 
     private void init() {
@@ -63,9 +65,13 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_profile:
                         selectedFragment = new MyProfileFragment();
                         break;
+                    case R.id.imageBadgeView:
+                        bottomNav.setVisibility(View.GONE);
+                        break;
+
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
-                        selectedFragment).commit();
+                        Objects.requireNonNull(selectedFragment)).commit();
                 return true;
             };
 

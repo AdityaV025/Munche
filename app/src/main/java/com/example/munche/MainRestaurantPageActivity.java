@@ -1,7 +1,13 @@
-package Fragments;
+package com.example.munche;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,42 +15,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.widget.NestedScrollView;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
-import com.example.munche.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.annotations.NotNull;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -53,9 +39,8 @@ import Models.RestaurantMenuItems;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainRestaurantPageFragment extends Fragment {
+public class MainRestaurantPageActivity extends AppCompatActivity {
 
-    private View view;
     private AppBarLayout mToolBar;
     private String mRestaurantUid, mResName, mResDistance, mResPrice, mResDeliveryTime;
     private TextView mResNameToolBar, mResNameText, mResDistanceText,mResAvgPriceText, mResDeliveryTimeText;
@@ -66,53 +51,50 @@ public class MainRestaurantPageFragment extends Fragment {
     private RecyclerView mMenuItemRecyclerView;
     private NestedScrollView mRootView;
 
-    public MainRestaurantPageFragment() {
-        // Required empty public constructor
-    }
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main_restaurant_page);
 
-        view = inflater.inflate(R.layout.fragment_main_restaurant_page, container, false);
-
-        Bundle bundle = this.getArguments();
-        if (bundle != null){
-            mRestaurantUid = bundle.getString("RUID");
-            mResName = bundle.getString("NAME");
-            mResDistance = bundle.getString("DISTANCE");
-            mResPrice = bundle.getString("PRICE");
-            mResDeliveryTime = bundle.getString("TIME");
+        Intent intent = getIntent();
+        if (intent != null){
+            mRestaurantUid = intent.getStringExtra("RUID");
+            mResName = intent.getStringExtra("NAME");
+            mResDistance = intent.getStringExtra("DISTANCE");
+            mResPrice = intent.getStringExtra("TIME");
+            mResDeliveryTime = intent.getStringExtra("PRICE");
         }
+
         init();
         getMenuItems();
-        return view;
+
     }
 
     @SuppressLint("SetTextI18n")
     private void init() {
 
-    mRootView = (NestedScrollView) view.findViewById(R.id.content1);
-    db = FirebaseFirestore.getInstance();
-    mToolBar = view.findViewById(R.id.mainResToolBar);
-    mResNameToolBar = view.findViewById(R.id.restaurantTitleToolbar);
-    mResNameText = view.findViewById(R.id.mainResName);
-    mResDistanceText = view.findViewById(R.id.mainResDistance);
-    mResAvgPriceText = view.findViewById(R.id.restaurantAvgPrice);
-    mResDeliveryTimeText = view.findViewById(R.id.restaurantDeliveryTime);
-    mResNameToolBar.setText(mResName);
-    mResNameText.setText(mResName);
-    mResDeliveryTimeText.setText(mResDeliveryTime + " mins");
-    mResAvgPriceText.setText("\u20b9" + mResPrice + "/person");
-    mResDistanceText.setText(mResDistance + " kms");
-    mBackBtnView = view.findViewById(R.id.backBtn);
-    mBackBtnView.setOnClickListener(view -> {
-        Objects.requireNonNull(getActivity()).onBackPressed();
-    });
+        mRootView = (NestedScrollView) findViewById(R.id.content1);
+        db = FirebaseFirestore.getInstance();
+        mToolBar = findViewById(R.id.mainResToolBar);
+        mResNameToolBar = findViewById(R.id.restaurantTitleToolbar);
+        mResNameText = findViewById(R.id.mainResName);
+        mResDistanceText = findViewById(R.id.mainResDistance);
+        mResAvgPriceText = findViewById(R.id.restaurantAvgPrice);
+        mResDeliveryTimeText = findViewById(R.id.restaurantDeliveryTime);
+        mResNameToolBar.setText(mResName);
+        mResNameText.setText(mResName);
+        mResDeliveryTimeText.setText(mResDeliveryTime + " mins");
+        mResAvgPriceText.setText("\u20b9" + mResPrice + "/person");
+        mResDistanceText.setText(mResDistance + " kms");
+        mBackBtnView = findViewById(R.id.backBtn);
+        mBackBtnView.setOnClickListener(view -> {
+            this.onBackPressed();
+            this.overridePendingTransition(0,0);
+        });
 
-    mMenuItemRecyclerView = view.findViewById(R.id.menuItemRecylerView);
-    linearLayoutManager = new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false);
-    mMenuItemRecyclerView.setLayoutManager(linearLayoutManager);
+        mMenuItemRecyclerView = findViewById(R.id.menuItemRecylerView);
+        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mMenuItemRecyclerView.setLayoutManager(linearLayoutManager);
 
     }
 
@@ -130,10 +112,10 @@ public class MainRestaurantPageFragment extends Fragment {
                 holder.mItemCategory.setText(model.getCategory());
                 String specImage = String.valueOf(model.getSpecification());
                 if (specImage.equals("Veg")){
-                    Glide.with(Objects.requireNonNull(requireActivity()))
+                    Glide.with(Objects.requireNonNull(getApplicationContext()))
                             .load(R.drawable.veg_symbol).into(holder.foodSpecification);
                 }else {
-                    Glide.with(Objects.requireNonNull(requireActivity()))
+                    Glide.with(Objects.requireNonNull(getApplicationContext()))
                             .load(R.drawable.non_veg_symbol).into(holder.foodSpecification);
                 }
                 holder.mItemPrice.setText("\u20B9 " + model.getPrice());
@@ -146,7 +128,6 @@ public class MainRestaurantPageFragment extends Fragment {
 
                     String selectedItemName = holder.mItemName.getText().toString();
                     addItemToCart(selectedItemName,model,uid);
-
 
                 });
                 holder.mQtyPicker.setOnValueChangeListener((view, oldValue, newValue) -> {
@@ -212,9 +193,9 @@ public class MainRestaurantPageFragment extends Fragment {
         resNameMap.put("restaurant_cart_uid", mRestaurantUid);
 
         db.collection("UserList").document(uid).update(resNameMap).addOnSuccessListener(aVoid -> {
-            Toast.makeText(getContext(), "Added Item Successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Added Item Successfully", Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> {
-            Toast.makeText(getContext(), "Adding Item Failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Adding Item Failed", Toast.LENGTH_SHORT).show();
         });
 
     }

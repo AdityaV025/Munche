@@ -1,6 +1,7 @@
 package Fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -25,6 +26,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.munche.CartItemActivity;
+import com.example.munche.EmptyCartActivity;
+import com.example.munche.MainRestaurantPageActivity;
 import com.example.munche.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -110,11 +114,9 @@ public class RestaurantFragment extends Fragment {
                     count++;
                 }
                 mImageBadgeView.setBadgeValue(count);
-
-                int finalCount = count;
                 mImageBadgeView.setOnClickListener(view -> {
                     if (mImageBadgeView.getBadgeValue() != 0){
-                        sendUserToCheckOut(finalCount);
+                        sendUserToCheckOut();
                     }else {
                         sendUserToEmptyCart();
                     }
@@ -166,19 +168,14 @@ public class RestaurantFragment extends Fragment {
 
                             holder.itemView.setOnClickListener(view -> {
 
-                                Bundle bundle = new Bundle();
-                                bundle.putString("RUID",RUID);
-                                bundle.putString("NAME", model.getRestaurant_name());
-                                bundle.putString("DISTANCE", String.valueOf(distanceInMeters/1000));
-                                bundle.putString("TIME", deliveryTime);
-                                bundle.putString("PRICE", model.getAverage_price());
-                                Fragment fragment = new MainRestaurantPageFragment();
-                                fragment.setArguments(bundle);
-                                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                fragmentTransaction.replace(R.id.fragmentContainer, fragment);
-                                fragmentTransaction.addToBackStack(null);
-                                fragmentTransaction.commit();
+                                Intent intent = new Intent(getActivity(), MainRestaurantPageActivity.class);
+                                intent.putExtra("RUID", RUID);
+                                intent.putExtra("NAME", model.getRestaurant_name());
+                                intent.putExtra("DISTANCE", String.valueOf(distanceInMeters/1000));
+                                intent.putExtra("TIME", deliveryTime);
+                                intent.putExtra("PRICE", model.getAverage_price());
+                                startActivity(intent);
+                                Objects.requireNonNull(getActivity()).overridePendingTransition(0,0);
 
                             });
                         }
@@ -222,25 +219,16 @@ public class RestaurantFragment extends Fragment {
         }
     }
 
-    private void sendUserToCheckOut(int finalCount) {
-        Fragment fragment = new CartItemFragment();
-        Bundle args = new Bundle();
-        args.putString("ITEM_COUNT", String.valueOf(finalCount));
-        fragment.setArguments(args);
-        FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragmentContainer, fragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+    private void sendUserToCheckOut() {
+        Intent intent = new Intent(getActivity(), CartItemActivity.class);
+        startActivity(intent);
+        Objects.requireNonNull(getActivity()).overridePendingTransition(0,0);
     }
 
     private void sendUserToEmptyCart() {
-        Fragment fragment = new EmptyCartFragment();
-        FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragmentContainer, fragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        Intent intent = new Intent(getActivity(), EmptyCartActivity.class);
+        startActivity(intent);
+        Objects.requireNonNull(getActivity()).overridePendingTransition(0,0);
     }
 
 }

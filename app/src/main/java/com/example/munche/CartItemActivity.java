@@ -1,13 +1,12 @@
-package Fragments;
-
-import android.annotation.SuppressLint;
-import android.os.Bundle;
+package com.example.munche;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +17,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
-import com.example.munche.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,9 +36,8 @@ import Models.CartItemDetail;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CartItemFragment extends Fragment {
+public class CartItemActivity extends AppCompatActivity {
 
-    private View view;
     private AppBarLayout mToolBar;
     private FirebaseFirestore db;
     private FirestoreRecyclerAdapter<CartItemDetail, CartItemHolder> itemAdapter;
@@ -57,31 +52,29 @@ public class CartItemFragment extends Fragment {
     private BottomSheetBehavior mBottomSheetBehavior;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_cart_item);
 
-         view = inflater.inflate(R.layout.fragment_cart_item, container, false);
-         init();
-         setRestaurantName();
-         getCartItems();
+        init();
+        setRestaurantName();
+        getCartItems();
 
-         return view;
     }
 
     private void init() {
         db = FirebaseFirestore.getInstance();
-        mToolBar = view.findViewById(R.id.cartItemToolBar);
-        mRestaurantCartName = view.findViewById(R.id.restaurantCartName);
-        mCartBackBtn = view.findViewById(R.id.cartBackBtn);
+        mToolBar = findViewById(R.id.cartItemToolBar);
+        mRestaurantCartName = findViewById(R.id.restaurantCartName);
+        mCartBackBtn = findViewById(R.id.cartBackBtn);
         mCartBackBtn.setOnClickListener(view -> {
-            Objects.requireNonNull(getActivity()).onBackPressed();
+            this.onBackPressed();
         });
         uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-        mCartItemRecylerView = view.findViewById(R.id.cartItemRecyclerView);
-        linearLayoutManager = new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false);
+        mCartItemRecylerView = findViewById(R.id.cartItemRecyclerView);
+        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mCartItemRecylerView.setLayoutManager(linearLayoutManager);
-        itemCount = Objects.requireNonNull(getArguments()).getString("ITEM_COUNT");
-        View bottomSheet = view.findViewById(R.id.bottomSheet);
+        View bottomSheet = findViewById(R.id.bottomSheet);
         mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
     }
 
@@ -95,14 +88,12 @@ public class CartItemFragment extends Fragment {
                 mRestaurantCartName.setText(resName);
 
             }else {
-                Toast.makeText(getContext(), "Something Went Wrong!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Something Went Wrong!", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     private void getCartItems() {
-
         Query query = db.collection(USER_LIST).document(uid).collection(CART_ITEMS);
         FirestoreRecyclerOptions<CartItemDetail> cartItemModel = new FirestoreRecyclerOptions.Builder<CartItemDetail>()
                 .setQuery(query, CartItemDetail.class)
@@ -114,10 +105,10 @@ public class CartItemFragment extends Fragment {
 
                 String specImage = model.getSelect_specification();
                 if (specImage.equals("Veg")){
-                    Glide.with(Objects.requireNonNull(requireActivity()))
+                    Glide.with(Objects.requireNonNull(getApplicationContext()))
                             .load(R.drawable.veg_symbol).into(holder.mFoodMarkImg);
                 }else {
-                    Glide.with(Objects.requireNonNull(requireActivity()))
+                    Glide.with(Objects.requireNonNull(getApplicationContext()))
                             .load(R.drawable.non_veg_symbol).into(holder.mFoodMarkImg);
                 }
                 holder.mItemCartName.setText(model.getSelect_name());
@@ -168,7 +159,6 @@ public class CartItemFragment extends Fragment {
     }
 
     public static class CartItemHolder extends RecyclerView.ViewHolder {
-
         @BindView(R.id.foodMarkCart)
         ImageView mFoodMarkImg;
         @BindView(R.id.itemNameCart)
