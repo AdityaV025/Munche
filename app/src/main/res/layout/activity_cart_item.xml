@@ -30,7 +30,7 @@
                     android:id="@+id/restaurantCartName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Haldirams"
+                    android:text="Restaurant Name"
                     android:fontFamily="@font/open_sans_bold"
                     android:textColor="@color/colorAccent"
                     android:textSize="17sp"/>
@@ -53,8 +53,8 @@
         android:layout_height="wrap_content"
         app:layout_behavior="@string/bottom_sheet_behavior"
         android:id="@+id/bottomSheet"
-        android:padding="21dp"
-        android:elevation="10dp"
+        android:padding="17dp"
+        android:elevation="30dp"
         android:background="@color/white"
         android:layout_alignParentBottom="true">
 
@@ -72,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/deliveringAtText"
-            android:text="F-238, Sector - 40, Noida, 201303"
+            android:text="User Address"
             android:fontFamily="@font/open_sans"
             android:textColor="@color/gray"
             android:layout_marginTop="1dp"/>
@@ -97,14 +97,24 @@
             android:layout_marginBottom="13dp"/>
 
         <TextView
-            android:id="@+id/totSavingsText"
+            android:id="@+id/totAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/cartDivider"
-            android:text="You Save \u20b925"
+            android:text="Amount Payable: "
             android:fontFamily="@font/open_sans_semibold"
             android:textColor="@color/colorAccent"
-            android:textSize="16sp" />
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/amountSaved"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/totAmount"
+            android:layout_marginTop="1dp"
+            android:text="You Save: "
+            android:fontFamily="@font/open_sans_semibold"
+            android:textColor="@color/colorAccent"/>
 
         <Button
             android:id="@+id/payAmountBtn"
@@ -112,7 +122,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/cartDivider"
             android:layout_alignParentEnd="true"
-            android:text="Pay \u20b9245"
+            android:text="Checkout"
             android:fontFamily="@font/open_sans_bold"
             android:background="@drawable/pay_button_amt"
             android:textColor="@color/white"

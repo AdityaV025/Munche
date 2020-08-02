@@ -6,11 +6,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,13 +45,13 @@ public class CartItemActivity extends AppCompatActivity {
     private FirestoreRecyclerAdapter<CartItemDetail, CartItemHolder> itemAdapter;
     LinearLayoutManager linearLayoutManager;
     private RecyclerView mCartItemRecylerView;
-    private TextView mRestaurantCartName;
-    private String uid;
+    private TextView mRestaurantCartName, mToolBarText, mUserAddressText, mTotalAmountText;
+    private String uid, userAddress;
     private ImageView mCartBackBtn;
     private String USER_LIST = "UserList";
     private String CART_ITEMS = "CartItems";
-    private String itemCount;
     private BottomSheetBehavior mBottomSheetBehavior;
+    private Button mCheckoutBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +64,12 @@ public class CartItemActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("SetTextI18n")
     private void init() {
         db = FirebaseFirestore.getInstance();
         mToolBar = findViewById(R.id.cartItemToolBar);
+        mToolBarText = findViewById(R.id.confirmOrderText);
+        mToolBarText.setText("Confirm Order");
         mRestaurantCartName = findViewById(R.id.restaurantCartName);
         mCartBackBtn = findViewById(R.id.cartBackBtn);
         mCartBackBtn.setOnClickListener(view -> {
@@ -76,6 +81,14 @@ public class CartItemActivity extends AppCompatActivity {
         mCartItemRecylerView.setLayoutManager(linearLayoutManager);
         View bottomSheet = findViewById(R.id.bottomSheet);
         mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        userAddress = getIntent().getStringExtra("USER_ADDRESS");
+        mUserAddressText = findViewById(R.id.userDeliveryAddress);
+        mTotalAmountText = findViewById(R.id.totAmount);
+        mUserAddressText.setText(userAddress);
+        mCheckoutBtn = findViewById(R.id.payAmountBtn);
+        mCheckoutBtn.setOnClickListener(view -> {
+            calculateTotalPriceAndMove();
+        });
     }
 
     private void setRestaurantName() {
@@ -136,6 +149,7 @@ public class CartItemActivity extends AppCompatActivity {
                                     Log.d("SUCCESS", "SUCESSSSSSS"));
 
                 });
+
                 calculateTotalPrice();
             }
 
@@ -174,6 +188,7 @@ public class CartItemActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private void calculateTotalPrice() {
         mCartItemRecylerView.postDelayed(() -> {
             if (Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(0)).itemView.findViewById(R.id.itemPriceCart) != null){
@@ -184,8 +199,28 @@ public class CartItemActivity extends AppCompatActivity {
                     int price = Integer.parseInt(priceText);
                     totPrice = price + totPrice;
                 }
-                Log.d("TOTPRICE", String.valueOf(totPrice));
+                mTotalAmountText.setText("Amount Payable: \u20b9" + totPrice);
+            }
 
+        },5);
+
+    }
+
+    private void calculateTotalPriceAndMove() {
+        mCartItemRecylerView.postDelayed(() -> {
+            if (Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(0)).itemView.findViewById(R.id.itemPriceCart) != null){
+                int totPrice = 0;
+                for (int i = 0; i < Objects.requireNonNull(mCartItemRecylerView.getAdapter()).getItemCount() ; i++){
+                    TextView textView = Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(i)).itemView.findViewById(R.id.itemPriceCart);
+                    String priceText = textView.getText().toString().replace("\u20b9 " , "");
+                    int price = Integer.parseInt(priceText);
+                    totPrice = price + totPrice;
+                }
+                Intent intent = new Intent(CartItemActivity.this, CheckoutActivity.class);
+                intent.putExtra("TOTAL_AMOUNT", String.valueOf(totPrice));
+                Toast.makeText(this, String.valueOf(totPrice), Toast.LENGTH_SHORT).show();
+                startActivity(intent);
+                this.overridePendingTransition(0,0);
             }
 
         },5);

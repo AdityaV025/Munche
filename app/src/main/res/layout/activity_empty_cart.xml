@@ -6,6 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".EmptyCartActivity">
 
+    <include layout="@layout/cart_item_layout_toolbar"
+        android:id="@+id/emptyCartItemToolBar"/>
+
     <ImageView
         android:id="@+id/emptyCartImg"
         android:layout_width="wrap_content"

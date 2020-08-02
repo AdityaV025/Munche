@@ -32,8 +32,7 @@
                 android:textColor="@color/colorAccent"
                 android:textSize="19sp"
                 android:fontFamily="@font/open_sans_semibold"
-                android:layout_toEndOf="@+id/cartBackBtn"
-                android:text="Confirm Order"/>
+                android:layout_toEndOf="@+id/cartBackBtn"/>
 
         </RelativeLayout>
 

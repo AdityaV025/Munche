@@ -61,8 +61,8 @@ public class MainRestaurantPageActivity extends AppCompatActivity {
             mRestaurantUid = intent.getStringExtra("RUID");
             mResName = intent.getStringExtra("NAME");
             mResDistance = intent.getStringExtra("DISTANCE");
-            mResPrice = intent.getStringExtra("TIME");
-            mResDeliveryTime = intent.getStringExtra("PRICE");
+            mResPrice = intent.getStringExtra("PRICE");
+            mResDeliveryTime = intent.getStringExtra("TIME");
         }
 
         init();

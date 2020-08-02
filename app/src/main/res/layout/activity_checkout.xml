@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CheckoutActivity"
+    android:background="@color/blue_grey">
+
+    <include layout="@layout/cart_item_layout_toolbar"
+        android:id="@+id/paymentMethodToolBar"/>
+
+    <LinearLayout
+        android:id="@+id/textContainers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/paymentMethodToolBar"
+        android:orientation="vertical"
+        android:padding="15dp"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/chooseMethodText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/choose_your_payment_method"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/colorAccent"
+            android:textSize="21sp"/>
+
+        <TextView
+            android:id="@+id/totalAmountItems"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Amount to be paid \u20b9258"
+            android:fontFamily="@font/open_sans"
+            android:layout_marginTop="1dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/cashMethodContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/textContainers"
+        android:layout_marginTop="21dp"
+        android:background="@color/white"
+        android:padding="11dp"
+        android:weightSum="5">
+
+        <ImageView
+            android:id="@+id/cashIconImg"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/cash_icon"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/codText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cash On Delivery"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/open_sans"
+            android:layout_marginStart="12dp"
+            android:textSize="17sp"
+            android:textColor="@color/colorAccent"
+            android:layout_weight="3"/>
+
+        <ImageView
+            android:id="@+id/backArrow1"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/forward_arrow"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/creditCardMethodContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/cashMethodContainer"
+        android:layout_marginTop="21dp"
+        android:background="@color/white"
+        android:padding="11dp"
+        android:weightSum="5">
+
+        <ImageView
+            android:id="@+id/creditCardIconImg"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/credit_card_icon"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/creditCarText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Credit/Debit/Paytm"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/open_sans"
+            android:layout_marginStart="12dp"
+            android:textSize="17sp"
+            android:textColor="@color/colorAccent"
+            android:layout_weight="3"/>
+
+        <ImageView
+            android:id="@+id/backArrow2"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/forward_arrow"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/upiMethodContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/creditCardMethodContainer"
+        android:layout_marginTop="21dp"
+        android:background="@color/white"
+        android:padding="11dp"
+        android:weightSum="5">
+
+        <ImageView
+            android:id="@+id/upiIconImg"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/upi_icon"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/upiText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pay With Bhim UPI"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/open_sans"
+            android:layout_marginStart="12dp"
+            android:textSize="17sp"
+            android:textColor="@color/colorAccent"
+            android:layout_weight="3"/>
+
+        <ImageView
+            android:id="@+id/backArrow3"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/forward_arrow"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
