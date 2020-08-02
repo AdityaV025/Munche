@@ -218,7 +218,6 @@ public class CartItemActivity extends AppCompatActivity {
                 }
                 Intent intent = new Intent(CartItemActivity.this, CheckoutActivity.class);
                 intent.putExtra("TOTAL_AMOUNT", String.valueOf(totPrice));
-                Toast.makeText(this, String.valueOf(totPrice), Toast.LENGTH_SHORT).show();
                 startActivity(intent);
                 this.overridePendingTransition(0,0);
             }

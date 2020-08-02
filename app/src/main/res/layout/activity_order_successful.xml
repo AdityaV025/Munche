@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".OrderSuccessfulActivity">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/successAnim"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="false"
+        android:layout_centerInParent="true"
+        app:lottie_rawRes="@raw/success"
+        android:scaleType="centerCrop"/>
+
+    <TextView
+        android:id="@+id/orderPlacedSuccess"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hurray! Your Order Has Been Placed"
+        android:layout_below="@+id/successAnim"
+        android:layout_marginTop="7dp"
+        android:fontFamily="@font/open_sans"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/colorAccent"
+        android:textSize="19sp"/>
+
+</RelativeLayout>

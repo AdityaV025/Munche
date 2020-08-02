@@ -8,14 +8,13 @@
     tools:context=".CheckoutActivity"
     android:background="@color/blue_grey">
 
-    <include layout="@layout/cart_item_layout_toolbar"
-        android:id="@+id/paymentMethodToolBar"/>
+<!--    <include layout="@layout/cart_item_layout_toolbar"-->
+<!--        android:id="@+id/paymentMethodToolBar"/>-->
 
     <LinearLayout
         android:id="@+id/textContainers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/paymentMethodToolBar"
         android:orientation="vertical"
         android:padding="15dp"
         android:background="@color/white">
@@ -33,7 +32,6 @@
             android:id="@+id/totalAmountItems"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Amount to be paid \u20b9258"
             android:fontFamily="@font/open_sans"
             android:layout_marginTop="1dp"/>
 
@@ -45,7 +43,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@+id/textContainers"
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="17dp"
         android:background="@color/white"
         android:padding="11dp"
         android:weightSum="5">
@@ -86,7 +84,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@+id/cashMethodContainer"
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="17dp"
         android:background="@color/white"
         android:padding="11dp"
         android:weightSum="5">
@@ -127,7 +125,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@+id/creditCardMethodContainer"
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="17dp"
         android:background="@color/white"
         android:padding="11dp"
         android:weightSum="5">

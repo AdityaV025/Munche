@@ -60,6 +60,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0' //Annotation Processor
     implementation 'com.cepheuen.elegant-number-button:lib:1.0.2'//NumberPicker
     implementation 'com.github.nikartm:image-support:1.0.5' //ItemBadge Count
+    implementation 'com.airbnb.android:lottie:3.4.1'//Lottie Animation
 
 }
 apply plugin: 'com.google.gms.google-services'
