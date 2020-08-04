@@ -210,14 +210,19 @@ public class CartItemActivity extends AppCompatActivity {
         mCartItemRecylerView.postDelayed(() -> {
             if (Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(0)).itemView.findViewById(R.id.itemPriceCart) != null){
                 int totPrice = 0;
+                String[] itemsArr = new String[Objects.requireNonNull(mCartItemRecylerView.getAdapter()).getItemCount()];
                 for (int i = 0; i < Objects.requireNonNull(mCartItemRecylerView.getAdapter()).getItemCount() ; i++){
                     TextView textView = Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(i)).itemView.findViewById(R.id.itemPriceCart);
+                    TextView textView2 = Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(i)).itemView.findViewById(R.id.itemNameCart);
                     String priceText = textView.getText().toString().replace("\u20b9 " , "");
                     int price = Integer.parseInt(priceText);
                     totPrice = price + totPrice;
+                    itemsArr[i] = textView2.getText().toString();
                 }
+
                 Intent intent = new Intent(CartItemActivity.this, CheckoutActivity.class);
                 intent.putExtra("TOTAL_AMOUNT", String.valueOf(totPrice));
+                intent.putExtra("ITEM_NAMES", itemsArr);
                 startActivity(intent);
                 this.overridePendingTransition(0,0);
             }

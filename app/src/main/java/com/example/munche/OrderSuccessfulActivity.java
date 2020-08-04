@@ -3,17 +3,22 @@ package com.example.munche;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.airbnb.lottie.LottieAnimationView;
 
+import Fragments.RestaurantFragment;
+
 public class OrderSuccessfulActivity extends AppCompatActivity {
 
     private LottieAnimationView mSuccessAnimation;
+    private static int TIME_OUT = 5000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +33,7 @@ public class OrderSuccessfulActivity extends AppCompatActivity {
         mSuccessAnimation = findViewById(R.id.successAnim);
         mSuccessAnimation.playAnimation();
         mSuccessAnimation.setSpeed(0.8f);
+        moveToOrderScreen();
     }
 
     private void changestatusbarcolor() {
@@ -38,6 +44,15 @@ public class OrderSuccessfulActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
+    }
+
+    private void moveToOrderScreen() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        }, TIME_OUT);
     }
 
     @Override
