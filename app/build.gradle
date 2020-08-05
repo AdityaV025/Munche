@@ -61,6 +61,10 @@ dependencies {
     implementation 'com.cepheuen.elegant-number-button:lib:1.0.2'//NumberPicker
     implementation 'com.github.nikartm:image-support:1.0.5' //ItemBadge Count
     implementation 'com.airbnb.android:lottie:3.4.1'//Lottie Animation
+    implementation 'com.shreyaspatil:EasyUpiPayment:2.2'//UPI Payment
+    implementation('com.paytm:pgplussdk:1.2.3') {//Paytm Gateway Integration
+        transitive = true;
+    }
 
 }
 apply plugin: 'com.google.gms.google-services'
