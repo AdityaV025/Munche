@@ -8,6 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.Toolbar;
+
+import com.example.munche.OrdersActivity;
 import com.example.munche.R;
 import com.google.firebase.auth.FirebaseAuth;
 import java.util.Objects;
@@ -15,7 +19,7 @@ import UI.LoginActivity;
 
 public class MyProfileFragment extends Fragment implements View.OnClickListener {
 
-    private TextView mLogOutText;
+    private TextView mLogOutText, mMyOrdersText;
     private View view;
     private FirebaseAuth mAuth;
 
@@ -29,13 +33,14 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
         view = inflater.inflate(R.layout.fragment_my_profile, container, false);
         init();
         mLogOutText.setOnClickListener(this);
-
+        mMyOrdersText.setOnClickListener(this);
         return view;
     }
 
     private void init() {
         mLogOutText = view.findViewById(R.id.logOutText);
         mAuth = FirebaseAuth.getInstance();
+        mMyOrdersText = view.findViewById(R.id.myOrdersText);
     }
 
     @Override
@@ -51,6 +56,12 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
                         })
                         .setNegativeButton("Cancel", null)
                         .show();
+                break;
+
+            case R.id.myOrdersText:
+                Intent intent = new Intent(getActivity(), OrdersActivity.class);
+                startActivity(intent);
+                Toast.makeText(getContext(), "sdjkasdkj", Toast.LENGTH_SHORT).show();
                 break;
 
         }

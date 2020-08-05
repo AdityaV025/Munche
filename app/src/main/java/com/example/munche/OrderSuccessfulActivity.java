@@ -33,7 +33,7 @@ public class OrderSuccessfulActivity extends AppCompatActivity {
         mSuccessAnimation = findViewById(R.id.successAnim);
         mSuccessAnimation.playAnimation();
         mSuccessAnimation.setSpeed(0.8f);
-        moveToOrderScreen();
+        moveToOrdersScreen();
     }
 
     private void changestatusbarcolor() {
@@ -46,11 +46,13 @@ public class OrderSuccessfulActivity extends AppCompatActivity {
         }
     }
 
-    private void moveToOrderScreen() {
+    private void moveToOrdersScreen() {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-
+                Intent intent = new Intent(OrderSuccessfulActivity.this, OrdersActivity.class);
+                startActivity(intent);
+                finish();
             }
         }, TIME_OUT);
     }

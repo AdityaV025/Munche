@@ -16,4 +16,14 @@
         android:textColor="@color/colorAccent"
         android:fontFamily="@font/open_sans"/>
 
+    <TextView
+        android:id="@+id/myOrdersText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="My Orders"
+        android:textSize="17sp"
+        android:textColor="@color/colorAccent"
+        android:fontFamily="@font/open_sans"
+        android:layout_marginTop="20dp"/>
+
 </LinearLayout>

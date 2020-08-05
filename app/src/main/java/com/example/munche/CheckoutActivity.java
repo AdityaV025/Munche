@@ -1,5 +1,6 @@
 package com.example.munche;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -17,9 +18,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.paytm.pgsdk.PaytmOrder;
 import com.paytm.pgsdk.PaytmPGService;
@@ -31,8 +35,12 @@ import com.shreyaspatil.EasyUpiPayment.model.TransactionDetails;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import Utils.JSONParser;
@@ -46,12 +54,13 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
     private FirebaseFirestore db;
     private String USER_LIST = "UserList";
     private String CART_ITEMS = "CartItems";
+    private String USER_ORDERS = "UserOrders";
     private String RES_LIST = "RestaurantList";
-    private String[] getItemsArr;
+    private String[] getItemsArr, getOrderedItemsArr;
     private String upiID,resName;
     private EasyUpiPayment mEasyUPIPayment;
     private String mid;
-    private long customerID, orderID,transactionId,transactionRefId ;
+    private long customerID, orderID,transactionId,transactionRefId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +73,8 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
     @SuppressLint("SetTextI18n")
     private void init() {
         getItemsArr = getIntent().getStringArrayExtra("ITEM_NAMES");
+        getOrderedItemsArr = getIntent().getStringArrayExtra("ITEM_ORDERED_NAME");
+        resName = getIntent().getStringExtra("RES_NAME");
         uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         db = FirebaseFirestore.getInstance();
         mTotalAmount = getIntent().getStringExtra("TOTAL_AMOUNT");
@@ -93,6 +104,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         switch (view.getId()){
 
             case R.id.cashMethodContainer:
+                uploadOrderDetails();
                 deleteCartItems();
                 break;
 
@@ -124,8 +136,6 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
                     String codPay = Objects.requireNonNull(Objects.requireNonNull(documentSnapshot1).get("cod_payment")).toString();
                     String cardPay = Objects.requireNonNull(Objects.requireNonNull(documentSnapshot1).get("card_payment")).toString();
                     String upiPay = Objects.requireNonNull(Objects.requireNonNull(documentSnapshot1).get("upi_payment")).toString();
-                    resName = Objects.requireNonNull(Objects.requireNonNull(documentSnapshot1).get("restaurant_name")).toString();
-
                     if (codPay.equals("YES") || cardPay.equals("YES") || !upiPay.equals("NO")){
 
                         mCODView.setVisibility(View.VISIBLE);
@@ -182,6 +192,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     public class sendUserDetailTOServerdd extends AsyncTask<ArrayList<String>, Void, String> {
         private ProgressDialog dialog = new ProgressDialog(CheckoutActivity.this);
         //private String orderId , mid, custid, amt;
@@ -246,8 +257,22 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
             Service.initialize(Order,null);
             // start payment service call here
             Service.startPaymentTransaction(CheckoutActivity.this, true, true,
-                    CheckoutActivity.this  );
+                    CheckoutActivity.this);
         }
+    }
+
+    private void uploadOrderDetails() {
+        @SuppressLint("SimpleDateFormat") String timeStampDate1 = new SimpleDateFormat("dd MMM yyyy").format(Calendar.getInstance().getTime());
+        @SuppressLint("SimpleDateFormat") String timeStampDate2 = new SimpleDateFormat("hh:mm a").format(Calendar.getInstance().getTime());
+
+        Map<String, Object> orderedItemsMap = new HashMap<>();
+        orderedItemsMap.put("ordered_items", FieldValue.arrayUnion((Object[]) getOrderedItemsArr));
+        orderedItemsMap.put("total_amount", "\u20b9" + mTotalAmount);
+        orderedItemsMap.put("ordered_time", timeStampDate1 + " at " + timeStampDate2);
+        orderedItemsMap.put("ordered_restaurant_name", resName);
+        db.collection(USER_LIST).document(uid).collection(USER_ORDERS).document().set(orderedItemsMap).addOnCompleteListener(task -> {
+            Log.d("ajsdklad", "Ordered-ITEMS_ADDED");
+        });
     }
 
     //UPI Callbacks Starts Here
@@ -258,6 +283,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onTransactionSuccess() {
+        uploadOrderDetails();
         deleteCartItems();
         Toast.makeText(this, "Payment Successful", Toast.LENGTH_SHORT).show();
     }
@@ -286,6 +312,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
     //Paytm CallBacks Start Here
     @Override
     public void onTransactionResponse(Bundle inResponse) {
+        uploadOrderDetails();
         deleteCartItems();
     }
 

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:cardElevation="7dp"
+        app:cardCornerRadius="6dp"
+        android:padding="10dp"
+        app:contentPadding="11dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/orderedResName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Haldirams"
+                android:fontFamily="@font/open_sans"
+                android:textColor="@color/colorAccent"
+                android:textSize="19sp"/>
+
+            <TextView
+                android:id="@+id/orderedResAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/orderedResName"
+                android:fontFamily="@font/open_sans"
+                android:textColor="@color/grey"
+                android:text="Sector-39, Noida"/>
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="0.2dp"
+                android:background="@android:color/darker_gray"
+                android:layout_below="@+id/orderedResAddress"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/orderedItemsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/divider"
+                android:text="Ordered Items"
+                android:fontFamily="@font/open_sans"
+                android:textSize="15sp"
+                android:textColor="@color/grey"/>
+
+            <TextView
+                android:id="@+id/orderedItems"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1 x Aloo Tikki"
+                android:layout_below="@+id/orderedItemsText"
+                android:layout_marginTop="1dp"
+                android:fontFamily="@font/open_sans"
+                android:textColor="@color/colorAccent"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/orderedDateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ordered On"
+                android:layout_below="@+id/orderedItems"
+                android:layout_marginTop="6dp"
+                android:fontFamily="@font/open_sans"
+                android:textColor="@color/grey"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/orderedTimeStamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5 August 2020 at 9:20 PM"
+                android:layout_below="@+id/orderedDateText"
+                android:layout_marginTop="1dp"
+                android:fontFamily="@font/open_sans"
+                android:textColor="@color/colorAccent"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/orderedItemAmountText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total Amount"
+                android:layout_below="@+id/orderedTimeStamp"
+                android:layout_marginTop="6dp"
+                android:fontFamily="@font/open_sans"
+                android:textColor="@color/grey"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/orderedAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="\u20b9125.00"
+                android:layout_below="@+id/orderedItemAmountText"
+                android:layout_marginTop="1dp"
+                android:fontFamily="@font/open_sans"
+                android:textColor="@color/colorAccent"
+                android:textSize="15sp"/>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

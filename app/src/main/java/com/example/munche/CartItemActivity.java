@@ -211,18 +211,24 @@ public class CartItemActivity extends AppCompatActivity {
             if (Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(0)).itemView.findViewById(R.id.itemPriceCart) != null){
                 int totPrice = 0;
                 String[] itemsArr = new String[Objects.requireNonNull(mCartItemRecylerView.getAdapter()).getItemCount()];
+                String[] orderedItemsArr = new String[mCartItemRecylerView.getAdapter().getItemCount()];
                 for (int i = 0; i < Objects.requireNonNull(mCartItemRecylerView.getAdapter()).getItemCount() ; i++){
                     TextView textView = Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(i)).itemView.findViewById(R.id.itemPriceCart);
                     TextView textView2 = Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(i)).itemView.findViewById(R.id.itemNameCart);
+                    ElegantNumberButton elegantNumberButton = Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(i)).itemView.findViewById(R.id.quantityPicker);
+                    String itemCount = elegantNumberButton.getNumber();
                     String priceText = textView.getText().toString().replace("\u20b9 " , "");
                     int price = Integer.parseInt(priceText);
                     totPrice = price + totPrice;
                     itemsArr[i] = textView2.getText().toString();
+                    orderedItemsArr[i] = itemCount + " x " + textView2.getText().toString();
                 }
 
                 Intent intent = new Intent(CartItemActivity.this, CheckoutActivity.class);
                 intent.putExtra("TOTAL_AMOUNT", String.valueOf(totPrice));
                 intent.putExtra("ITEM_NAMES", itemsArr);
+                intent.putExtra("ITEM_ORDERED_NAME", orderedItemsArr);
+                intent.putExtra("RES_NAME", mRestaurantCartName.getText().toString());
                 startActivity(intent);
                 this.overridePendingTransition(0,0);
             }
