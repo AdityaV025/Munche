@@ -1,14 +1,15 @@
 package com.example.munche;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,19 +17,27 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.paytm.pgsdk.PaytmOrder;
+import com.paytm.pgsdk.PaytmPGService;
+import com.paytm.pgsdk.PaytmPaymentTransactionCallback;
 import com.shreyaspatil.EasyUpiPayment.EasyUpiPayment;
 import com.shreyaspatil.EasyUpiPayment.listener.PaymentStatusListener;
 import com.shreyaspatil.EasyUpiPayment.model.TransactionDetails;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
-public class CheckoutActivity extends AppCompatActivity implements View.OnClickListener, PaymentStatusListener {
+import Utils.JSONParser;
+
+public class CheckoutActivity extends AppCompatActivity implements View.OnClickListener, PaymentStatusListener, PaytmPaymentTransactionCallback {
 
     private String mTotalAmount;
     private TextView mAmountText;
@@ -41,6 +50,8 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
     private String[] getItemsArr;
     private String upiID,resName;
     private EasyUpiPayment mEasyUPIPayment;
+    private String mid;
+    private long customerID, orderID,transactionId,transactionRefId ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +77,10 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         mCardView.setOnClickListener(this);
         mUpiView.setOnClickListener(this);
 
+        mid = "motuUW73726819251685";
+        customerID = (long) Math.floor(Math.random() * 9000000000000L) + 1000000000000L;
+        orderID = (long) Math.floor(Math.random() * 9000000000000L) + 1000000000000L;
+
         if (ContextCompat.checkSelfPermission(CheckoutActivity.this, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(CheckoutActivity.this, new String[]{Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS}, 101);
         }
@@ -82,7 +97,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.creditCardMethodContainer:
-                deleteCartItems();
+                paytmGateway();
                 break;
 
             case R.id.upiMethodContainer:
@@ -131,15 +146,21 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         });
 
     }
+
+    private void paytmGateway() {
+        sendUserDetailTOServerdd dl = new sendUserDetailTOServerdd();
+        dl.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
     private void upiPaymentMethod() {
-            long trID = (long) Math.floor(Math.random() * 9000000000000L) + 1000000000000L;
-            long trfID = (long) Math.floor(Math.random() * 9000000000000L) + 1000000000000L;
+            transactionId = (long) Math.floor(Math.random() * 9000000000000L) + 1000000000000L;
+            transactionRefId = (long) Math.floor(Math.random() * 9000000000000L) + 1000000000000L;
             mEasyUPIPayment = new EasyUpiPayment.Builder()
                     .with(this)
                     .setPayeeVpa(upiID)
                     .setPayeeName(resName)
-                    .setTransactionId(String.valueOf(trID))
-                    .setTransactionRefId(String.valueOf(trfID))
+                    .setTransactionId(String.valueOf(transactionId))
+                    .setTransactionRefId(String.valueOf(transactionRefId))
                     .setDescription("Payment to " + resName + " for food ordering")
                     .setAmount(mTotalAmount + ".00")
                     .build();
@@ -161,6 +182,75 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    public class sendUserDetailTOServerdd extends AsyncTask<ArrayList<String>, Void, String> {
+        private ProgressDialog dialog = new ProgressDialog(CheckoutActivity.this);
+        //private String orderId , mid, custid, amt;
+        String url ="https://surgical-atoms.000webhostapp.com/generateChecksum.php";
+        String verifyurl = "https://pguat.paytm.com/paytmchecksum/paytmCallback.jsp";
+        // "https://securegw-stage.paytm.in/theia/paytmCallback?ORDER_ID"+orderId;
+        String CHECKSUMHASH ="";
+        @Override
+        protected void onPreExecute() {
+            this.dialog.setMessage("Please wait");
+            this.dialog.show();
+        }
+        protected String doInBackground(ArrayList<String>... alldata) {
+            JSONParser jsonParser = new JSONParser(CheckoutActivity.this);
+            String param=
+                    "MID="+mid+
+                            "&ORDER_ID=" + orderID +
+                            "&CUST_ID="+customerID+
+                            "&CHANNEL_ID=WAP&TXN_AMOUNT=" + mTotalAmount +"&WEBSITE=WEBSTAGING"+
+                            "&CALLBACK_URL="+ verifyurl+"&INDUSTRY_TYPE_ID=Retail";
+            JSONObject jsonObject = jsonParser.makeHttpRequest(url,"POST",param);
+            // yaha per checksum ke saht order id or status receive hoga..
+            Log.e("CheckSum result >>",jsonObject.toString());
+            if(jsonObject != null){
+                Log.e("CheckSum result >>",jsonObject.toString());
+                try {
+                    CHECKSUMHASH=jsonObject.has("CHECKSUMHASH")?jsonObject.getString("CHECKSUMHASH"):"";
+                    Log.e("CheckSum result >>",CHECKSUMHASH);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            return CHECKSUMHASH;
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            Log.e(" setup acc ","  signup result  " + result);
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+            PaytmPGService Service = PaytmPGService.getStagingService();
+            // when app is ready to publish use production service
+            // PaytmPGService  Service = PaytmPGService.getProductionService();
+            // now call paytm service here
+            //below parameter map is required to construct PaytmOrder object, Merchant should replace below map values with his own values
+            HashMap<String, String> paramMap = new HashMap<String, String>();
+            //these are mandatory parameters
+            paramMap.put("MID", mid); //MID provided by paytm
+            paramMap.put("ORDER_ID", String.valueOf(orderID));
+            paramMap.put("CUST_ID", String.valueOf(customerID));
+            paramMap.put("CHANNEL_ID", "WAP");
+            paramMap.put("TXN_AMOUNT", mTotalAmount);
+            paramMap.put("WEBSITE", "WEBSTAGING");
+            paramMap.put("CALLBACK_URL" ,verifyurl);
+            //paramMap.put( "EMAIL" , "abc@gmail.com");   // no need
+            // paramMap.put( "MOBILE_NO" , "9144040888");  // no need
+            paramMap.put("CHECKSUMHASH" ,CHECKSUMHASH);
+            //paramMap.put("PAYMENT_TYPE_ID" ,"CC");    // no need
+            paramMap.put("INDUSTRY_TYPE_ID", "Retail");
+            PaytmOrder Order = new PaytmOrder(paramMap);
+            Log.e("checksum ", "param "+ paramMap.toString());
+            Service.initialize(Order,null);
+            // start payment service call here
+            Service.startPaymentTransaction(CheckoutActivity.this, true, true,
+                    CheckoutActivity.this  );
+        }
+    }
+
+    //UPI Callbacks Starts Here
     @Override
     public void onTransactionCompleted(TransactionDetails transactionDetails) {
         Log.d("TRDETAILS", String.valueOf(transactionDetails));
@@ -190,5 +280,44 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onAppNotFound() {
         Toast.makeText(this, "NO UPI Apps Found On Your Device", Toast.LENGTH_SHORT).show();
+    }
+
+
+    //Paytm CallBacks Start Here
+    @Override
+    public void onTransactionResponse(Bundle inResponse) {
+        deleteCartItems();
+    }
+
+    @Override
+    public void networkNotAvailable() {
+        Toast.makeText(this, "Network Not Available", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void clientAuthenticationFailed(String inErrorMessage) {
+        Toast.makeText(this, "Client Authentication Failed", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void someUIErrorOccurred(String inErrorMessage) {
+        Toast.makeText(this, "Error Occurred", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onErrorLoadingWebPage(int iniErrorCode, String inErrorMessage, String inFailingUrl) {
+        Toast.makeText(this, "Transaction Failed", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onBackPressedCancelTransaction() {
+        Toast.makeText(this, "Transaction Cancelled", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onTransactionCancel(String inErrorMessage, Bundle inResponse) {
+        Toast.makeText(this, "Transaction Cancelled", Toast.LENGTH_SHORT).show();
     }
 }
