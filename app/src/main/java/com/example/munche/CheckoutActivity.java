@@ -275,7 +275,9 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         });
     }
 
-    //UPI Callbacks Starts Here
+/**
+    ==========UPI Callbacks Starts Here===========
+*/
     @Override
     public void onTransactionCompleted(TransactionDetails transactionDetails) {
         Log.d("TRDETAILS", String.valueOf(transactionDetails));
@@ -308,8 +310,9 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         Toast.makeText(this, "NO UPI Apps Found On Your Device", Toast.LENGTH_SHORT).show();
     }
 
-
-    //Paytm CallBacks Start Here
+/**
+    ==============Paytm Callback Starts From Here==============
+ */
     @Override
     public void onTransactionResponse(Bundle inResponse) {
         uploadOrderDetails();

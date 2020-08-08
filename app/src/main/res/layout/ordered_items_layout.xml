@@ -9,23 +9,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        app:cardElevation="7dp"
-        app:cardCornerRadius="6dp"
-        android:padding="10dp"
-        app:contentPadding="11dp">
+        app:cardElevation="3dp"
+        app:cardCornerRadius="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="17dp"
+        android:layout_marginEnd="17dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="11dp">
 
             <TextView
                 android:id="@+id/orderedResName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Haldirams"
-                android:fontFamily="@font/open_sans"
+                android:fontFamily="@font/open_sans_semibold"
                 android:textColor="@color/colorAccent"
-                android:textSize="19sp"/>
+                android:textSize="17sp"/>
 
             <TextView
                 android:id="@+id/orderedResAddress"
@@ -55,23 +58,22 @@
                 android:textSize="15sp"
                 android:textColor="@color/grey"/>
 
-            <TextView
-                android:id="@+id/orderedItems"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="1 x Aloo Tikki"
-                android:layout_below="@+id/orderedItemsText"
+                android:id="@+id/orderedItemsLayout"
+                android:layout_below="@id/orderedItemsText"
                 android:layout_marginTop="1dp"
-                android:fontFamily="@font/open_sans"
-                android:textColor="@color/colorAccent"
-                android:textSize="15sp"/>
+                android:orientation="vertical">
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/orderedDateText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Ordered On"
-                android:layout_below="@+id/orderedItems"
+                android:layout_below="@+id/orderedItemsLayout"
                 android:layout_marginTop="6dp"
                 android:fontFamily="@font/open_sans"
                 android:textColor="@color/grey"

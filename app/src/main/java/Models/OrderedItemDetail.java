@@ -1,13 +1,10 @@
 package Models;
 
+import java.util.ArrayList;
+
 public class OrderedItemDetail {
 
-    private String ordered_items;
-    private String ordered_restaurant_name;
-    private String ordered_time;
-    private String total_amount;
-
-    public OrderedItemDetail(String ordered_items, String ordered_restaurant_name, String ordered_time, String total_amount) {
+    public OrderedItemDetail(ArrayList<String> ordered_items, String ordered_restaurant_name, String ordered_time, String total_amount) {
         this.ordered_items = ordered_items;
         this.ordered_restaurant_name = ordered_restaurant_name;
         this.ordered_time = ordered_time;
@@ -17,11 +14,11 @@ public class OrderedItemDetail {
     public OrderedItemDetail() {
     }
 
-    public String[] getOrdered_items() {
-        return new String[]{ordered_items};
+    public ArrayList<String> getOrdered_items() {
+        return ordered_items;
     }
 
-    public void setOrdered_items(String ordered_items) {
+    public void setOrdered_items(ArrayList<String> ordered_items) {
         this.ordered_items = ordered_items;
     }
 
@@ -48,5 +45,10 @@ public class OrderedItemDetail {
     public void setTotal_amount(String total_amount) {
         this.total_amount = total_amount;
     }
+
+    private ArrayList<String> ordered_items;
+    private String ordered_restaurant_name;
+    private String ordered_time;
+    private String total_amount;
 
 }

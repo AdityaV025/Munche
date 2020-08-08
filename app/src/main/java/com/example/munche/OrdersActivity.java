@@ -3,14 +3,18 @@ package com.example.munche;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
@@ -20,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import Models.CartItemDetail;
@@ -47,7 +52,6 @@ public class OrdersActivity extends AppCompatActivity {
         fetchOrderedItems();
 
     }
-
     private void init() {
         uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         mOrderItemToolBar = findViewById(R.id.orderedItemsToolBar);
@@ -68,9 +72,15 @@ public class OrdersActivity extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(@NonNull OrderedItemHolder holder, int item, @NonNull OrderedItemDetail model) {
 
-                String[] orderedItems = model.getOrdered_items();
-                for (int i = 0; i < orderedItems.length; i++){
-                    holder.mOrderedItemName.setText(orderedItems[i]);
+                ArrayList<String> orderedItems = model.getOrdered_items();
+                for(int i = 0; i < orderedItems.size() ; i++){
+                    TextView tv = new TextView(getApplicationContext());
+                    final Typeface typeface = ResourcesCompat.getFont(getApplicationContext(), R.font.open_sans);
+                    tv.setText(orderedItems.get(i));
+                    tv.setTypeface(typeface);
+                    tv.setTextColor(getResources().getColor(R.color.colorAccent));
+                    tv.setTextSize(15);
+                    holder.layout.addView(tv);
                 }
 
                 holder.mOrderedResName.setText(model.getOrdered_restaurant_name());
@@ -96,12 +106,12 @@ public class OrdersActivity extends AppCompatActivity {
     public static class OrderedItemHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.orderedResName)
         TextView mOrderedResName;
-        @BindView(R.id.orderedItems)
-        TextView mOrderedItemName;
         @BindView(R.id.orderedTimeStamp)
         TextView mOrderedTime;
         @BindView(R.id.orderedAmount)
         TextView mTotalAmount;
+        @BindView(R.id.orderedItemsLayout)
+        LinearLayout layout;
 
         public OrderedItemHolder(View itemView) {
             super(itemView);

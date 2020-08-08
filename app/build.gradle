@@ -53,7 +53,7 @@ dependencies {
     //External Libraries
     implementation 'com.github.aabhasr1:OtpView:v1.1.2' //OTP
     implementation 'com.hbb20:ccp:2.4.0' //Country Code Picker
-    implementation 'com.google.android.material:material:1.1.0' //Material
+    implementation 'com.google.android.material:material:1.2.0' //Material
     implementation 'com.jakewharton:butterknife:10.2.1'//Binding
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
     implementation 'com.github.bumptech.glide:glide:4.11.0' //Glide Image Loading

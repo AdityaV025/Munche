@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EmptyCartActivity">
+    tools:context=".EmptyCartActivity"
+    android:background="@color/white">
 
-    <include layout="@layout/cart_item_layout_toolbar"
+    <include layout="@layout/simple_toolbar"
         android:id="@+id/emptyCartItemToolBar"/>
 
     <ImageView

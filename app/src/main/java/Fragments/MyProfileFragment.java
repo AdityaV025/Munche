@@ -8,8 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.example.munche.OrdersActivity;
 import com.example.munche.R;
@@ -61,7 +59,6 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
             case R.id.myOrdersText:
                 Intent intent = new Intent(getActivity(), OrdersActivity.class);
                 startActivity(intent);
-                Toast.makeText(getContext(), "sdjkasdkj", Toast.LENGTH_SHORT).show();
                 break;
 
         }
