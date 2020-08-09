@@ -52,6 +52,9 @@ public class OrdersActivity extends AppCompatActivity {
         fetchOrderedItems();
 
     }
+
+//    TODO:Sort The OrderedItems By Latest To Oldest Orders.
+
     private void init() {
         uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         mOrderItemToolBar = findViewById(R.id.orderedItemsToolBar);

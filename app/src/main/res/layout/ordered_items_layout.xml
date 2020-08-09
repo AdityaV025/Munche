@@ -25,7 +25,6 @@
                 android:id="@+id/orderedResName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Haldirams"
                 android:fontFamily="@font/open_sans_semibold"
                 android:textColor="@color/colorAccent"
                 android:textSize="17sp"/>

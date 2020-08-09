@@ -56,8 +56,9 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
     private String CART_ITEMS = "CartItems";
     private String USER_ORDERS = "UserOrders";
     private String RES_LIST = "RestaurantList";
+    private String RES_ORDERS = "RestaurantOrders";
     private String[] getItemsArr, getOrderedItemsArr;
-    private String upiID,resName;
+    private String upiID,resName,resUid,userAddress;
     private EasyUpiPayment mEasyUPIPayment;
     private String mid;
     private long customerID, orderID,transactionId,transactionRefId;
@@ -75,6 +76,8 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         getItemsArr = getIntent().getStringArrayExtra("ITEM_NAMES");
         getOrderedItemsArr = getIntent().getStringArrayExtra("ITEM_ORDERED_NAME");
         resName = getIntent().getStringExtra("RES_NAME");
+        resUid = getIntent().getStringExtra("RES_UID");
+        userAddress = getIntent().getStringExtra("USER_ADDRESS");
         uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         db = FirebaseFirestore.getInstance();
         mTotalAmount = getIntent().getStringExtra("TOTAL_AMOUNT");
@@ -104,7 +107,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         switch (view.getId()){
 
             case R.id.cashMethodContainer:
-                uploadOrderDetails();
+                uploadOrderDetails("COD");
                 deleteCartItems();
                 break;
 
@@ -261,7 +264,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private void uploadOrderDetails() {
+    private void uploadOrderDetails(String paymentMethod) {
         @SuppressLint("SimpleDateFormat") String timeStampDate1 = new SimpleDateFormat("dd MMM yyyy").format(Calendar.getInstance().getTime());
         @SuppressLint("SimpleDateFormat") String timeStampDate2 = new SimpleDateFormat("hh:mm a").format(Calendar.getInstance().getTime());
 
@@ -271,7 +274,18 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         orderedItemsMap.put("ordered_time", timeStampDate1 + " at " + timeStampDate2);
         orderedItemsMap.put("ordered_restaurant_name", resName);
         db.collection(USER_LIST).document(uid).collection(USER_ORDERS).document().set(orderedItemsMap).addOnCompleteListener(task -> {
-            Log.d("ajsdklad", "Ordered-ITEMS_ADDED");
+        });
+
+        String orderID = String.valueOf((long) Math.floor(Math.random() * 9000000000000L) + 1000000000000L);
+
+        Map<String, Object> orderedRestaurantName = new HashMap<>();
+        orderedRestaurantName.put("ordered_items", FieldValue.arrayUnion((Object[]) getOrderedItemsArr));
+        orderedRestaurantName.put("ordered_at",timeStampDate1 + " at " + timeStampDate2);
+        orderedRestaurantName.put("total_amount", "\u20b9" + mTotalAmount);
+        orderedRestaurantName.put("payment_method", paymentMethod);
+        orderedRestaurantName.put("delivery_address", userAddress);
+        orderedRestaurantName.put("order_id", orderID);
+        db.collection(RES_LIST).document(resUid).collection(RES_ORDERS).document().set(orderedRestaurantName).addOnCompleteListener(task -> {
         });
     }
 
@@ -285,7 +299,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onTransactionSuccess() {
-        uploadOrderDetails();
+        uploadOrderDetails("PAID");
         deleteCartItems();
         Toast.makeText(this, "Payment Successful", Toast.LENGTH_SHORT).show();
     }
@@ -315,7 +329,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
  */
     @Override
     public void onTransactionResponse(Bundle inResponse) {
-        uploadOrderDetails();
+        uploadOrderDetails("PAID");
         deleteCartItems();
     }
 

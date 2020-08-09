@@ -18,7 +18,7 @@ import Fragments.RestaurantFragment;
 public class OrderSuccessfulActivity extends AppCompatActivity {
 
     private LottieAnimationView mSuccessAnimation;
-    private static int TIME_OUT = 5000;
+    private static int TIME_OUT = 3000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
