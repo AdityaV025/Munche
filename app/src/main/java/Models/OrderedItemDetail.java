@@ -4,6 +4,11 @@ import java.util.ArrayList;
 
 public class OrderedItemDetail {
 
+    private ArrayList<String> ordered_items;
+    private String ordered_restaurant_name;
+    private String ordered_time;
+    private String total_amount;
+
     public OrderedItemDetail(ArrayList<String> ordered_items, String ordered_restaurant_name, String ordered_time, String total_amount) {
         this.ordered_items = ordered_items;
         this.ordered_restaurant_name = ordered_restaurant_name;
@@ -45,10 +50,5 @@ public class OrderedItemDetail {
     public void setTotal_amount(String total_amount) {
         this.total_amount = total_amount;
     }
-
-    private ArrayList<String> ordered_items;
-    private String ordered_restaurant_name;
-    private String ordered_time;
-    private String total_amount;
 
 }

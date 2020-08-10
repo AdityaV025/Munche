@@ -281,6 +281,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         Map<String, Object> orderedRestaurantName = new HashMap<>();
         orderedRestaurantName.put("ordered_items", FieldValue.arrayUnion((Object[]) getOrderedItemsArr));
         orderedRestaurantName.put("ordered_at",timeStampDate1 + " at " + timeStampDate2);
+        orderedRestaurantName.put("short_time", timeStampDate2);
         orderedRestaurantName.put("total_amount", "\u20b9" + mTotalAmount);
         orderedRestaurantName.put("payment_method", paymentMethod);
         orderedRestaurantName.put("delivery_address", userAddress);
