@@ -42,6 +42,7 @@ public class OrdersActivity extends AppCompatActivity {
     private String uid;
     private String USER_LIST = "UserList";
     private String USER_ORDERS = "UserOrders";
+    private ImageView mGoBackBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +63,11 @@ public class OrdersActivity extends AppCompatActivity {
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mOrderItemRecyclerView = findViewById(R.id.orderedItemsRecyclerView);
         mOrderItemRecyclerView.setLayoutManager(linearLayoutManager);
+        mGoBackBtn = findViewById(R.id.cartBackBtn);
+
+        mGoBackBtn.setOnClickListener(view -> {
+            onBackPressed();
+        });
 
     }
 

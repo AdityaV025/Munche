@@ -50,7 +50,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
     private String mTotalAmount;
     private TextView mAmountText;
     private LinearLayout mCODView,mCardView,mUpiView;
-    private String uid;
+    private String uid,userName;
     private FirebaseFirestore db;
     private String USER_LIST = "UserList";
     private String CART_ITEMS = "CartItems";
@@ -79,6 +79,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         resUid = getIntent().getStringExtra("RES_UID");
         userAddress = getIntent().getStringExtra("USER_ADDRESS");
         uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        userName = getIntent().getStringExtra("USER_NAME");
         db = FirebaseFirestore.getInstance();
         mTotalAmount = getIntent().getStringExtra("TOTAL_AMOUNT");
         mAmountText = findViewById(R.id.totalAmountItems);
@@ -205,7 +206,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         String CHECKSUMHASH ="";
         @Override
         protected void onPreExecute() {
-            this.dialog.setMessage("Please wait");
+            this.dialog.setMessage("Please wait...");
             this.dialog.show();
         }
         protected String doInBackground(ArrayList<String>... alldata) {
@@ -286,6 +287,8 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         orderedRestaurantName.put("payment_method", paymentMethod);
         orderedRestaurantName.put("delivery_address", userAddress);
         orderedRestaurantName.put("order_id", orderID);
+        orderedRestaurantName.put("customer_name", userName);
+        orderedRestaurantName.put("customer_uid", uid);
         db.collection(RES_LIST).document(resUid).collection(RES_ORDERS).document().set(orderedRestaurantName).addOnCompleteListener(task -> {
         });
     }

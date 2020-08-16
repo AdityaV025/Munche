@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +20,7 @@ public class OrderSuccessfulActivity extends AppCompatActivity {
 
     private LottieAnimationView mSuccessAnimation;
     private static int TIME_OUT = 3000;
+    private MediaPlayer mp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +32,15 @@ public class OrderSuccessfulActivity extends AppCompatActivity {
     }
 
     private void init() {
+        mp = MediaPlayer.create(this, R.raw.success_sound);
         mSuccessAnimation = findViewById(R.id.successAnim);
-        mSuccessAnimation.playAnimation();
         mSuccessAnimation.setSpeed(0.8f);
+        mSuccessAnimation.playAnimation();
+        if(!mp.isPlaying()){
+            mp.start();
+        }else {
+            mp.stop();
+        }
         moveToOrdersScreen();
     }
 
@@ -52,6 +60,8 @@ public class OrderSuccessfulActivity extends AppCompatActivity {
             public void run() {
                 Intent intent = new Intent(OrderSuccessfulActivity.this, OrdersActivity.class);
                 startActivity(intent);
+                mp.reset();
+                mp.release();
                 finish();
             }
         }, TIME_OUT);

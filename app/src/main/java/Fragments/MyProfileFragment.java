@@ -11,7 +11,13 @@ import android.widget.TextView;
 
 import com.example.munche.OrdersActivity;
 import com.example.munche.R;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import UI.LoginActivity;
 
@@ -20,6 +26,8 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
     private TextView mLogOutText, mMyOrdersText;
     private View view;
     private FirebaseAuth mAuth;
+    private String uid;
+    private FirebaseFirestore db;
 
     public MyProfileFragment() {
         // Required empty public constructor
@@ -36,8 +44,10 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
     }
 
     private void init() {
+        db = FirebaseFirestore.getInstance();
         mLogOutText = view.findViewById(R.id.logOutText);
         mAuth = FirebaseAuth.getInstance();
+        uid = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
         mMyOrdersText = view.findViewById(R.id.myOrdersText);
     }
 
@@ -49,8 +59,14 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
                 new AlertDialog.Builder(Objects.requireNonNull(getActivity()))
                         .setMessage("Are you sure you want to log out ?")
                         .setPositiveButton("Log Out", (dialog, which) -> {
-                            mAuth.signOut();
-                            sendUserToLogin();
+
+                            Map<String, Object> updateDeviceToken = new HashMap<>();
+                            updateDeviceToken.put("devicetoken", FieldValue.delete());
+
+                            db.collection("UserList").document(uid).update(updateDeviceToken).addOnSuccessListener(aVoid -> {
+                                mAuth.signOut();
+                                sendUserToLogin();
+                            });
                         })
                         .setNegativeButton("Cancel", null)
                         .show();

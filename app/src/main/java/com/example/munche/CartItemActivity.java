@@ -46,7 +46,7 @@ public class CartItemActivity extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager;
     private RecyclerView mCartItemRecylerView;
     private TextView mRestaurantCartName, mToolBarText, mUserAddressText, mTotalAmountText;
-    private String uid, userAddress,ruid;
+    private String uid, userAddress,ruid,userName;
     private ImageView mCartBackBtn;
     private String USER_LIST = "UserList";
     private String CART_ITEMS = "CartItems";
@@ -99,6 +99,7 @@ public class CartItemActivity extends AppCompatActivity {
                 assert documentSnapshot != null;
                 String resName = (String) documentSnapshot.get("restaurant_cart_name");
                 ruid = String.valueOf(documentSnapshot.get("restaurant_cart_uid"));
+                userName = String.valueOf(documentSnapshot.get("name"));
                 mRestaurantCartName.setText(resName);
 
             }else {
@@ -232,6 +233,8 @@ public class CartItemActivity extends AppCompatActivity {
                 intent.putExtra("RES_NAME", mRestaurantCartName.getText().toString());
                 intent.putExtra("RES_UID", ruid);
                 intent.putExtra("USER_ADDRESS",userAddress);
+                intent.putExtra("USER_NAME", userName);
+                intent.putExtra("USER_UID",uid);
                 startActivity(intent);
                 this.overridePendingTransition(0,0);
             }

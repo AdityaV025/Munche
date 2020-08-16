@@ -134,7 +134,7 @@
             android:id="@+id/upiIconImg"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:src="@drawable/upi_icon"
+            android:src="@drawable/upi_logo"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"/>
 
