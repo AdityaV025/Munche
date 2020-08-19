@@ -33,7 +33,8 @@
             android:layout_marginTop="7dp"
             android:clipToPadding="false"
             android:paddingStart="12dp"
-            android:paddingEnd="23dp"/>
+            android:paddingEnd="23dp"
+            android:overScrollMode="never"/>
 
     </RelativeLayout>
 

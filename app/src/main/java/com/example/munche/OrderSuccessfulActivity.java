@@ -55,15 +55,14 @@ public class OrderSuccessfulActivity extends AppCompatActivity {
     }
 
     private void moveToOrdersScreen() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(OrderSuccessfulActivity.this, OrdersActivity.class);
-                startActivity(intent);
-                mp.reset();
-                mp.release();
-                finish();
-            }
+        new Handler().postDelayed(() -> {
+            Intent intent = new Intent(OrderSuccessfulActivity.this, SimpleMapViewActivity.class);
+            startActivity(intent);
+            mp.reset();
+            mp.release();
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            finish();
         }, TIME_OUT);
     }
 

@@ -15,9 +15,9 @@
     <string name="logOutText">Log Out</string>
     <string name="trending">Trending</string>
     <string name="or">or</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="your_cart_is_empty">Your cart is empty</string>
     <string name="choose_your_payment_method">Choose Your Payment Method</string>
     <string name="your_orders">Your Orders</string>
+    <string name="mapbox_access_token">pk.eyJ1IjoibXVrZXNoZ3V0a2EiLCJhIjoiY2tkeXI2azV1M2VwZjJ6cGFpOWI3ZWZyYSJ9.vc6s1I6_6dDvzaAKgXPAHg</string>
 </resources>

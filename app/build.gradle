@@ -65,6 +65,7 @@ dependencies {
     implementation('com.paytm:pgplussdk:1.2.3') {//Paytm Gateway Integration
         transitive = true;
     }
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.3.0'//MapBox
 
 }
 apply plugin: 'com.google.gms.google-services'

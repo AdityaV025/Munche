@@ -66,7 +66,7 @@ public class OrdersActivity extends AppCompatActivity {
         mGoBackBtn = findViewById(R.id.cartBackBtn);
 
         mGoBackBtn.setOnClickListener(view -> {
-            onBackPressed();
+            this.onBackPressed();
         });
 
     }

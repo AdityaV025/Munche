@@ -162,7 +162,7 @@ public class RestaurantFragment extends Fragment {
 
                             Glide.with(requireActivity())
                                     .load(model.getRestaurant_spotimage())
-                                    .placeholder(R.drawable.vector_utensil_background)
+                                    .placeholder(R.drawable.restaurant_image_placeholder)
                                     .into(holder.mRestaurantSpotImage);
                             holder.mAveragePrice.setText("\u20B9" +  model.getAverage_price() + " Per Person | ");
 

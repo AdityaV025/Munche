@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.munche.OrdersActivity;
 import com.example.munche.R;
+import com.example.munche.SimpleMapViewActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
@@ -73,7 +74,7 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
                 break;
 
             case R.id.myOrdersText:
-                Intent intent = new Intent(getActivity(), OrdersActivity.class);
+                Intent intent = new Intent(getActivity(), SimpleMapViewActivity.class);
                 startActivity(intent);
                 break;
 

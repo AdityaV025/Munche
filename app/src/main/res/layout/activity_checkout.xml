@@ -8,8 +8,8 @@
     tools:context=".CheckoutActivity"
     android:background="@color/blue_grey">
 
-<!--    <include layout="@layout/cart_item_layout_toolbar"-->
-<!--        android:id="@+id/paymentMethodToolBar"/>-->
+    <include layout="@layout/simple_toolbar"
+        android:id="@+id/paymentMethodToolBar"/>
 
     <LinearLayout
         android:id="@+id/textContainers"
@@ -17,7 +17,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="15dp"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:layout_below="@+id/paymentMethodToolBar">
 
         <TextView
             android:id="@+id/chooseMethodText"

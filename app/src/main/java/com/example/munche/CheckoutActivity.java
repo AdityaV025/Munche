@@ -2,6 +2,7 @@ package com.example.munche;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -14,6 +15,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +53,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
     private TextView mAmountText;
     private LinearLayout mCODView,mCardView,mUpiView;
     private String uid,userName;
+    private Toolbar mPaymentToolBar;
     private FirebaseFirestore db;
     private String USER_LIST = "UserList";
     private String CART_ITEMS = "CartItems";
@@ -62,6 +65,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
     private EasyUpiPayment mEasyUPIPayment;
     private String mid;
     private long customerID, orderID,transactionId,transactionRefId;
+    private ImageView mGoBackBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +77,8 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
 
     @SuppressLint("SetTextI18n")
     private void init() {
+        mPaymentToolBar = findViewById(R.id.paymentMethodToolBar);
+        mGoBackBtn = findViewById(R.id.cartBackBtn);
         getItemsArr = getIntent().getStringArrayExtra("ITEM_NAMES");
         getOrderedItemsArr = getIntent().getStringArrayExtra("ITEM_ORDERED_NAME");
         resName = getIntent().getStringExtra("RES_NAME");
@@ -99,6 +105,10 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         if (ContextCompat.checkSelfPermission(CheckoutActivity.this, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(CheckoutActivity.this, new String[]{Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS}, 101);
         }
+
+        mGoBackBtn.setOnClickListener(view -> {
+            this.onBackPressed();
+        });
 
     }
 
