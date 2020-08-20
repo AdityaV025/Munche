@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:mapbox="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    tools:context=".CurrentOrderActivity">
+
+    <include layout="@layout/custom_current_order_toolbar"
+        android:id="@+id/currentOrderToolBar"/>
+
+    <ScrollView
+        android:id="@+id/userDetailContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/currentOrderToolBar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.mapbox.mapboxsdk.maps.MapView
+                android:id="@+id/mapView"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                mapbox:mapbox_cameraZoom="12"/>
+
+            <TextView
+                android:id="@+id/arrivingInId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/mapView"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="21dp"
+                android:text="ARRIVING IN"
+                android:fontFamily="@font/open_sans"
+                android:textColor="@color/grey"
+                android:textSize="13sp"/>
+
+            <ir.samanjafari.easycountdowntimer.EasyCountDownTextview
+                android:id="@+id/easyCountDownTextview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:showHours="false"
+                app:textSize="15sp"
+                app:digitBackground="@color/white"
+                app:textColor="@color/gray"
+                app:setAnimation="true"
+                app:colonColor="@color/grey"
+                app:showDays="false"
+                android:layout_below="@+id/arrivingInId"
+                android:layout_marginTop="3dp"
+                android:layout_marginStart="21dp"
+                android:layout_centerVertical="true"/>
+
+            <TextView
+                android:id="@+id/timeLeftText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/arrivingInId"
+                android:layout_toEndOf="@+id/easyCountDownTextview"
+                android:layout_marginStart="7dp"
+                android:layout_marginTop="3dp"
+                android:fontFamily="@font/open_sans_semibold"
+                android:textColor="@color/gray"
+                android:textSize="17sp"
+                android:layout_centerVertical="true"/>
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/deliveryAnimation"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_below="@+id/mapView"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="21dp"
+                mapbox:lottie_rawRes="@raw/delivery"
+                mapbox:lottie_autoPlay="true"
+                mapbox:lottie_loop="true"
+                android:scaleType="centerCrop"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="12dp"/>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

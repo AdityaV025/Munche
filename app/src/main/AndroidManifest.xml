@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <activity android:name=".SimpleMapViewActivity"></activity>
+        <activity android:name=".CurrentOrderActivity"></activity>
         <activity android:name=".OrdersActivity" />
         <activity android:name=".OrderSuccessfulActivity" />
         <activity android:name=".CheckoutActivity" />

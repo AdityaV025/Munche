@@ -9,10 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.munche.OrdersActivity;
 import com.example.munche.R;
-import com.example.munche.SimpleMapViewActivity;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.example.munche.CurrentOrderActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -74,7 +72,7 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
                 break;
 
             case R.id.myOrdersText:
-                Intent intent = new Intent(getActivity(), SimpleMapViewActivity.class);
+                Intent intent = new Intent(getActivity(), CurrentOrderActivity.class);
                 startActivity(intent);
                 break;
 

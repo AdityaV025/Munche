@@ -14,8 +14,6 @@ import android.view.WindowManager;
 
 import com.airbnb.lottie.LottieAnimationView;
 
-import Fragments.RestaurantFragment;
-
 public class OrderSuccessfulActivity extends AppCompatActivity {
 
     private LottieAnimationView mSuccessAnimation;
@@ -56,7 +54,7 @@ public class OrderSuccessfulActivity extends AppCompatActivity {
 
     private void moveToOrdersScreen() {
         new Handler().postDelayed(() -> {
-            Intent intent = new Intent(OrderSuccessfulActivity.this, SimpleMapViewActivity.class);
+            Intent intent = new Intent(OrderSuccessfulActivity.this, CurrentOrderActivity.class);
             startActivity(intent);
             mp.reset();
             mp.release();

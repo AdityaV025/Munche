@@ -49,40 +49,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@drawable/userinfo_background"
-        android:inputType="textPostalAddress"
-        android:hint="Enter Delivery Address *"
+        android:inputType="textEmailAddress"
+        android:hint="Your Address *"
         android:textSize="19sp"
         android:textColor="@color/colorAccent"
-        android:fontFamily="@font/open_sans"
-        android:visibility="gone"/>
-
-    <TextView
-        android:id="@+id/orText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/or"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
-        android:fontFamily="@font/open_sans"
-        android:textSize="17sp"
-        android:textColor="@color/gray"
-        android:visibility="gone"/>
-
-    <Button
-        android:id="@+id/getLocationBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Use My Current Location"
-        android:textAllCaps="false"
-        android:background="@drawable/get_location_button_background"
-        android:fontFamily="@font/open_sans"
-        android:textColor="@color/colorPrimary"
-        android:textSize="18sp"
-        android:drawableStart="@drawable/current_location"
-        android:gravity="left|center"
-        android:drawablePadding="6dp"
-        android:visibility="gone"/>
+        android:fontFamily="@font/open_sans"/>
 
     <Button
         android:id="@+id/addInfo"

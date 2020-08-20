@@ -24,6 +24,7 @@ allprojects {
         jcenter()
         maven { url 'https://jitpack.io' }
         maven { url "https://maven.google.com" }
+        maven { url 'https://dl.bintray.com/samanjafaridotir/easyCountDownTimerTextview' }
         maven {
             url 'https://api.mapbox.com/downloads/v2/releases/maven'
             authentication {
@@ -35,6 +36,7 @@ allprojects {
                 password = project.properties['MAPBOX_DOWNLOADS_TOKEN'] ?: ""
             }
         }
+        maven { url 'https://mapbox.bintray.com/mapbox' }
     }
 }
 

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.appbar.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/cartBackBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/back_arrow"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp" />
+
+            <TextView
+                android:id="@+id/orderFromId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ORDER FROM"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="7dp"
+                android:fontFamily="@font/open_sans"
+                android:textColor="@color/grey"
+                android:textSize="13sp"/>
+
+            <TextView
+                android:id="@+id/orderedRestaurantName"
+                android:layout_below="@+id/orderFromId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Behrouz Biryani"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/open_sans_semibold"
+                android:textColor="@color/colorAccent"
+                android:textSize="15sp"
+                android:layout_centerVertical="true"/>
+
+        </RelativeLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+</com.google.android.material.appbar.AppBarLayout>
+
