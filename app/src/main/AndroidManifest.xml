@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:allowBackup="true"
@@ -18,13 +19,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <activity android:name=".CurrentOrderActivity"></activity>
+        <activity android:name=".CurrentOrderActivity" />
         <activity android:name=".OrdersActivity" />
         <activity android:name=".OrderSuccessfulActivity" />
         <activity android:name=".CheckoutActivity" />
         <activity android:name=".MainRestaurantPageActivity" />
         <activity android:name=".EmptyCartActivity" />
-        <activity android:name=".CartItemActivity" />
+        <activity android:name=".CartItemActivity"
+            android:windowSoftInputMode="adjustResize">
+
+        </activity>
         <activity android:name="UI.AddInfoActivity" />
         <activity android:name="UI.OtpActivity" />
         <activity android:name="UI.LoginActivity" />

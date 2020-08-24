@@ -8,11 +8,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,12 +48,14 @@ public class CartItemActivity extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager;
     private RecyclerView mCartItemRecylerView;
     private TextView mRestaurantCartName, mToolBarText, mUserAddressText, mTotalAmountText;
-    private String uid, userAddress,ruid,userName;
+    private String uid, userAddress,ruid,userName,userPhoneNum;
+    private String extraIns = "none";
     private ImageView mCartBackBtn;
     private String USER_LIST = "UserList";
     private String CART_ITEMS = "CartItems";
     private BottomSheetBehavior mBottomSheetBehavior;
     private Button mCheckoutBtn;
+    private EditText mExtraInstructionsText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +86,7 @@ public class CartItemActivity extends AppCompatActivity {
         View bottomSheet = findViewById(R.id.bottomSheet);
         mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         userAddress = getIntent().getStringExtra("USER_ADDRESS");
+        mExtraInstructionsText = findViewById(R.id.extraInstructionEdiText);
         mUserAddressText = findViewById(R.id.userDeliveryAddress);
         mTotalAmountText = findViewById(R.id.totAmount);
         mUserAddressText.setText(userAddress);
@@ -100,12 +105,14 @@ public class CartItemActivity extends AppCompatActivity {
                 String resName = (String) documentSnapshot.get("restaurant_cart_name");
                 ruid = String.valueOf(documentSnapshot.get("restaurant_cart_uid"));
                 userName = String.valueOf(documentSnapshot.get("name"));
+                userPhoneNum = String.valueOf(documentSnapshot.get("phonenumber"));
                 mRestaurantCartName.setText(resName);
 
             }else {
                 Toast.makeText(this, "Something Went Wrong!", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
     private void getCartItems() {
@@ -226,6 +233,10 @@ public class CartItemActivity extends AppCompatActivity {
                     orderedItemsArr[i] = itemCount + " x " + textView2.getText().toString();
                 }
 
+                if(!TextUtils.isEmpty(mExtraInstructionsText.getText())){
+                    extraIns = mExtraInstructionsText.getText().toString();
+                }
+
                 Intent intent = new Intent(CartItemActivity.this, CheckoutActivity.class);
                 intent.putExtra("TOTAL_AMOUNT", String.valueOf(totPrice));
                 intent.putExtra("ITEM_NAMES", itemsArr);
@@ -235,6 +246,8 @@ public class CartItemActivity extends AppCompatActivity {
                 intent.putExtra("USER_ADDRESS",userAddress);
                 intent.putExtra("USER_NAME", userName);
                 intent.putExtra("USER_UID",uid);
+                intent.putExtra("EXTRA_INS", extraIns);
+                intent.putExtra("USER_PHONE", userPhoneNum);
                 startActivity(intent);
                 this.overridePendingTransition(0,0);
             }

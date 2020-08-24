@@ -5,85 +5,128 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white"
+    android:background="@color/blue_grey"
     tools:context=".CurrentOrderActivity">
 
     <include layout="@layout/custom_current_order_toolbar"
         android:id="@+id/currentOrderToolBar"/>
 
-    <ScrollView
-        android:id="@+id/userDetailContainer"
+    <com.mapbox.mapboxsdk.maps.MapView
+        android:id="@+id/mapView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/currentOrderToolBar">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/orderTimerContainer"
+        android:layout_below="@id/currentOrderToolBar"
+        android:layout_marginBottom="0dp"
+        mapbox:mapbox_cameraZoom="12" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.mapbox.mapboxsdk.maps.MapView
-                android:id="@+id/mapView"
+            <RelativeLayout
+                android:id="@+id/orderTimerContainer"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                mapbox:mapbox_cameraZoom="12"/>
-
-            <TextView
-                android:id="@+id/arrivingInId"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/mapView"
-                android:layout_marginTop="12dp"
-                android:layout_marginStart="21dp"
-                android:text="ARRIVING IN"
-                android:fontFamily="@font/open_sans"
-                android:textColor="@color/grey"
-                android:textSize="13sp"/>
+                android:background="@color/white"
+                android:layout_alignParentBottom="true">
 
-            <ir.samanjafari.easycountdowntimer.EasyCountDownTextview
-                android:id="@+id/easyCountDownTextview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:showHours="false"
-                app:textSize="15sp"
-                app:digitBackground="@color/white"
-                app:textColor="@color/gray"
-                app:setAnimation="true"
-                app:colonColor="@color/grey"
-                app:showDays="false"
-                android:layout_below="@+id/arrivingInId"
-                android:layout_marginTop="3dp"
-                android:layout_marginStart="21dp"
-                android:layout_centerVertical="true"/>
+                <TextView
+                    android:id="@+id/arrivingInId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginStart="21dp"
+                    android:text="ARRIVING IN"
+                    android:fontFamily="@font/open_sans"
+                    android:textColor="@color/grey"
+                    android:textSize="13sp"/>
 
-            <TextView
-                android:id="@+id/timeLeftText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/arrivingInId"
-                android:layout_toEndOf="@+id/easyCountDownTextview"
-                android:layout_marginStart="7dp"
-                android:layout_marginTop="3dp"
-                android:fontFamily="@font/open_sans_semibold"
-                android:textColor="@color/gray"
-                android:textSize="17sp"
-                android:layout_centerVertical="true"/>
+                <ir.samanjafari.easycountdowntimer.EasyCountDownTextview
+                    android:id="@+id/easyCountDownTextview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:showHours="false"
+                    app:textSize="15sp"
+                    app:digitBackground="@color/white"
+                    app:textColor="@color/gray"
+                    app:setAnimation="true"
+                    app:colonColor="@color/grey"
+                    app:showDays="false"
+                    android:layout_below="@+id/arrivingInId"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginStart="21dp"/>
 
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/deliveryAnimation"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_below="@+id/mapView"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="21dp"
-                mapbox:lottie_rawRes="@raw/delivery"
-                mapbox:lottie_autoPlay="true"
-                mapbox:lottie_loop="true"
-                android:scaleType="centerCrop"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="12dp"/>
+                <TextView
+                    android:id="@+id/timeLeftText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/arrivingInId"
+                    android:layout_toEndOf="@+id/easyCountDownTextview"
+                    android:layout_marginStart="7dp"
+                    android:layout_marginTop="3dp"
+                    android:fontFamily="@font/open_sans_semibold"
+                    android:textColor="@color/gray"
+                    android:textSize="17sp"/>
 
-        </RelativeLayout>
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/deliveryAnimation"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="21dp"
+                    mapbox:lottie_rawRes="@raw/delivery"
+                    mapbox:lottie_autoPlay="true"
+                    mapbox:lottie_loop="true"
+                    android:scaleType="centerCrop"
+                    android:layout_marginTop="12dp"/>
 
-    </ScrollView>
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.2dp"
+                    android:background="@android:color/darker_gray"
+                    android:layout_below="@+id/easyCountDownTextview"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="21dp"
+                    android:layout_marginEnd="21dp"/>
+
+                <TextView
+                    android:id="@+id/currentOrderResName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="21dp"
+                    android:layout_marginTop="7dp"
+                    android:textColor="@color/colorAccent"
+                    android:fontFamily="@font/open_sans_semibold"
+                    android:textSize="17sp"
+                    android:layout_below="@+id/divider"/>
+
+                <TextView
+                    android:id="@+id/currentOrderResLoc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans"
+                    android:layout_below="@id/currentOrderResName"
+                    android:layout_marginStart="21dp"
+                    android:text="Sector-41, Noida"
+                    android:layout_marginBottom="12dp"
+                    android:textSize="14sp"/>
+
+                <Button
+                    android:id="@+id/callResBtn"
+                    android:layout_width="75dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/divider"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="21dp"
+                    android:text="Call"
+                    android:textAllCaps="false"
+                    android:background="@drawable/get_location_button_background"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginBottom="12dp"
+                    android:fontFamily="@font/open_sans_semibold"
+                    android:textSize="15sp"
+                    android:drawableStart="@drawable/call_res"
+                    android:layout_marginTop="7dp"/>
+
+            </RelativeLayout>
 
 </RelativeLayout>

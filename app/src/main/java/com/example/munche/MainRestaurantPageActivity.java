@@ -84,7 +84,7 @@ public class MainRestaurantPageActivity extends AppCompatActivity {
         mResNameToolBar.setText(mResName);
         mResNameText.setText(mResName);
         mResDeliveryTimeText.setText(mResDeliveryTime + " mins");
-        mResAvgPriceText.setText("\u20b9" + mResPrice + "/person");
+        mResAvgPriceText.setText("\u20b9" + mResPrice);
         mResDistanceText.setText(mResDistance + " kms");
         mBackBtnView = findViewById(R.id.backBtn);
         mBackBtnView.setOnClickListener(view -> {

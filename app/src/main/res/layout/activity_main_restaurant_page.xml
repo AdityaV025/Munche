@@ -67,47 +67,76 @@
                 android:layout_below="@id/mainResDistance"
                 android:layout_marginTop="7dp" />
 
-            <LinearLayout
-                android:id="@+id/restaurantSpecsContainer"
+            <RelativeLayout
+                android:id="@+id/specsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_below="@+id/divider"
-                android:layout_marginTop="21dp"
-                android:weightSum="3">
+                android:layout_marginTop="21dp">
 
                 <TextView
                     android:id="@+id/restaurantRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="17dp"
                     android:text="\u2605 4.2"
-                    android:layout_weight="1"
-                    android:gravity="center"
+                    android:textSize="14sp"
                     android:fontFamily="@font/open_sans_semibold"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="14sp"/>
+                    android:textColor="@color/colorAccent"/>
 
                 <TextView
                     android:id="@+id/restaurantDeliveryTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
+                    android:layout_centerHorizontal="true"
+                    android:text="45 mins"
                     android:fontFamily="@font/open_sans_semibold"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp"
+                    android:textColor="@color/colorAccent"/>
 
                 <TextView
                     android:id="@+id/restaurantAvgPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="17dp"
+                    android:text="\u20b9 450"
                     android:fontFamily="@font/open_sans_semibold"
                     android:textColor="@color/colorAccent"
                     android:textSize="14sp"/>
 
-            </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ratings"
+                    android:layout_below="@+id/restaurantRating"
+                    android:layout_marginStart="15dp"
+                    android:fontFamily="@font/open_sans_light"
+                    android:textSize="13sp"
+                    android:textColor="@color/gray"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Delivery Time"
+                    android:fontFamily="@font/open_sans_light"
+                    android:textColor="@color/gray"
+                    android:textSize="13sp"
+                    android:layout_below="@id/restaurantDeliveryTime"
+                    android:layout_centerHorizontal="true"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="8dp"
+                    android:text="Per Person"
+                    android:fontFamily="@font/open_sans_light"
+                    android:textSize="13sp"
+                    android:textColor="@color/gray"
+                    android:layout_below="@+id/restaurantAvgPrice"/>
+
+            </RelativeLayout>
 
             <ImageView
                 android:id="@+id/divider2"
@@ -115,7 +144,7 @@
                 android:layout_height="21dp"
                 android:src="@drawable/dotted_divider"
                 android:layerType="software"
-                android:layout_below="@id/restaurantSpecsContainer"
+                android:layout_below="@+id/specsContainer"
                 android:layout_marginTop="7dp" />
 
             <androidx.recyclerview.widget.RecyclerView

@@ -19,6 +19,7 @@ public class OrderSuccessfulActivity extends AppCompatActivity {
     private LottieAnimationView mSuccessAnimation;
     private static int TIME_OUT = 3000;
     private MediaPlayer mp;
+    private String resUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,7 @@ public class OrderSuccessfulActivity extends AppCompatActivity {
     }
 
     private void init() {
+        resUid = getIntent().getStringExtra("RES_UID");
         mp = MediaPlayer.create(this, R.raw.success_sound);
         mSuccessAnimation = findViewById(R.id.successAnim);
         mSuccessAnimation.setSpeed(0.8f);
@@ -55,6 +57,7 @@ public class OrderSuccessfulActivity extends AppCompatActivity {
     private void moveToOrdersScreen() {
         new Handler().postDelayed(() -> {
             Intent intent = new Intent(OrderSuccessfulActivity.this, CurrentOrderActivity.class);
+            intent.putExtra("RES_UID", resUid);
             startActivity(intent);
             mp.reset();
             mp.release();

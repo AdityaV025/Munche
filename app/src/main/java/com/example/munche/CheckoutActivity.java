@@ -63,7 +63,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
     private String[] getItemsArr, getOrderedItemsArr;
     private String upiID,resName,resUid,userAddress;
     private EasyUpiPayment mEasyUPIPayment;
-    private String mid;
+    private String mid,extraInst,userPhone;
     private long customerID, orderID,transactionId,transactionRefId;
     private ImageView mGoBackBtn;
 
@@ -84,8 +84,10 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         resName = getIntent().getStringExtra("RES_NAME");
         resUid = getIntent().getStringExtra("RES_UID");
         userAddress = getIntent().getStringExtra("USER_ADDRESS");
+        extraInst = getIntent().getStringExtra("EXTRA_INS");
         uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         userName = getIntent().getStringExtra("USER_NAME");
+        userPhone = getIntent().getStringExtra("USER_PHONE");
         db = FirebaseFirestore.getInstance();
         mTotalAmount = getIntent().getStringExtra("TOTAL_AMOUNT");
         mAmountText = findViewById(R.id.totalAmountItems);
@@ -199,6 +201,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
             db.collection(USER_LIST).document(uid).collection(CART_ITEMS).document(getItemsArr[i]).delete().addOnSuccessListener(aVoid -> {
             });
             Intent intent =  new Intent(this, OrderSuccessfulActivity.class);
+            intent.putExtra("RES_UID", resUid);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
@@ -299,6 +302,8 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         orderedRestaurantName.put("order_id", orderID);
         orderedRestaurantName.put("customer_name", userName);
         orderedRestaurantName.put("customer_uid", uid);
+        orderedRestaurantName.put("extra_instructions", extraInst);
+        orderedRestaurantName.put("customer_phonenumber", userPhone);
         db.collection(RES_LIST).document(resUid).collection(RES_ORDERS).document().set(orderedRestaurantName).addOnCompleteListener(task -> {
         });
     }

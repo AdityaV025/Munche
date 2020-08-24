@@ -2,21 +2,32 @@ package com.example.munche;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.mapbox.api.directions.v5.DirectionsCriteria;
 import com.mapbox.api.directions.v5.MapboxDirections;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
@@ -66,13 +77,14 @@ public class CurrentOrderActivity extends AppCompatActivity{
     private MapView mapView;
     private DirectionsRoute currentRoute;
     private MapboxDirections client;
-    private Point origin = Point.fromLngLat(77.326202, 28.57052);
-    private Point destination = Point.fromLngLat(77.3555624, 28.5655182);
-    private LatLng loc1 = new LatLng(28.57052, 77.3262);
-    private  LatLng loc2 = new LatLng(28.56551 , 77.3556);
     private LottieAnimationView mDeliveryAnimation;
     private EasyCountDownTextview mCountDownTimer;
     private TextView mTimeFormatText;
+    private String resUid,uid,resPhoneNum,resName;
+    private double mUserLatitude,mUserLongitude,mResLatitude,mResLongitude;
+    private FirebaseFirestore db;
+    private String RES_LIST = "RestaurantList";
+    private String USER_LIST = "UserList";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +95,7 @@ public class CurrentOrderActivity extends AppCompatActivity{
         mapView.onCreate(savedInstanceState);
 
         changestatusbarcolor();
-        init();
+        fetchInfo();
 
     }
 
@@ -97,9 +109,55 @@ public class CurrentOrderActivity extends AppCompatActivity{
         }
     }
 
-    private void init() {
+    private void fetchInfo() {
+        resUid = getIntent().getStringExtra("RES_UID");
+        uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        db = FirebaseFirestore.getInstance();
+        db.collection(RES_LIST).document(resUid).get().addOnCompleteListener(task -> {
+
+            if (task.isSuccessful()){
+                DocumentSnapshot documentSnapshot = task.getResult();
+                assert documentSnapshot != null;
+                mResLatitude = (double) documentSnapshot.get("latitude");
+                mResLongitude = (double) documentSnapshot.get("longitude");
+                resPhoneNum = (String) documentSnapshot.get("restaurant_phonenumber");
+                resName = (String) documentSnapshot.get("restaurant_name");
+
+                db.collection(USER_LIST).document(uid).get().addOnCompleteListener(task1 -> {
+
+                    if (task1.isSuccessful()){
+                        DocumentSnapshot documentSnapshot1 = task1.getResult();
+                        assert  documentSnapshot1 != null;
+                        mUserLatitude = (double) documentSnapshot1.get("latitude");
+                        mUserLongitude = (double) documentSnapshot1.get("longitude");
+                        init(mResLongitude,mResLatitude,mUserLongitude,mUserLatitude,resName,resPhoneNum);
+                    }
+
+                });
+            }
+
+        });
+
+    }
+
+    private void init(double mResLongitude, double mResLatitude,double mUserLongitude, double mUserLatitude, String resName, String resPhoneNum) {
+        TextView OrderedResName = findViewById(R.id.orderedRestaurantName);
+        TextView mCurrentOrderText = findViewById(R.id.currentOrderResName);
+        mCurrentOrderText.setText(resName);
+        OrderedResName.setText(resName);
+        Button mCallResBtn = findViewById(R.id.callResBtn);
+        mCallResBtn.setOnClickListener(view -> {
+            Intent intent = new Intent(Intent.ACTION_DIAL);
+            intent.setData(Uri.parse("tel:" + resPhoneNum));
+            startActivity(intent);
+        });
+
+        Point origin = Point.fromLngLat(mResLongitude, mResLatitude);
+        Point destination = Point.fromLngLat(mUserLongitude,mUserLatitude);
+        LatLng loc1 = new LatLng(mUserLatitude, mUserLongitude);
+        LatLng loc2 = new LatLng(mResLatitude, mResLongitude);
         mapView.getMapAsync(mapboxMap -> mapboxMap.setStyle(Style.MAPBOX_STREETS, style -> {
-            initSource(style);
+            initSource(style, origin, destination);
             initLayers(style);
             getRoute(mapboxMap, origin, destination);
             LatLngBounds latLngBounds = new LatLngBounds.Builder()
@@ -109,6 +167,8 @@ public class CurrentOrderActivity extends AppCompatActivity{
             mapboxMap.setLatLngBoundsForCameraTarget(latLngBounds);
             mapboxMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 150));
             mapboxMap.setMinZoomPreference(5);
+
+            Timber.tag("hjsadkjas").d(origin + " " + destination + " " + loc1 + " " + loc2);
 
         }));
 
@@ -141,7 +201,7 @@ public class CurrentOrderActivity extends AppCompatActivity{
 
     }
 
-    private void initSource(@NonNull Style loadedMapStyle) {
+    private void initSource(@NonNull Style loadedMapStyle, Point origin, Point destination) {
         loadedMapStyle.addSource(new GeoJsonSource(ROUTE_SOURCE_ID));
 
         GeoJsonSource iconGeoJsonSource = new GeoJsonSource(ICON_SOURCE_ID, FeatureCollection.fromFeatures(new Feature[] {
@@ -206,18 +266,15 @@ public class CurrentOrderActivity extends AppCompatActivity{
                 Toast.makeText(getApplicationContext(), "The distance is: " +  currentRoute.distance(), Toast.LENGTH_SHORT).show();
 
                 if (mapboxMap != null) {
-                    mapboxMap.getStyle(new Style.OnStyleLoaded() {
-                        @Override
-                        public void onStyleLoaded(@NonNull Style style) {
+                    mapboxMap.getStyle(style -> {
 
 // Retrieve and update the source designated for showing the directions route
-                            GeoJsonSource source = style.getSourceAs(ROUTE_SOURCE_ID);
+                        GeoJsonSource source = style.getSourceAs(ROUTE_SOURCE_ID);
 
 // Create a LineString with the directions route's geometry and
 // reset the GeoJSON source for the route LineLayer source
-                            if (source != null) {
-                                source.setGeoJson(LineString.fromPolyline(Objects.requireNonNull(currentRoute.geometry()), PRECISION_6));
-                            }
+                        if (source != null) {
+                            source.setGeoJson(LineString.fromPolyline(Objects.requireNonNull(currentRoute.geometry()), PRECISION_6));
                         }
                     });
                 }

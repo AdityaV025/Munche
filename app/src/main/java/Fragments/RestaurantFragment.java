@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.example.munche.CartItemActivity;
 import com.example.munche.EmptyCartActivity;
@@ -48,6 +49,7 @@ import Models.RestaurantDetail;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.nikartm.support.ImageBadgeView;
+import timber.log.Timber;
 
 public class RestaurantFragment extends Fragment {
 
@@ -61,6 +63,7 @@ public class RestaurantFragment extends Fragment {
     LinearLayoutManager linearLayoutManager;
     private RecyclerView mRestaurantRecyclerView;
     private ImageBadgeView mImageBadgeView;
+    private TextView mTrendingTextView;
 
     public RestaurantFragment() {
         // Required empty public constructor
@@ -81,6 +84,7 @@ public class RestaurantFragment extends Fragment {
     private void init(View view) {
         mAuth = FirebaseAuth.getInstance();
         mCurrentUser = mAuth.getCurrentUser();
+        mTrendingTextView = view.findViewById(R.id.trendingTextView);
         db = FirebaseFirestore.getInstance();
         mToolbar = view.findViewById(R.id.customToolBar);
         ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(mToolbar);
@@ -165,7 +169,6 @@ public class RestaurantFragment extends Fragment {
                                     .placeholder(R.drawable.restaurant_image_placeholder)
                                     .into(holder.mRestaurantSpotImage);
                             holder.mAveragePrice.setText("\u20B9" +  model.getAverage_price() + " Per Person | ");
-
                             holder.itemView.setOnClickListener(view -> {
 
                                 Intent intent = new Intent(getActivity(), MainRestaurantPageActivity.class);
@@ -192,7 +195,7 @@ public class RestaurantFragment extends Fragment {
             }
             @Override
             public void onError(@NonNull @NotNull FirebaseFirestoreException e) {
-                Log.e("error", Objects.requireNonNull(e.getMessage()));
+                Timber.e(Objects.requireNonNull(e.getMessage()));
             }
         };
         restaurantAdapter.startListening();
@@ -200,7 +203,6 @@ public class RestaurantFragment extends Fragment {
         helper.attachToRecyclerView(mRestaurantRecyclerView);
         restaurantAdapter.notifyDataSetChanged();
         mRestaurantRecyclerView.setAdapter(restaurantAdapter);
-
     }
 
     public static class RestaurantItemViewHolder extends RecyclerView.ViewHolder {
