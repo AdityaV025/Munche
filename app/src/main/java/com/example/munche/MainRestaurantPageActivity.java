@@ -2,6 +2,7 @@ package com.example.munche;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,10 +23,14 @@ import com.bumptech.glide.Glide;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.annotations.NotNull;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -38,6 +43,8 @@ import java.util.Objects;
 import Models.RestaurantMenuItems;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.view.View.GONE;
 
 public class MainRestaurantPageActivity extends AppCompatActivity {
 
@@ -125,15 +132,30 @@ public class MainRestaurantPageActivity extends AppCompatActivity {
                 String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
                 holder.mItemAddBtn.setOnClickListener(view -> {
-
                     String selectedItemName = holder.mItemName.getText().toString();
                     addItemToCart(selectedItemName,model,uid);
-
+                    holder.mItemAddBtn.setVisibility(GONE);
+                    holder.mRemoveItemBtn.setVisibility(View.VISIBLE);
                 });
-                holder.mQtyPicker.setOnValueChangeListener((view, oldValue, newValue) -> {
-                    if(newValue <= 0) {
-                        holder.mQtyPicker.setVisibility(View.GONE);
-                        holder.mItemAddBtn.setVisibility(View.VISIBLE);
+
+                holder.mRemoveItemBtn.setOnClickListener(view -> {
+                    String selectedItemName = holder.mItemName.getText().toString();
+                    removeItemFromCart(selectedItemName,uid);
+                    holder.mRemoveItemBtn.setVisibility(GONE);
+                    holder.mItemAddBtn.setVisibility(View.VISIBLE);
+                });
+
+                DocumentReference docRef = db.collection("UserList").document(uid).collection("CartItems").document(holder.mItemName.getText().toString());
+                docRef.get().addOnCompleteListener(task -> {
+
+                    if (task.isSuccessful()){
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                        if (Objects.requireNonNull(documentSnapshot).exists()){
+
+                            holder.mItemAddBtn.setVisibility(GONE);
+                            holder.mRemoveItemBtn.setVisibility(View.VISIBLE);
+
+                        }
                     }
 
                 });
@@ -177,11 +199,15 @@ public class MainRestaurantPageActivity extends AppCompatActivity {
                                 count++;
                             }
                             Snackbar snackbar = Snackbar
-                                    .make(mRootView, "Added " + count + " items", Snackbar.LENGTH_INDEFINITE)
-                                    .setAction("UNDO", view -> {
+                                    .make(mRootView, "Added " + count + " items in  your cart", Snackbar.LENGTH_INDEFINITE)
+                                    .setAction("Cart", view -> {
                                         Snackbar snackbar1 = Snackbar.make(mRootView, "Message is restored!", Snackbar.LENGTH_SHORT);
+                                        Intent intent = new Intent(this, CartItemActivity.class);
+                                        startActivity(intent);
                                         snackbar1.dismiss();
                                     });
+                            snackbar.setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+                            snackbar.getView().setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
                             snackbar.show();
                         }
                     });
@@ -200,6 +226,12 @@ public class MainRestaurantPageActivity extends AppCompatActivity {
 
     }
 
+    private void removeItemFromCart(String selectedItemName,String uid) {
+        db.collection("UserList").document(uid).collection("CartItems").document(selectedItemName).delete().addOnCompleteListener(task -> {
+            Toast.makeText(getApplicationContext(), "Item Removed From Cart", Toast.LENGTH_SHORT).show();
+        });
+    }
+
     public static class MenuItemHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.menuItemName)
         TextView mItemName;
@@ -211,8 +243,8 @@ public class MainRestaurantPageActivity extends AppCompatActivity {
         TextView mItemCategory;
         @BindView(R.id.addMenuItemBtn)
         Button mItemAddBtn;
-        @BindView(R.id.quantityPicker)
-        ElegantNumberButton mQtyPicker;
+        @BindView(R.id.removeMenuItemBtn)
+        Button mRemoveItemBtn;
 
         public MenuItemHolder(View itemView) {
             super(itemView);

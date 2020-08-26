@@ -223,7 +223,6 @@ public class RestaurantFragment extends Fragment {
 
     private void sendUserToCheckOut() {
         Intent intent = new Intent(getActivity(), CartItemActivity.class);
-        intent.putExtra("USER_ADDRESS", address);
         startActivity(intent);
         Objects.requireNonNull(getActivity()).overridePendingTransition(0,0);
     }

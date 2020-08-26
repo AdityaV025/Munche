@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.auth.FirebaseAuth;
@@ -85,11 +86,9 @@ public class CartItemActivity extends AppCompatActivity {
         mCartItemRecylerView.setLayoutManager(linearLayoutManager);
         View bottomSheet = findViewById(R.id.bottomSheet);
         mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-        userAddress = getIntent().getStringExtra("USER_ADDRESS");
         mExtraInstructionsText = findViewById(R.id.extraInstructionEdiText);
         mUserAddressText = findViewById(R.id.userDeliveryAddress);
         mTotalAmountText = findViewById(R.id.totAmount);
-        mUserAddressText.setText(userAddress);
         mCheckoutBtn = findViewById(R.id.payAmountBtn);
         mCheckoutBtn.setOnClickListener(view -> {
             calculateTotalPriceAndMove();
@@ -106,7 +105,9 @@ public class CartItemActivity extends AppCompatActivity {
                 ruid = String.valueOf(documentSnapshot.get("restaurant_cart_uid"));
                 userName = String.valueOf(documentSnapshot.get("name"));
                 userPhoneNum = String.valueOf(documentSnapshot.get("phonenumber"));
+                userAddress = String.valueOf(documentSnapshot.get("address"));
                 mRestaurantCartName.setText(resName);
+                mUserAddressText.setText(userAddress);
 
             }else {
                 Toast.makeText(this, "Something Went Wrong!", Toast.LENGTH_SHORT).show();
@@ -156,6 +157,18 @@ public class CartItemActivity extends AppCompatActivity {
                             .update(updatedPriceMap)
                             .addOnCompleteListener(task ->
                                     Log.d("SUCCESS", "SUCESSSSSSS"));
+
+                    if (newValue == 0){
+                        db.collection(USER_LIST).document(uid).collection(CART_ITEMS).document(holder.mItemCartName.getText().toString())
+                                .delete().addOnSuccessListener(aVoid -> {
+                            Toast.makeText(getApplicationContext(), "Item Removed", Toast.LENGTH_SHORT).show();
+                        });
+                    }
+                    if (itemAdapter.getItemCount() == 0){
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
 
                 });
 

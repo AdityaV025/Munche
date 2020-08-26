@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.munche.OrdersActivity;
 import com.example.munche.R;
 import com.example.munche.CurrentOrderActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -72,7 +73,7 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
                 break;
 
             case R.id.myOrdersText:
-                Intent intent = new Intent(getActivity(), CurrentOrderActivity.class);
+                Intent intent = new Intent(getActivity(), OrdersActivity.class);
                 startActivity(intent);
                 break;
 

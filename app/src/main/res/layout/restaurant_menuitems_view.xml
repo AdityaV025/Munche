@@ -64,16 +64,18 @@
         android:visibility="visible"
         android:textSize="13sp"/>
 
-    <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
-        android:id="@+id/quantityPicker"
+    <Button
+        android:id="@+id/removeMenuItemBtn"
         android:layout_width="80dp"
         android:layout_height="32dp"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="19dp"
-        app:textColor="@color/white"
-        app:textSize="6sp"
-        app:backGroundColor="@color/colorPrimary"
-        app:backgroundDrawable="@drawable/menu_item_add_btn_background"
-        android:visibility="gone"/>
+        android:text="Remove -"
+        android:textAllCaps="false"
+        android:fontFamily="@font/open_sans"
+        android:background="@drawable/menu_item_remove_btn"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        android:textSize="13sp"/>
 
 </RelativeLayout>
