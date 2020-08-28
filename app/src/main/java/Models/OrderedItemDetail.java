@@ -8,12 +8,14 @@ public class OrderedItemDetail {
     private String ordered_restaurant_name;
     private String ordered_time;
     private String total_amount;
+    private String ordered_restaurant_spotimage;
 
-    public OrderedItemDetail(ArrayList<String> ordered_items, String ordered_restaurant_name, String ordered_time, String total_amount) {
+    public OrderedItemDetail(ArrayList<String> ordered_items, String ordered_restaurant_name, String ordered_time, String total_amount, String ordered_restaurant_spotimage) {
         this.ordered_items = ordered_items;
         this.ordered_restaurant_name = ordered_restaurant_name;
         this.ordered_time = ordered_time;
         this.total_amount = total_amount;
+        this.ordered_restaurant_spotimage = ordered_restaurant_spotimage;
     }
 
     public OrderedItemDetail() {
@@ -49,6 +51,14 @@ public class OrderedItemDetail {
 
     public void setTotal_amount(String total_amount) {
         this.total_amount = total_amount;
+    }
+
+    public String getOrdered_restaurant_spotimage() {
+        return ordered_restaurant_spotimage;
+    }
+
+    public void setOrdered_restaurant_spotimage(String ordered_restaurant_spotimage) {
+        this.ordered_restaurant_spotimage = ordered_restaurant_spotimage;
     }
 
 }

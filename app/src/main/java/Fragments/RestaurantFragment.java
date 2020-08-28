@@ -149,6 +149,7 @@ public class RestaurantFragment extends Fragment {
                             Double mUserLong = (Double) documentSnapshot.get("longitude");
                             Double mResLat = model.getLatitude();
                             Double mResLong = model.getLongitude();
+                            int prepTime = Integer.parseInt(model.getRestaurant_prep_time().replace(" Mins" , ""));
                             Location userLocation = new Location("");
                             userLocation.setLatitude(mUserLat);
                             userLocation.setLongitude(mUserLong);
@@ -159,7 +160,7 @@ public class RestaurantFragment extends Fragment {
                             int distanceInMeters = (int) (userLocation.distanceTo(restaurantLocation));
                             int AvgDrivingSpeedPerKm = 666;
                             int estimatedDriveTimeInMinutes = (int) (distanceInMeters / AvgDrivingSpeedPerKm);
-                            String deliveryTime = String.valueOf(estimatedDriveTimeInMinutes);
+                            String deliveryTime = String.valueOf(estimatedDriveTimeInMinutes + prepTime);
                             holder.mRestaurantName.setText(model.getRestaurant_name());
                             String RUID = model.getRestaurant_uid();
                             holder.mAverageDeliveryTime.setText(deliveryTime + " mins");

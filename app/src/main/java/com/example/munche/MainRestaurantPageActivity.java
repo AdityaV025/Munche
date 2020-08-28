@@ -79,7 +79,6 @@ public class MainRestaurantPageActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void init() {
-
         mRootView = (NestedScrollView) findViewById(R.id.content1);
         db = FirebaseFirestore.getInstance();
         mToolBar = findViewById(R.id.mainResToolBar);
@@ -217,6 +216,7 @@ public class MainRestaurantPageActivity extends AppCompatActivity {
         Map<String, Object> resNameMap = new HashMap<>();
         resNameMap.put("restaurant_cart_name", mResName);
         resNameMap.put("restaurant_cart_uid", mRestaurantUid);
+        resNameMap.put("restaurant_delivery_time", mResDeliveryTime);
 
         db.collection("UserList").document(uid).update(resNameMap).addOnSuccessListener(aVoid -> {
             Toast.makeText(this, "Added Item Successfully", Toast.LENGTH_SHORT).show();

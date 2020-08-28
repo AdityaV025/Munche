@@ -21,13 +21,29 @@
             android:layout_height="match_parent"
             android:padding="11dp">
 
+            <androidx.cardview.widget.CardView
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:id="@+id/imageContainer"
+                android:layout_marginEnd="9dp"
+                app:cardCornerRadius="4dp">
+
+                <ImageView
+                    android:id="@+id/orderedResImage"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:scaleType="centerCrop"/>
+
+            </androidx.cardview.widget.CardView>
+
             <TextView
                 android:id="@+id/orderedResName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/open_sans_semibold"
                 android:textColor="@color/colorAccent"
-                android:textSize="17sp"/>
+                android:textSize="17sp"
+                android:layout_toEndOf="@+id/imageContainer"/>
 
             <TextView
                 android:id="@+id/orderedResAddress"
@@ -36,7 +52,8 @@
                 android:layout_below="@+id/orderedResName"
                 android:fontFamily="@font/open_sans"
                 android:textColor="@color/grey"
-                android:text="Sector-39, Noida"/>
+                android:text="Sector-39, Noida"
+                android:layout_toEndOf="@+id/imageContainer"/>
 
             <View
                 android:id="@+id/divider"

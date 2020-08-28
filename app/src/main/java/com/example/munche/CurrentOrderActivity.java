@@ -122,14 +122,38 @@ public class CurrentOrderActivity extends AppCompatActivity{
                 mResLongitude = (double) documentSnapshot.get("longitude");
                 resPhoneNum = (String) documentSnapshot.get("restaurant_phonenumber");
                 resName = (String) documentSnapshot.get("restaurant_name");
-
                 db.collection(USER_LIST).document(uid).get().addOnCompleteListener(task1 -> {
-
                     if (task1.isSuccessful()){
                         DocumentSnapshot documentSnapshot1 = task1.getResult();
                         assert  documentSnapshot1 != null;
                         mUserLatitude = (double) documentSnapshot1.get("latitude");
                         mUserLongitude = (double) documentSnapshot1.get("longitude");
+                        String time = String.valueOf(documentSnapshot1.get("restaurant_delivery_time"));
+                        int resDeliveryTime = Integer.parseInt(time);
+                        mCountDownTimer = findViewById(R.id.easyCountDownTextview);
+                        mTimeFormatText = findViewById(R.id.timeLeftText);
+                        mCountDownTimer.setTime(0,0, resDeliveryTime,0);
+                        mCountDownTimer.startTimer();
+                        final Typeface typeface2 = ResourcesCompat.getFont(Objects.requireNonNull(getApplicationContext()), R.font.open_sans_semibold);
+                        mCountDownTimer.setTypeFace(typeface2);
+                        mCountDownTimer.setOnTick(new CountDownInterface() {
+                            @SuppressLint("SetTextI18n")
+                            @Override
+                            public void onTick(long time) {
+
+                                if (time > 60000){
+                                    mTimeFormatText.setText("minutes");
+                                }else {
+                                    mTimeFormatText.setText("seconds");
+                                }
+
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                Toast.makeText(getApplicationContext(), "time is finished!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                         init(mResLongitude,mResLatitude,mUserLongitude,mUserLatitude,resName,resPhoneNum);
                     }
 
@@ -174,31 +198,6 @@ public class CurrentOrderActivity extends AppCompatActivity{
 
         mDeliveryAnimation = findViewById(R.id.deliveryAnimation);
         mDeliveryAnimation.playAnimation();
-        mCountDownTimer = findViewById(R.id.easyCountDownTextview);
-        mTimeFormatText = findViewById(R.id.timeLeftText);
-        mCountDownTimer.setTime(0,0,45,10);
-        mCountDownTimer.startTimer();
-        final Typeface typeface2 = ResourcesCompat.getFont(Objects.requireNonNull(getApplicationContext()), R.font.open_sans_semibold);
-        mCountDownTimer.setTypeFace(typeface2);
-        mCountDownTimer.setOnTick(new CountDownInterface() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onTick(long time) {
-
-                if (time > 60000){
-                    mTimeFormatText.setText("minutes");
-                }else {
-                    mTimeFormatText.setText("seconds");
-                }
-
-            }
-
-            @Override
-            public void onFinish() {
-                Toast.makeText(getApplicationContext(), "time is finished!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
     }
 
     private void initSource(@NonNull Style loadedMapStyle, Point origin, Point destination) {

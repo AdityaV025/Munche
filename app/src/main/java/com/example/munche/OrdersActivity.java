@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -95,6 +96,10 @@ public class OrdersActivity extends AppCompatActivity {
                 holder.mOrderedResName.setText(model.getOrdered_restaurant_name());
                 holder.mOrderedTime.setText(model.getOrdered_time());
                 holder.mTotalAmount.setText(model.getTotal_amount());
+                Glide.with(getApplicationContext())
+                        .load(model.getOrdered_restaurant_spotimage())
+                        .placeholder(R.drawable.restaurant_image_placeholder)
+                        .into(holder.mOrderedResImage);
             }
 
             @NonNull
@@ -121,6 +126,8 @@ public class OrdersActivity extends AppCompatActivity {
         TextView mTotalAmount;
         @BindView(R.id.orderedItemsLayout)
         LinearLayout layout;
+        @BindView(R.id.orderedResImage)
+        ImageView mOrderedResImage;
 
         public OrderedItemHolder(View itemView) {
             super(itemView);

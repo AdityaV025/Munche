@@ -52,7 +52,6 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
     private String mTotalAmount;
     private TextView mAmountText;
     private LinearLayout mCODView,mCardView,mUpiView;
-    private String uid,userName;
     private Toolbar mPaymentToolBar;
     private FirebaseFirestore db;
     private String USER_LIST = "UserList";
@@ -61,9 +60,8 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
     private String RES_LIST = "RestaurantList";
     private String RES_ORDERS = "RestaurantOrders";
     private String[] getItemsArr, getOrderedItemsArr;
-    private String upiID,resName,resUid,userAddress;
+    private String upiID,resName,resUid,userAddress,mid,extraInst,userPhone,uid,userName,resSpotImage,resDelTime;
     private EasyUpiPayment mEasyUPIPayment;
-    private String mid,extraInst,userPhone;
     private long customerID, orderID,transactionId,transactionRefId;
     private ImageView mGoBackBtn;
 
@@ -84,6 +82,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         resName = getIntent().getStringExtra("RES_NAME");
         resUid = getIntent().getStringExtra("RES_UID");
         userAddress = getIntent().getStringExtra("USER_ADDRESS");
+        resDelTime = getIntent().getStringExtra("DELIVERY_TIME");
         extraInst = getIntent().getStringExtra("EXTRA_INS");
         uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         userName = getIntent().getStringExtra("USER_NAME");
@@ -149,6 +148,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
                 payRef.get().addOnCompleteListener(task1 -> {
 
                     DocumentSnapshot documentSnapshot1 = task1.getResult();
+                    resSpotImage = String.valueOf(Objects.requireNonNull(documentSnapshot1).get("restaurant_spotimage"));
                     String codPay = Objects.requireNonNull(Objects.requireNonNull(documentSnapshot1).get("cod_payment")).toString();
                     String cardPay = Objects.requireNonNull(Objects.requireNonNull(documentSnapshot1).get("card_payment")).toString();
                     String upiPay = Objects.requireNonNull(Objects.requireNonNull(documentSnapshot1).get("upi_payment")).toString();
@@ -287,6 +287,8 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         orderedItemsMap.put("total_amount", "\u20b9" + mTotalAmount);
         orderedItemsMap.put("ordered_time", timeStampDate1 + " at " + timeStampDate2);
         orderedItemsMap.put("ordered_restaurant_name", resName);
+        orderedItemsMap.put("ordered_restaurant_spotimage", resSpotImage);
+        orderedItemsMap.put("ordered_restaurant_delivery_time", resDelTime);
         db.collection(USER_LIST).document(uid).collection(USER_ORDERS).document().set(orderedItemsMap).addOnCompleteListener(task -> {
         });
 
@@ -304,6 +306,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         orderedRestaurantName.put("customer_uid", uid);
         orderedRestaurantName.put("extra_instructions", extraInst);
         orderedRestaurantName.put("customer_phonenumber", userPhone);
+        orderedRestaurantName.put("delivery_time", resDelTime);
         db.collection(RES_LIST).document(resUid).collection(RES_ORDERS).document().set(orderedRestaurantName).addOnCompleteListener(task -> {
         });
     }
