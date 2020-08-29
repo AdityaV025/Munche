@@ -19,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
+import com.airbnb.lottie.LottieDrawable;
 import com.bumptech.glide.Glide;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -49,7 +51,7 @@ import static android.view.View.GONE;
 public class MainRestaurantPageActivity extends AppCompatActivity {
 
     private AppBarLayout mToolBar;
-    private String mRestaurantUid, mResName, mResDistance, mResPrice, mResDeliveryTime;
+    private String uid,mRestaurantUid, mResName, mResDistance, mResPrice, mResDeliveryTime, mResImage;
     private TextView mResNameToolBar, mResNameText, mResDistanceText,mResAvgPriceText, mResDeliveryTimeText;
     private ImageView mBackBtnView;
     private FirebaseFirestore db;
@@ -57,6 +59,7 @@ public class MainRestaurantPageActivity extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager;
     private RecyclerView mMenuItemRecyclerView;
     private NestedScrollView mRootView;
+    private LottieAnimationView mFavoriteAnim;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +73,7 @@ public class MainRestaurantPageActivity extends AppCompatActivity {
             mResDistance = intent.getStringExtra("DISTANCE");
             mResPrice = intent.getStringExtra("PRICE");
             mResDeliveryTime = intent.getStringExtra("TIME");
+            mResImage = intent.getStringExtra("RES_IMAGE");
         }
 
         init();
@@ -81,9 +85,24 @@ public class MainRestaurantPageActivity extends AppCompatActivity {
     private void init() {
         mRootView = (NestedScrollView) findViewById(R.id.content1);
         db = FirebaseFirestore.getInstance();
+        uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         mToolBar = findViewById(R.id.mainResToolBar);
         mResNameToolBar = findViewById(R.id.restaurantTitleToolbar);
         mResNameText = findViewById(R.id.mainResName);
+        mFavoriteAnim = findViewById(R.id.favoriteAnim);
+        checkFavRes();
+        mFavoriteAnim.setOnClickListener(view -> {
+            if (mFavoriteAnim.getProgress() >= 0.1f){
+                mFavoriteAnim.setSpeed(-1);
+                mFavoriteAnim.playAnimation();
+                delFavRes();
+            }else if(mFavoriteAnim.getProgress() == 0.0f){
+                Log.d("askdkls", String.valueOf(mFavoriteAnim.getProgress()));
+                mFavoriteAnim.setSpeed(1);
+                mFavoriteAnim.playAnimation();
+                favRes();
+            }
+        });
         mResDistanceText = findViewById(R.id.mainResDistance);
         mResAvgPriceText = findViewById(R.id.restaurantAvgPrice);
         mResDeliveryTimeText = findViewById(R.id.restaurantDeliveryTime);
@@ -179,7 +198,6 @@ public class MainRestaurantPageActivity extends AppCompatActivity {
     }
 
     private void addItemToCart(String selectedItemName, RestaurantMenuItems model, String uid){
-
         Map<String ,String> cartItemMap = new HashMap<>();
         cartItemMap.put("select_name", selectedItemName);
         cartItemMap.put("select_price", model.getPrice());
@@ -217,6 +235,7 @@ public class MainRestaurantPageActivity extends AppCompatActivity {
         resNameMap.put("restaurant_cart_name", mResName);
         resNameMap.put("restaurant_cart_uid", mRestaurantUid);
         resNameMap.put("restaurant_delivery_time", mResDeliveryTime);
+        resNameMap.put("restaurant_cart_spotimage", mResImage);
 
         db.collection("UserList").document(uid).update(resNameMap).addOnSuccessListener(aVoid -> {
             Toast.makeText(this, "Added Item Successfully", Toast.LENGTH_SHORT).show();
@@ -250,6 +269,51 @@ public class MainRestaurantPageActivity extends AppCompatActivity {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    private void checkFavRes() {
+        db.collection("UserList")
+                .document(uid)
+                .collection("FavoriteRestaurants")
+                .document(mRestaurantUid)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()){
+                        DocumentSnapshot docRef = task.getResult();
+                        if (Objects.requireNonNull(docRef).exists()){
+                            mFavoriteAnim.setProgress(0.1f);
+                            mFavoriteAnim.resumeAnimation();
+                        }else {
+                            mFavoriteAnim.setProgress(0.0f);
+                        }
+                    }
+                });
+    }
+
+    private void favRes() {
+        Map<String, Object> favResMap = new HashMap<>();
+        favResMap.put("restaurant_uid" , mRestaurantUid);
+        favResMap.put("restaurant_name", mResName);
+        favResMap.put("restaurant_image", mResImage);
+        favResMap.put("restaurant_price", mResPrice);
+
+        db.collection("UserList")
+                .document(uid)
+                .collection("FavoriteRestaurants")
+                .document(mRestaurantUid).set(favResMap)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(getApplicationContext(), mResName + " has marked as favorite", Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private void delFavRes() {
+        db.collection("UserList")
+                .document(uid)
+                .collection("FavoriteRestaurants")
+                .document(mRestaurantUid).delete()
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(getApplicationContext(), "Removed as favorite", Toast.LENGTH_SHORT).show();
+                });
     }
 
 }

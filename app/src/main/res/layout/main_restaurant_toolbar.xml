@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <androidx.appcompat.widget.Toolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -34,6 +33,16 @@
                 android:textSize="15sp"
                 android:fontFamily="@font/open_sans"
                 android:layout_toEndOf="@+id/backBtn"/>
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/favoriteAnim"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:lottie_rawRes="@raw/favorite"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="21dp"
+                app:lottie_colorFilter="@android:color/holo_red_light"/>
 
         </RelativeLayout>
 

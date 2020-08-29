@@ -178,6 +178,7 @@ public class RestaurantFragment extends Fragment {
                                 intent.putExtra("DISTANCE", String.valueOf(distanceInMeters/1000));
                                 intent.putExtra("TIME", deliveryTime);
                                 intent.putExtra("PRICE", model.getAverage_price());
+                                intent.putExtra("RES_IMAGE", model.getRestaurant_spotimage());
                                 startActivity(intent);
                                 Objects.requireNonNull(getActivity()).overridePendingTransition(0,0);
 

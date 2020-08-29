@@ -49,7 +49,7 @@ public class CartItemActivity extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager;
     private RecyclerView mCartItemRecylerView;
     private TextView mRestaurantCartName, mToolBarText, mUserAddressText, mTotalAmountText;
-    private String uid, userAddress,ruid,userName,userPhoneNum,resDeliveryTime;
+    private String uid, userAddress,ruid,userName,userPhoneNum,resDeliveryTime,resSpotImage;
     private String extraIns = "none";
     private ImageView mCartBackBtn;
     private String USER_LIST = "UserList";
@@ -104,6 +104,7 @@ public class CartItemActivity extends AppCompatActivity {
                 String resName = (String) documentSnapshot.get("restaurant_cart_name");
                 ruid = String.valueOf(documentSnapshot.get("restaurant_cart_uid"));
                 resDeliveryTime = String.valueOf(documentSnapshot.get("restaurant_delivery_time"));
+                resSpotImage = String.valueOf(documentSnapshot.get("restaurant_cart_spotimage"));
                 userName = String.valueOf(documentSnapshot.get("name"));
                 userPhoneNum = String.valueOf(documentSnapshot.get("phonenumber"));
                 userAddress = String.valueOf(documentSnapshot.get("address"));
@@ -251,20 +252,23 @@ public class CartItemActivity extends AppCompatActivity {
                     extraIns = mExtraInstructionsText.getText().toString();
                 }
 
-                Intent intent = new Intent(CartItemActivity.this, CheckoutActivity.class);
-                intent.putExtra("TOTAL_AMOUNT", String.valueOf(totPrice));
-                intent.putExtra("ITEM_NAMES", itemsArr);
-                intent.putExtra("ITEM_ORDERED_NAME", orderedItemsArr);
-                intent.putExtra("RES_NAME", mRestaurantCartName.getText().toString());
-                intent.putExtra("RES_UID", ruid);
-                intent.putExtra("USER_ADDRESS",userAddress);
-                intent.putExtra("USER_NAME", userName);
-                intent.putExtra("USER_UID",uid);
-                intent.putExtra("EXTRA_INS", extraIns);
-                intent.putExtra("USER_PHONE", userPhoneNum);
-                intent.putExtra("DELIVERY_TIME", resDeliveryTime);
-                startActivity(intent);
-                this.overridePendingTransition(0,0);
+                if (resSpotImage != null){
+                    Intent intent = new Intent(CartItemActivity.this, CheckoutActivity.class);
+                    intent.putExtra("TOTAL_AMOUNT", String.valueOf(totPrice));
+                    intent.putExtra("ITEM_NAMES", itemsArr);
+                    intent.putExtra("ITEM_ORDERED_NAME", orderedItemsArr);
+                    intent.putExtra("RES_NAME", mRestaurantCartName.getText().toString());
+                    intent.putExtra("RES_UID", ruid);
+                    intent.putExtra("USER_ADDRESS",userAddress);
+                    intent.putExtra("USER_NAME", userName);
+                    intent.putExtra("USER_UID",uid);
+                    intent.putExtra("EXTRA_INS", extraIns);
+                    intent.putExtra("USER_PHONE", userPhoneNum);
+                    intent.putExtra("DELIVERY_TIME", resDeliveryTime);
+                    intent.putExtra("RES_IMAGE", resSpotImage);
+                    startActivity(intent);
+                    this.overridePendingTransition(0,0);
+                }
             }
 
         },5);

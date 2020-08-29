@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="17dp"
+    android:background="@color/white">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="6dp"
+        android:background="@color/white"
+        app:cardElevation="6dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="110dp"
+                android:layout_height="116dp"
+                android:layout_alignParentStart="true"
+                android:id="@+id/resImageContainer">
+
+                <ImageView
+                    android:id="@+id/favResImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/favResName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/resImageContainer"
+                android:layout_marginTop="11dp"
+                android:layout_marginStart="17dp"
+                android:textSize="19sp"
+                android:fontFamily="@font/open_sans_semibold"
+                android:textColor="@color/colorAccent"/>
+
+            <TextView
+                android:id="@+id/favResCategories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/favResName"
+                android:layout_toEndOf="@id/resImageContainer"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="3dp"
+                android:text="Biryani, Mughlai, North Indian"
+                android:fontFamily="@font/open_sans"
+                android:textSize="13sp"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:id="@+id/favResLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/favResCategories"
+                android:text="Sector- 41, Noida"
+                android:layout_toEndOf="@+id/resImageContainer"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="3dp"
+                android:textSize="13sp"
+                android:fontFamily="@font/open_sans"/>
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@android:color/darker_gray"
+                android:layout_toEndOf="@id/resImageContainer"
+                android:layout_below="@+id/favResLocation"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="17dp"/>
+
+            <TextView
+                android:id="@+id/favoriteResPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/resImageContainer"
+                android:layout_below="@+id/divider"
+                android:layout_marginStart="17dp"
+                android:fontFamily="@font/open_sans"
+                android:textSize="15sp"
+                android:textColor="@color/colorAccent"/>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

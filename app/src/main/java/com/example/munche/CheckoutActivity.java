@@ -77,6 +77,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
     private void init() {
         mPaymentToolBar = findViewById(R.id.paymentMethodToolBar);
         mGoBackBtn = findViewById(R.id.cartBackBtn);
+        resSpotImage = getIntent().getStringExtra("RES_IMAGE");
         getItemsArr = getIntent().getStringArrayExtra("ITEM_NAMES");
         getOrderedItemsArr = getIntent().getStringArrayExtra("ITEM_ORDERED_NAME");
         resName = getIntent().getStringExtra("RES_NAME");
@@ -148,7 +149,6 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
                 payRef.get().addOnCompleteListener(task1 -> {
 
                     DocumentSnapshot documentSnapshot1 = task1.getResult();
-                    resSpotImage = String.valueOf(Objects.requireNonNull(documentSnapshot1).get("restaurant_spotimage"));
                     String codPay = Objects.requireNonNull(Objects.requireNonNull(documentSnapshot1).get("cod_payment")).toString();
                     String cardPay = Objects.requireNonNull(Objects.requireNonNull(documentSnapshot1).get("card_payment")).toString();
                     String upiPay = Objects.requireNonNull(Objects.requireNonNull(documentSnapshot1).get("upi_payment")).toString();
@@ -282,6 +282,8 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         @SuppressLint("SimpleDateFormat") String timeStampDate1 = new SimpleDateFormat("dd MMM yyyy").format(Calendar.getInstance().getTime());
         @SuppressLint("SimpleDateFormat") String timeStampDate2 = new SimpleDateFormat("hh:mm a").format(Calendar.getInstance().getTime());
 
+        String orderID = String.valueOf((long) Math.floor(Math.random() * 9000000000000L) + 1000000000000L);
+
         Map<String, Object> orderedItemsMap = new HashMap<>();
         orderedItemsMap.put("ordered_items", FieldValue.arrayUnion((Object[]) getOrderedItemsArr));
         orderedItemsMap.put("total_amount", "\u20b9" + mTotalAmount);
@@ -289,10 +291,9 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         orderedItemsMap.put("ordered_restaurant_name", resName);
         orderedItemsMap.put("ordered_restaurant_spotimage", resSpotImage);
         orderedItemsMap.put("ordered_restaurant_delivery_time", resDelTime);
-        db.collection(USER_LIST).document(uid).collection(USER_ORDERS).document().set(orderedItemsMap).addOnCompleteListener(task -> {
+        orderedItemsMap.put("ordered_id", orderID);
+        db.collection(USER_LIST).document(uid).collection(USER_ORDERS).document(orderID).set(orderedItemsMap).addOnCompleteListener(task -> {
         });
-
-        String orderID = String.valueOf((long) Math.floor(Math.random() * 9000000000000L) + 1000000000000L);
 
         Map<String, Object> orderedRestaurantName = new HashMap<>();
         orderedRestaurantName.put("ordered_items", FieldValue.arrayUnion((Object[]) getOrderedItemsArr));
@@ -307,7 +308,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         orderedRestaurantName.put("extra_instructions", extraInst);
         orderedRestaurantName.put("customer_phonenumber", userPhone);
         orderedRestaurantName.put("delivery_time", resDelTime);
-        db.collection(RES_LIST).document(resUid).collection(RES_ORDERS).document().set(orderedRestaurantName).addOnCompleteListener(task -> {
+        db.collection(RES_LIST).document(resUid).collection(RES_ORDERS).document(orderID).set(orderedRestaurantName).addOnCompleteListener(task -> {
         });
     }
 
