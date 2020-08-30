@@ -22,8 +22,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
@@ -46,6 +48,7 @@ import com.google.firebase.firestore.Query;
 import java.util.Objects;
 
 import Models.RestaurantDetail;
+import UI.ChangeLocationActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.nikartm.support.ImageBadgeView;
@@ -64,6 +67,7 @@ public class RestaurantFragment extends Fragment {
     private RecyclerView mRestaurantRecyclerView;
     private ImageBadgeView mImageBadgeView;
     private TextView mTrendingTextView;
+    private LinearLayout mAddressContainer;
 
     public RestaurantFragment() {
         // Required empty public constructor
@@ -82,6 +86,11 @@ public class RestaurantFragment extends Fragment {
     }
 
     private void init(View view) {
+        mAddressContainer = view.findViewById(R.id.addressContainer);
+        mAddressContainer.setOnClickListener(view1 -> {
+            Intent intent = new Intent(getActivity(), ChangeLocationActivity.class);
+            startActivity(intent);
+        });
         mAuth = FirebaseAuth.getInstance();
         mCurrentUser = mAuth.getCurrentUser();
         mTrendingTextView = view.findViewById(R.id.trendingTextView);

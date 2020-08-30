@@ -15,23 +15,30 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp">
 
-        <TextView
-            android:id="@+id/userLocationNickName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Delivering To"
-            android:textSize="20sp"
-            android:fontFamily="@font/open_sans_bold"
-            android:textColor="@color/lightWhite"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/addressContainer">
 
-        <TextView
-            android:id="@+id/userLocation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="getting location ..."
-            android:fontFamily="@font/open_sans"
-            android:layout_below="@id/userLocationNickName"
-            android:textColor="@color/lightWhite"/>
+            <TextView
+                android:id="@+id/userLocationNickName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Delivering To"
+                android:textSize="20sp"
+                android:fontFamily="@font/open_sans_bold"
+                android:textColor="@color/lightWhite"/>
+
+            <TextView
+                android:id="@+id/userLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="getting location ..."
+                android:fontFamily="@font/open_sans"
+                android:textColor="@color/lightWhite"/>
+
+        </LinearLayout>
 
         <ru.nikartm.support.ImageBadgeView
             android:id="@+id/imageBadgeView"
