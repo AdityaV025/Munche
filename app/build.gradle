@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 30
@@ -40,6 +42,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:21.5.0'
     implementation 'com.google.firebase:firebase-messaging:20.2.4'
     implementation 'com.google.firebase:firebase-crashlytics:17.2.1'
+    implementation 'com.google.firebase:firebase-storage:19.1.1'
     implementation 'com.google.firebase:firebase-analytics:17.5.0'
     implementation 'com.firebaseui:firebase-ui-auth:4.2.1'
     implementation 'com.firebaseui:firebase-ui-firestore:4.2.1'
@@ -49,6 +52,9 @@ dependencies {
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation "androidx.core:core-ktx:+"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     //External Libraries
     implementation 'com.github.aabhasr1:OtpView:v1.1.2' //OTP
@@ -68,7 +74,12 @@ dependencies {
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.3.0'//MapBox
     implementation 'com.mapbox.mapboxsdk:mapbox-android-navigation:0.42.6'//MapBox Navigation
     implementation 'ir.samanjafari.easycountdowntimer:easycountdowntimer:2.4.1'//Countdown Timer
+    implementation 'com.myhexaville:smart-image-picker:1.0.4' //ImagePicker
+    implementation 'de.hdodenhof:circleimageview:3.1.0'//CircleImageView
 
 }
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
+repositories {
+    mavenCentral()
+}

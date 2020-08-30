@@ -1,29 +1,141 @@
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="Fragments.MyProfileFragment"
-    android:orientation="vertical"
-    android:padding="27dp">
+    android:padding="27dp"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/userProfileName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Aditya Verma"
+        android:fontFamily="@font/open_sans_semibold"
+        android:textColor="@color/colorAccent"
+        android:textSize="19sp"/>
+
+    <TextView
+        android:id="@+id/userProfileNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/userProfileName"
+        android:text="+91-9319246217"
+        android:fontFamily="@font/open_sans"
+        android:textSize="15sp"
+        android:textColor="@color/gray"
+        android:layout_marginTop="1dp"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/userProfileImage"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        android:layout_alignParentEnd="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/user_placeholder"/>
+
+    <ImageView
+        android:id="@+id/dottedDivider"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:src="@drawable/dotted_divider"
+        android:layerType="software"
+        android:layout_below="@id/userProfileImage"
+        android:layout_marginTop="17dp"
+        android:layout_marginBottom="11dp"/>
+
+    <LinearLayout
+        android:id="@+id/settingsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_below="@+id/dottedDivider">
+
+        <ImageView
+            android:id="@+id/myOrdersImage"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:src="@drawable/orders"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:id="@+id/changeAddressImage"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:src="@drawable/address_book"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:id="@+id/editProfileImage"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:src="@drawable/edit_profile"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/settingsTextContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_below="@+id/settingsContainer"
+        android:layout_marginTop="3dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Orders"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/gray"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Address Book"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/gray"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Edit Profile"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/gray"
+            android:textSize="13sp"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/dottedDivider1"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:src="@drawable/dotted_divider"
+        android:layerType="software"
+        android:layout_below="@id/settingsTextContainer"
+        android:layout_marginTop="17dp"
+        android:layout_marginBottom="11dp"/>
 
     <TextView
         android:id="@+id/logOutText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/logOutText"
-        android:textSize="17sp"
-        android:textColor="@color/colorAccent"
-        android:fontFamily="@font/open_sans"/>
-
-    <TextView
-        android:id="@+id/myOrdersText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="My Orders"
-        android:textSize="17sp"
+        android:textSize="19sp"
         android:textColor="@color/colorAccent"
         android:fontFamily="@font/open_sans"
-        android:layout_marginTop="20dp"/>
+        android:layout_below="@+id/dottedDivider1"
+        android:drawableEnd="@drawable/logout_icon"/>
 
-</LinearLayout>
+</RelativeLayout>

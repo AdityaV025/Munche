@@ -1,20 +1,18 @@
 package com.example.munche;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.List;
 import java.util.Objects;
 
 import Fragments.ExploreFragment;
@@ -22,7 +20,6 @@ import Fragments.FavouriteFragment;
 import Fragments.MyProfileFragment;
 import Fragments.RestaurantFragment;
 import UI.LoginActivity;
-import Utils.ChangeStatusBarColor;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private FirebaseUser firebaseUser;
     private BottomNavigationView bottomNav;
+    private String uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
         init();
         bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentContainer, new RestaurantFragment())
+                .commit();
     }
 
     private void init() {
@@ -47,7 +48,10 @@ public class MainActivity extends AppCompatActivity {
         firebaseUser = mAuth.getCurrentUser();
         mCurrentUser = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
+        uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
     }
+
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             item -> {
@@ -63,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                         selectedFragment = new FavouriteFragment();
                         break;
                     case R.id.nav_profile:
-                        selectedFragment = new MyProfileFragment();
+                       selectedFragment = new MyProfileFragment();
                         break;
                     case R.id.imageBadgeView:
                         bottomNav.setVisibility(View.GONE);
@@ -82,16 +86,21 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        for (Fragment f : fragments) {
+            if (f instanceof MyProfileFragment) {
+                f.onActivityResult(requestCode, resultCode, data);
+            }
+        }
+    }
     @Override
     protected void onStart() {
         super.onStart();
         if (mCurrentUser == null) {
             sendUserToLogin();
-        }else {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContainer, new RestaurantFragment())
-                    .commit();
         }
     }
 

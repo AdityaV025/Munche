@@ -6,23 +6,17 @@
     android:layout_marginBottom="17dp"
     android:background="@color/white">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="6dp"
-        android:background="@color/white"
-        app:cardElevation="6dp">
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white">
 
             <androidx.cardview.widget.CardView
-                android:layout_width="110dp"
-                android:layout_height="116dp"
+                android:layout_width="95dp"
+                android:layout_height="110dp"
                 android:layout_alignParentStart="true"
-                android:id="@+id/resImageContainer">
+                android:id="@+id/resImageContainer"
+                app:cardCornerRadius="6dp">
 
                 <ImageView
                     android:id="@+id/favResImage"
@@ -37,8 +31,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/resImageContainer"
-                android:layout_marginTop="11dp"
                 android:layout_marginStart="17dp"
+                android:layout_marginTop="0dp"
                 android:textSize="19sp"
                 android:fontFamily="@font/open_sans_semibold"
                 android:textColor="@color/colorAccent"/>
@@ -92,7 +86,5 @@
                 android:textColor="@color/colorAccent"/>
 
         </RelativeLayout>
-
-    </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

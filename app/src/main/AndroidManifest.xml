@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -25,10 +26,9 @@
         <activity android:name=".CheckoutActivity" />
         <activity android:name=".MainRestaurantPageActivity" />
         <activity android:name=".EmptyCartActivity" />
-        <activity android:name=".CartItemActivity"
-            android:windowSoftInputMode="adjustResize">
-
-        </activity>
+        <activity
+            android:name=".CartItemActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name="UI.AddInfoActivity" />
         <activity android:name="UI.OtpActivity" />
         <activity android:name="UI.LoginActivity" />
