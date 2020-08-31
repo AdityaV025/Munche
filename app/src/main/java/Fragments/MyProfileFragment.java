@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import UI.ChangeLocationActivity;
 import UI.LoginActivity;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -42,7 +43,7 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
     private FirebaseAuth mAuth;
     private String uid;
     private FirebaseFirestore db;
-    private ImageView mMyOrdersText;
+    private ImageView mMyOrdersText, mChangeAddressView, mEditProfileView;
     private CircleImageView mUserProfileImage;
     Uri mImageUri;
     private ProgressDialog mProgressDialog;
@@ -65,6 +66,7 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
         mLogOutText.setOnClickListener(this);
         mMyOrdersText.setOnClickListener(this);
         mUserProfileImage.setOnClickListener(this);
+        mChangeAddressView.setOnClickListener(this);
 
         return view;
     }
@@ -78,6 +80,8 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
         mAuth = FirebaseAuth.getInstance();
         uid = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
         mMyOrdersText = view.findViewById(R.id.myOrdersImage);
+        mChangeAddressView = view.findViewById(R.id.changeAddressImage);
+        mEditProfileView = view.findViewById(R.id.editProfile);
         mUserProfileImage = view.findViewById(R.id.userProfileImage);
         mUserImageRef = FirebaseStorage.getInstance().getReference();
         mUserRef = db.collection("UserList").document(uid);
@@ -128,6 +132,12 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
             case R.id.myOrdersImage:
                 Intent intent = new Intent(getActivity(), OrdersActivity.class);
                 startActivity(intent);
+                break;
+
+            case R.id.changeAddressImage:
+                Intent intent1 = new Intent(getActivity(), ChangeLocationActivity.class);
+                intent1.putExtra("INT", "THREE");
+                startActivity(intent1);
                 break;
 
         }

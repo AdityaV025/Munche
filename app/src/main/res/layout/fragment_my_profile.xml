@@ -68,7 +68,7 @@
             android:layout_weight="1"/>
 
         <ImageView
-            android:id="@+id/editProfileImage"
+            android:id="@+id/editProfile"
             android:layout_width="0dp"
             android:layout_height="32dp"
             android:src="@drawable/edit_profile"
@@ -98,7 +98,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Address Book"
+            android:text="Change Address"
             android:layout_weight="1"
             android:gravity="center"
             android:fontFamily="@font/open_sans"

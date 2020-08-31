@@ -1,13 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:mapbox="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <com.mapbox.mapboxsdk.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        mapbox:mapbox_cameraZoom="16" />
+        android:layout_above="@+id/locationContainer"
+        mapbox:mapbox_cameraZoom="15" />
 
-</FrameLayout>
+    <RelativeLayout
+        android:id="@+id/locationContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="17dp"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:id="@+id/locationText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans_bold"
+            android:textSize="21sp"
+            android:textColor="@color/colorAccent"
+            android:text="Current Location"/>
+
+        <EditText
+            android:id="@+id/locationActualText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/locationText"
+            android:layout_marginTop="7dp"
+            android:textColor="@color/gray"
+            android:fontFamily="@font/open_sans"
+            android:textSize="16sp"
+            android:background="@drawable/menu_item_add_btn_background"
+            android:padding="11dp"
+            android:hint="Add Address"/>
+
+        <Button
+            android:id="@+id/saveLocationBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/locationActualText"
+            android:text="Confirm Location"
+            android:textAllCaps="false"
+            android:textSize="17sp"
+            android:fontFamily="@font/open_sans"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:layout_marginTop="17dp"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

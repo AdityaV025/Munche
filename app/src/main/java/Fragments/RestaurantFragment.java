@@ -89,6 +89,7 @@ public class RestaurantFragment extends Fragment {
         mAddressContainer = view.findViewById(R.id.addressContainer);
         mAddressContainer.setOnClickListener(view1 -> {
             Intent intent = new Intent(getActivity(), ChangeLocationActivity.class);
+            intent.putExtra("INT", "ONE");
             startActivity(intent);
         });
         mAuth = FirebaseAuth.getInstance();

@@ -20,7 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <activity android:name="UI.ChangeLocationActivity"></activity>
+        <activity
+            android:name="UI.ChangeLocationActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".CurrentOrderActivity" />
         <activity android:name=".OrdersActivity" />
         <activity android:name=".OrderSuccessfulActivity" />

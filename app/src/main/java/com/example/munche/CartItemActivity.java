@@ -38,6 +38,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import Models.CartItemDetail;
+import UI.ChangeLocationActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -48,7 +49,7 @@ public class CartItemActivity extends AppCompatActivity {
     private FirestoreRecyclerAdapter<CartItemDetail, CartItemHolder> itemAdapter;
     LinearLayoutManager linearLayoutManager;
     private RecyclerView mCartItemRecylerView;
-    private TextView mRestaurantCartName, mToolBarText, mUserAddressText, mTotalAmountText;
+    private TextView mRestaurantCartName, mToolBarText, mUserAddressText, mTotalAmountText,mChangeAddressText;
     private String uid, userAddress,ruid,userName,userPhoneNum,resDeliveryTime,resSpotImage;
     private String extraIns = "none";
     private ImageView mCartBackBtn;
@@ -76,6 +77,15 @@ public class CartItemActivity extends AppCompatActivity {
         mToolBarText = findViewById(R.id.confirmOrderText);
         mToolBarText.setText("Confirm Order");
         mRestaurantCartName = findViewById(R.id.restaurantCartName);
+        mChangeAddressText = findViewById(R.id.changeAddressText);
+        mChangeAddressText.setOnClickListener(view -> {
+
+            Intent intent = new Intent(getApplicationContext(), ChangeLocationActivity.class);
+            intent.putExtra("INT","TWO");
+            startActivity(intent);
+            finish();
+
+        });
         mCartBackBtn = findViewById(R.id.cartBackBtn);
         mCartBackBtn.setOnClickListener(view -> {
             this.onBackPressed();
