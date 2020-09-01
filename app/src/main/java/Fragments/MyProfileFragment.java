@@ -39,7 +39,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MyProfileFragment extends Fragment implements View.OnClickListener {
 
     private View view;
-    private TextView mLogOutText,mUserProfileName,mUserProfileNum;
+    private TextView mLogOutText,mUserProfileName,mUserProfileNum,mUserProfileAddress;
     private FirebaseAuth mAuth;
     private String uid;
     private FirebaseFirestore db;
@@ -81,6 +81,7 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
         uid = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
         mMyOrdersText = view.findViewById(R.id.myOrdersImage);
         mChangeAddressView = view.findViewById(R.id.changeAddressImage);
+        mUserProfileAddress = view.findViewById(R.id.userProfileAddress);
         mEditProfileView = view.findViewById(R.id.editProfile);
         mUserProfileImage = view.findViewById(R.id.userProfileImage);
         mUserImageRef = FirebaseStorage.getInstance().getReference();
@@ -94,12 +95,14 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
                 String imageRef = (String) Objects.requireNonNull(docRef).get("user_profile_image");
                 String userName = (String) docRef.get("name");
                 String userPhoneNum = (String) docRef.get("phonenumber");
+                String userAddress = (String) docRef.get("address");
                 Glide.with(Objects.requireNonNull(getActivity()))
                         .load(imageRef)
                         .placeholder(R.drawable.user_placeholder)
                         .into(mUserProfileImage);
                 mUserProfileName.setText(userName);
                 mUserProfileNum.setText(userPhoneNum);
+                mUserProfileAddress.setText(userAddress);
             }
         });
     }

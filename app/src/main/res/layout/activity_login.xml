@@ -50,7 +50,8 @@
         android:fontFamily="@font/open_sans_light"
         android:text="@string/descMobile"
         android:textColor="@color/colorAccent"
-        android:paddingBottom="1dp"/>
+        android:paddingBottom="1dp"
+        android:layout_marginTop="17dp"/>
 
     <RelativeLayout
         android:id="@+id/loginContainer"
@@ -107,27 +108,11 @@
         android:fontFamily="@font/open_sans"/>
 
     <Button
-        android:id="@+id/facebookLoginBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/or"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/other_login_btn_background"
-        android:text="@string/ctnwithfb"
-        android:textAllCaps="false"
-        android:textColor="@color/colorAccent"
-        android:textSize="18sp"
-        android:fontFamily="@font/open_sans_semibold"
-        android:drawableLeft="@drawable/fb_logo"
-        android:gravity="left|center"
-        android:drawablePadding="6dp"/>
-
-    <Button
         android:id="@+id/googleLoginBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/facebookLoginBtn"
-        android:layout_marginTop="11dp"
+        android:layout_below="@+id/or"
+        android:layout_marginTop="21dp"
         android:background="@drawable/other_login_btn_background"
         android:text="@string/ctnwithgoogle"
         android:textAllCaps="false"

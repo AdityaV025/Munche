@@ -11,7 +11,6 @@
         android:id="@+id/userProfileName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Aditya Verma"
         android:fontFamily="@font/open_sans_semibold"
         android:textColor="@color/colorAccent"
         android:textSize="19sp"/>
@@ -21,16 +20,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/userProfileName"
-        android:text="+91-9319246217"
         android:fontFamily="@font/open_sans"
         android:textSize="15sp"
         android:textColor="@color/gray"
         android:layout_marginTop="1dp"/>
 
+    <TextView
+        android:id="@+id/userProfileAddressText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/userProfileNumber"
+        android:text="Delivering To:"
+        android:fontFamily="@font/open_sans_semibold"
+        android:layout_marginTop="7dp"
+        android:textSize="15sp"
+        android:textColor="@color/colorAccent"/>
+
+    <TextView
+        android:id="@+id/userProfileAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/userProfileAddressText"
+        android:layout_marginTop="3dp"
+        android:fontFamily="@font/open_sans"
+        android:textSize="14sp"
+        android:textColor="@color/gray"/>
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/userProfileImage"
-        android:layout_width="62dp"
-        android:layout_height="62dp"
+        android:layout_width="82dp"
+        android:layout_height="82dp"
         android:layout_alignParentEnd="true"
         android:scaleType="centerCrop"
         android:src="@drawable/user_placeholder"/>

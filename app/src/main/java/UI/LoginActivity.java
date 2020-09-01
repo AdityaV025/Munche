@@ -33,7 +33,7 @@ import Utils.ChangeStatusBarColor;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private Button mSendOtpBtn, mLoginWithFbBtn, mLoginWithGoogleBtn, mLoginWithEmailBtn;
+    private Button mSendOtpBtn,mLoginWithGoogleBtn, mLoginWithEmailBtn;
     private EditText mNumberText;
     private CountryCodePicker countryCodePicker;
     private FirebaseAuth mAuth;
@@ -99,7 +99,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void initialiseViews() {
         mSendOtpBtn = findViewById(R.id.sendOtpBtn);
-        mLoginWithFbBtn = findViewById(R.id.facebookLoginBtn);
         mLoginWithGoogleBtn = findViewById(R.id.googleLoginBtn);
         mLoginWithEmailBtn = findViewById(R.id.emailLoginBtn);
         mNumberText = findViewById(R.id.loginInput);

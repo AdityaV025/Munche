@@ -3,7 +3,7 @@
     <string name="getStarted">Get Started</string>
     <string name="descLogin">Enter your phone number and we will send you an OTP to verify you.</string>
     <string name="descMobile">Mobile No.</string>
-    <string name="mobileHint">Your Mobile Number *</string>
+    <string name="mobileHint">Phone Number *</string>
     <string name="loginBtnText">Send OTP</string>
     <string name="ctnwithfb">Continue with Facebook</string>
     <string name="ctnwithgoogle">Continue with Google</string>

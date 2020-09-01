@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -37,6 +38,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import Fragments.RestaurantFragment;
 import Models.CartItemDetail;
 import UI.ChangeLocationActivity;
 import butterknife.BindView;
@@ -176,12 +178,6 @@ public class CartItemActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Item Removed", Toast.LENGTH_SHORT).show();
                         });
                     }
-                    if (itemAdapter.getItemCount() == 0){
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-
                 });
 
                 calculateTotalPrice();
@@ -222,65 +218,77 @@ public class CartItemActivity extends AppCompatActivity {
         }
     }
 
+    private void moveIfCartEmpty() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     @SuppressLint("SetTextI18n")
     private void calculateTotalPrice() {
         mCartItemRecylerView.postDelayed(() -> {
-            if (Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(0)).itemView.findViewById(R.id.itemPriceCart) != null){
-                int totPrice = 0;
-                for (int i = 0; i < Objects.requireNonNull(mCartItemRecylerView.getAdapter()).getItemCount() ; i++){
-                    TextView textView = Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(i)).itemView.findViewById(R.id.itemPriceCart);
-                    String priceText = textView.getText().toString().replace("\u20b9 " , "");
-                    int price = Integer.parseInt(priceText);
-                    totPrice = price + totPrice;
+            if (itemAdapter.getItemCount() == 0){
+                moveIfCartEmpty();
+            }else {
+                if (Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(0)).itemView.findViewById(R.id.itemPriceCart) != null){
+                    int totPrice = 0;
+                    for (int i = 0; i < Objects.requireNonNull(mCartItemRecylerView.getAdapter()).getItemCount() ; i++){
+                        TextView textView = Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(i)).itemView.findViewById(R.id.itemPriceCart);
+                        String priceText = textView.getText().toString().replace("\u20b9 " , "");
+                        int price = Integer.parseInt(priceText);
+                        totPrice = price + totPrice;
+                    }
+                    mTotalAmountText.setText("Amount Payable: \u20b9" + totPrice);
                 }
-                mTotalAmountText.setText("Amount Payable: \u20b9" + totPrice);
             }
-
         },5);
 
     }
 
     private void calculateTotalPriceAndMove() {
         mCartItemRecylerView.postDelayed(() -> {
-            if (Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(0)).itemView.findViewById(R.id.itemPriceCart) != null){
-                int totPrice = 0;
-                String[] itemsArr = new String[Objects.requireNonNull(mCartItemRecylerView.getAdapter()).getItemCount()];
-                String[] orderedItemsArr = new String[mCartItemRecylerView.getAdapter().getItemCount()];
-                for (int i = 0; i < Objects.requireNonNull(mCartItemRecylerView.getAdapter()).getItemCount() ; i++){
-                    TextView textView = Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(i)).itemView.findViewById(R.id.itemPriceCart);
-                    TextView textView2 = Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(i)).itemView.findViewById(R.id.itemNameCart);
-                    ElegantNumberButton elegantNumberButton = Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(i)).itemView.findViewById(R.id.quantityPicker);
-                    String itemCount = elegantNumberButton.getNumber();
-                    String priceText = textView.getText().toString().replace("\u20b9 " , "");
-                    int price = Integer.parseInt(priceText);
-                    totPrice = price + totPrice;
-                    itemsArr[i] = textView2.getText().toString();
-                    orderedItemsArr[i] = itemCount + " x " + textView2.getText().toString();
-                }
+            if (itemAdapter.getItemCount() == 0){
+                moveIfCartEmpty();
+            }else {
+                if (Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(0)).itemView.findViewById(R.id.itemPriceCart) != null){
+                    int totPrice = 0;
+                    String[] itemsArr = new String[Objects.requireNonNull(mCartItemRecylerView.getAdapter()).getItemCount()];
+                    String[] orderedItemsArr = new String[mCartItemRecylerView.getAdapter().getItemCount()];
+                    for (int i = 0; i < Objects.requireNonNull(mCartItemRecylerView.getAdapter()).getItemCount() ; i++){
+                        TextView textView = Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(i)).itemView.findViewById(R.id.itemPriceCart);
+                        TextView textView2 = Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(i)).itemView.findViewById(R.id.itemNameCart);
+                        ElegantNumberButton elegantNumberButton = Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(i)).itemView.findViewById(R.id.quantityPicker);
+                        String itemCount = elegantNumberButton.getNumber();
+                        String priceText = textView.getText().toString().replace("\u20b9 " , "");
+                        int price = Integer.parseInt(priceText);
+                        totPrice = price + totPrice;
+                        itemsArr[i] = textView2.getText().toString();
+                        orderedItemsArr[i] = itemCount + " x " + textView2.getText().toString();
+                    }
 
-                if(!TextUtils.isEmpty(mExtraInstructionsText.getText())){
-                    extraIns = mExtraInstructionsText.getText().toString();
-                }
+                    if(!TextUtils.isEmpty(mExtraInstructionsText.getText())){
+                        extraIns = mExtraInstructionsText.getText().toString();
+                    }
 
-                if (resSpotImage != null){
-                    Intent intent = new Intent(CartItemActivity.this, CheckoutActivity.class);
-                    intent.putExtra("TOTAL_AMOUNT", String.valueOf(totPrice));
-                    intent.putExtra("ITEM_NAMES", itemsArr);
-                    intent.putExtra("ITEM_ORDERED_NAME", orderedItemsArr);
-                    intent.putExtra("RES_NAME", mRestaurantCartName.getText().toString());
-                    intent.putExtra("RES_UID", ruid);
-                    intent.putExtra("USER_ADDRESS",userAddress);
-                    intent.putExtra("USER_NAME", userName);
-                    intent.putExtra("USER_UID",uid);
-                    intent.putExtra("EXTRA_INS", extraIns);
-                    intent.putExtra("USER_PHONE", userPhoneNum);
-                    intent.putExtra("DELIVERY_TIME", resDeliveryTime);
-                    intent.putExtra("RES_IMAGE", resSpotImage);
-                    startActivity(intent);
-                    this.overridePendingTransition(0,0);
+                    if (resSpotImage != null){
+                        Intent intent = new Intent(CartItemActivity.this, CheckoutActivity.class);
+                        intent.putExtra("TOTAL_AMOUNT", String.valueOf(totPrice));
+                        intent.putExtra("ITEM_NAMES", itemsArr);
+                        intent.putExtra("ITEM_ORDERED_NAME", orderedItemsArr);
+                        intent.putExtra("RES_NAME", mRestaurantCartName.getText().toString());
+                        intent.putExtra("RES_UID", ruid);
+                        intent.putExtra("USER_ADDRESS",userAddress);
+                        intent.putExtra("USER_NAME", userName);
+                        intent.putExtra("USER_UID",uid);
+                        intent.putExtra("EXTRA_INS", extraIns);
+                        intent.putExtra("USER_PHONE", userPhoneNum);
+                        intent.putExtra("DELIVERY_TIME", resDeliveryTime);
+                        intent.putExtra("RES_IMAGE", resSpotImage);
+                        startActivity(intent);
+                        this.overridePendingTransition(0,0);
+                    }
                 }
             }
-
         },5);
     }
 
