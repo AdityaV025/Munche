@@ -76,6 +76,7 @@ dependencies {
     implementation 'ir.samanjafari.easycountdowntimer:easycountdowntimer:2.4.1'//Countdown Timer
     implementation 'com.myhexaville:smart-image-picker:1.0.4' //ImagePicker
     implementation 'de.hdodenhof:circleimageview:3.1.0'//CircleImageView
+    implementation 'com.github.sujithkanna:smileyrating:2.0.0'//Smiley Rating Bar
 
 }
 apply plugin: 'com.google.gms.google-services'

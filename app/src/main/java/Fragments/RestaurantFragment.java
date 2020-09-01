@@ -189,6 +189,7 @@ public class RestaurantFragment extends Fragment {
                                 intent.putExtra("TIME", deliveryTime);
                                 intent.putExtra("PRICE", model.getAverage_price());
                                 intent.putExtra("RES_IMAGE", model.getRestaurant_spotimage());
+                                intent.putExtra("RES_NUM", model.getRestaurant_phonenumber());
                                 startActivity(intent);
                                 Objects.requireNonNull(getActivity()).overridePendingTransition(0,0);
 

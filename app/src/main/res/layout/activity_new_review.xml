@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NewReviewActivity"
+    android:background="@color/blue_grey">
+
+    <include layout="@layout/simple_toolbar"
+        android:id="@+id/newRatingToolBar"/>
+
+    <RelativeLayout
+        android:id="@+id/newRatingContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/newRatingToolBar"
+        android:padding="11dp"
+        android:background="@color/white"
+        android:layout_marginBottom="5dp">
+
+        <TextView
+            android:id="@+id/experienceLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="How was Your Experience ?"
+            android:fontFamily="@font/open_sans_semibold"
+            android:textSize="21sp"
+            android:textColor="@color/colorAccent"/>
+
+        <com.hsalf.smileyrating.SmileyRating
+            android:id="@+id/smiley_rating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/experienceLabel"
+            android:layout_marginTop="7dp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/reviewContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/newRatingContainer"
+        android:padding="11dp"
+        android:background="@color/white"
+        android:layout_marginBottom="5dp">
+
+        <TextView
+            android:id="@+id/reviewTextLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Write Review"
+            android:fontFamily="@font/open_sans_semibold"
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp"/>
+
+        <EditText
+            android:id="@+id/reviewEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/review_hint"
+            android:fontFamily="@font/open_sans"
+            android:textSize="16sp"
+            android:layout_below="@+id/reviewTextLabel"
+            android:background="@drawable/menu_item_add_btn_background"
+            android:padding="11dp"
+            android:layout_marginTop="7dp"
+            android:textColor="@color/gray"
+            android:inputType="textMultiLine"
+            android:scrollHorizontally="false"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/reviewContainer"
+        android:padding="11dp"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/recommendLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans_semibold"
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp"/>
+
+        <RadioGroup
+            android:id="@+id/recommendContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/recommendLabel"
+            android:layout_marginTop="11dp">
+
+            <RadioButton
+                android:id="@+id/recommend"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Recommend"
+                android:fontFamily="@font/open_sans"
+                android:textColor="@color/gray"
+                android:textSize="17sp" />
+
+            <RadioButton
+                android:id="@+id/notrecommend"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Not Recommend"
+                android:fontFamily="@font/open_sans"
+                android:textColor="@color/gray"
+                android:textSize="17sp"/>
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/saveReviewBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/login_btn_background"
+            android:fontFamily="@font/open_sans"
+            android:text="Submit Review"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="17sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -29,9 +29,36 @@
                     android:id="@+id/mainResName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorAccent"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="3dp"
                     android:fontFamily="@font/open_sans_semibold"
-                    android:textSize="19sp"/>
+                    android:text="Haldirams"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="19sp" />
+
+                <ImageView
+                    android:id="@+id/reviewImage"
+                    android:layout_width="17dp"
+                    android:layout_height="17dp"
+                    android:layout_alignTop="@+id/reviewText"
+                    android:layout_alignBottom="@+id/reviewText"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginBottom="0dp"
+                    android:layout_toStartOf="@+id/reviewText"
+                    android:src="@drawable/review" />
+
+                <TextView
+                    android:id="@+id/reviewText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="9dp"
+                    android:fontFamily="@font/open_sans"
+                    android:text="Reviews"
+                    android:textColor="@color/blue"
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/mainResCuisine"

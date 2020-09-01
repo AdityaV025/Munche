@@ -7,13 +7,14 @@ public class RestaurantDetail {
     private String restaurant_prep_time;
     private String average_price;
     private String restaurant_uid;
+    private String restaurant_phonenumber;
     private Double latitude;
     private Double longitude;
 
     public RestaurantDetail() {
     }
 
-    public RestaurantDetail(String restaurant_name, String restaurant_spotimage, String average_price, String restaurant_uid, Double latitude, Double longitude, String restaurant_prep_time) {
+    public RestaurantDetail(String restaurant_name, String restaurant_spotimage, String average_price, String restaurant_uid, Double latitude, Double longitude, String restaurant_prep_time, String restaurant_phonenumber) {
         this.restaurant_name = restaurant_name;
         this.restaurant_spotimage = restaurant_spotimage;
         this.average_price = average_price;
@@ -21,6 +22,7 @@ public class RestaurantDetail {
         this.latitude = latitude;
         this.longitude = longitude;
         this.restaurant_prep_time = restaurant_prep_time;
+        this.restaurant_phonenumber = restaurant_phonenumber;
     }
 
     public String getRestaurant_name() {
@@ -77,6 +79,14 @@ public class RestaurantDetail {
 
     public void setRestaurant_prep_time(String restaurant_prep_time) {
         this.restaurant_prep_time = restaurant_prep_time;
+    }
+
+    public String getRestaurant_phonenumber() {
+        return restaurant_phonenumber;
+    }
+
+    public void setRestaurant_phonenumber(String restaurant_phonenumber) {
+        this.restaurant_phonenumber = restaurant_phonenumber;
     }
 
 }

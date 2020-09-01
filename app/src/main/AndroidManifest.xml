@@ -20,7 +20,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <activity android:name="UI.SplashActivity"
+        <activity android:name=".NewReviewActivity"></activity>
+        <activity android:name=".ReviewsActivity" />
+        <activity
+            android:name="UI.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,8 +46,7 @@
         <activity android:name="UI.AddInfoActivity" />
         <activity android:name="UI.OtpActivity" />
         <activity android:name="UI.LoginActivity" />
-        <activity android:name=".MainActivity">
-        </activity>
+        <activity android:name=".MainActivity" />
         <activity
             android:name="com.paytm.pgsdk.PaytmPGActivity"
             android:configChanges="keyboardHidden|orientation|keyboard"

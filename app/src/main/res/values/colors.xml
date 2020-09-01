@@ -8,4 +8,7 @@
     <color name="lightWhite">#eeeeee</color>
     <color name="golden">#F5C82F</color>
     <color name="blue_grey">#ECEFF1</color>
+    <color name="blue">#1E88E5</color>
+    <color name="red">#FF5252</color>
+    <color name="green">#67BD46</color>
 </resources>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:padding="11dp"
+    android:layout_marginBottom="5dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/userReviewProfileImage"
+        android:layout_width="37dp"
+        android:layout_height="37dp"
+        android:src="@drawable/user_placeholder"/>
+
+    <TextView
+        android:id="@+id/userReviewName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/userReviewProfileImage"
+        android:fontFamily="@font/open_sans"
+        android:text="Aditya Verma"
+        android:textColor="@color/colorAccent"
+        android:textSize="19sp" />
+
+    <TextView
+        android:id="@+id/recommendTextLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/userReviewName"
+        android:layout_toEndOf="@+id/userReviewProfileImage"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="15dp"
+        android:fontFamily="@font/open_sans_semibold"
+        android:textColor="@color/white"
+        android:textSize="12sp" />
+
+    <View
+        android:id="@+id/reviewDivider"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_toEndOf="@+id/userReviewProfileImage"
+        android:layout_below="@+id/recommendTextLabel"
+        android:layout_marginTop="7dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="5dp"
+        android:background="@android:color/darker_gray"/>
+
+    <TextView
+        android:id="@+id/userReviewText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/userReviewProfileImage"
+        android:layout_below="@+id/reviewDivider"
+        android:layout_marginStart="15dp"
+        android:fontFamily="@font/open_sans"
+        android:textSize="15sp"/>
+
+</RelativeLayout>

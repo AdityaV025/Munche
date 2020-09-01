@@ -51,8 +51,8 @@ import static android.view.View.GONE;
 public class MainRestaurantPageActivity extends AppCompatActivity {
 
     private AppBarLayout mToolBar;
-    private String uid,mRestaurantUid, mResName, mResDistance, mResPrice, mResDeliveryTime, mResImage;
-    private TextView mResNameToolBar, mResNameText, mResDistanceText,mResAvgPriceText, mResDeliveryTimeText;
+    private String uid,mRestaurantUid, mResName, mResDistance, mResPrice, mResDeliveryTime, mResImage, mResNum;
+    private TextView mResNameToolBar, mResNameText, mResDistanceText,mResAvgPriceText, mResDeliveryTimeText, mReviewsText;
     private ImageView mBackBtnView;
     private FirebaseFirestore db;
     private FirestoreRecyclerAdapter<RestaurantMenuItems, MenuItemHolder> adapter;
@@ -74,6 +74,7 @@ public class MainRestaurantPageActivity extends AppCompatActivity {
             mResPrice = intent.getStringExtra("PRICE");
             mResDeliveryTime = intent.getStringExtra("TIME");
             mResImage = intent.getStringExtra("RES_IMAGE");
+            mResNum = intent.getStringExtra("RES_NUM");
         }
 
         init();
@@ -89,6 +90,15 @@ public class MainRestaurantPageActivity extends AppCompatActivity {
         mToolBar = findViewById(R.id.mainResToolBar);
         mResNameToolBar = findViewById(R.id.restaurantTitleToolbar);
         mResNameText = findViewById(R.id.mainResName);
+        mReviewsText=  findViewById(R.id.reviewText);
+        mReviewsText.setOnClickListener(view -> {
+            Intent intent = new Intent(this, ReviewsActivity.class);
+            intent.putExtra("RUID", mRestaurantUid);
+            intent.putExtra("NAME", mResName);
+            intent.putExtra("PRICE", mResPrice);
+            intent.putExtra("NUM", mResNum);
+            startActivity(intent);
+        });
         mFavoriteAnim = findViewById(R.id.favoriteAnim);
         checkFavRes();
         mFavoriteAnim.setOnClickListener(view -> {
@@ -97,7 +107,6 @@ public class MainRestaurantPageActivity extends AppCompatActivity {
                 mFavoriteAnim.playAnimation();
                 delFavRes();
             }else if(mFavoriteAnim.getProgress() == 0.0f){
-                Log.d("askdkls", String.valueOf(mFavoriteAnim.getProgress()));
                 mFavoriteAnim.setSpeed(1);
                 mFavoriteAnim.playAnimation();
                 favRes();

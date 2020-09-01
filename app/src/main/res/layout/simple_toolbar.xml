@@ -31,6 +31,34 @@
             android:fontFamily="@font/open_sans_semibold"
             android:layout_toEndOf="@+id/cartBackBtn"/>
 
+        <LinearLayout
+            android:id="@+id/newReviewContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:orientation="horizontal"
+            android:layout_marginEnd="15dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/get_location_button_background"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="21dp"
+                android:src="@drawable/write_review"
+                android:layout_marginEnd="5dp"/>
+
+            <TextView
+                android:id="@+id/newReviewText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/write_a_review"
+                android:textSize="15sp"
+                android:fontFamily="@font/open_sans"
+                android:textColor="@color/colorPrimary"/>
+
+        </LinearLayout>
+
     </RelativeLayout>
 
 </androidx.appcompat.widget.Toolbar>

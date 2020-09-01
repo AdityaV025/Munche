@@ -192,8 +192,6 @@ public class CurrentOrderActivity extends AppCompatActivity{
             mapboxMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 150));
             mapboxMap.setMinZoomPreference(5);
 
-            Timber.tag("hjsadkjas").d(origin + " " + destination + " " + loc1 + " " + loc2);
-
         }));
 
         mDeliveryAnimation = findViewById(R.id.deliveryAnimation);

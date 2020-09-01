@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ReviewsActivity"
+    android:background="@color/blue_grey">
+
+    <include layout="@layout/simple_toolbar"
+        android:id="@+id/reviewsToolBar"/>
+
+    <RelativeLayout
+        android:id="@+id/resReviewContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/reviewsToolBar"
+        android:padding="11dp"
+        android:background="@color/white"
+        android:layout_marginBottom="5dp">
+
+        <TextView
+            android:id="@+id/resReviewText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Behrouz Biryani"
+            android:fontFamily="@font/open_sans"
+            android:textSize="29sp"
+            android:textColor="@color/colorAccent"/>
+
+        <TextView
+            android:id="@+id/resReviewType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/resReviewText"
+            android:text="North Indian, Biryani, Fast Food"
+            android:fontFamily="@font/open_sans"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/resReviewPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/resReviewType"
+            android:text="Cost for one - \u20b9200"
+            android:fontFamily="@font/open_sans"
+            android:textSize="15sp"
+            android:textColor="@color/gray"
+            android:layout_marginTop="3dp"/>
+
+        <ImageView
+            android:id="@+id/callResBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/resReviewPrice"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="7dp"
+            android:src="@drawable/call_res_lg" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/resReviewContainer"
+        android:background="@color/white">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/userReviewRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/blue_grey"
+            android:overScrollMode="never"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>
