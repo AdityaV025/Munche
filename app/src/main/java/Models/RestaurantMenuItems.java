@@ -6,15 +6,16 @@ public class RestaurantMenuItems {
     private String price;
     private String specification;
     private String category;
-
+    private String is_active;
     private String is_added;
 
-    public RestaurantMenuItems(String name, String price, String specification, String category, String is_added) {
+    public RestaurantMenuItems(String name, String price, String specification, String category, String is_added, String is_active) {
         this.name = name;
         this.price = price;
         this.specification = specification;
         this.category = category;
         this.is_added = is_added;
+        this.is_active = is_active;
     }
 
     public String getName() {
@@ -58,6 +59,14 @@ public class RestaurantMenuItems {
 
     public void setIs_added(String is_added) {
         this.is_added = is_added;
+    }
+
+    public String getIs_active() {
+        return is_active;
+    }
+
+    public void setIs_active(String is_active) {
+        this.is_active = is_active;
     }
 
 }

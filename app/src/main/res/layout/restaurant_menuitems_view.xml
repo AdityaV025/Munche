@@ -18,7 +18,6 @@
         android:layout_toEndOf="@+id/foodMark"
         android:layout_marginTop="15dp"
         android:layout_marginStart="11dp"
-        android:text="Paneer Biryani"
         android:textSize="15sp"
         android:textColor="@color/colorAccent"
         android:fontFamily="@font/open_sans_semibold"
@@ -32,7 +31,6 @@
         android:layout_toEndOf="@+id/foodMark"
         android:layout_marginStart="11dp"
         android:layout_marginTop="3dp"
-        android:text="In Biryani"
         android:textSize="12sp"
         android:fontFamily="@font/open_sans"
         android:textColor="@color/gray"/>
@@ -47,8 +45,20 @@
         android:layout_marginTop="3dp"
         android:fontFamily="@font/open_sans"
         android:textSize="13sp"
-        android:text="\u20b9 327"
         android:textColor="@color/colorAccent"/>
+
+    <TextView
+        android:id="@+id/notAvailableText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="* Item not available"
+        android:fontFamily="@font/open_sans"
+        android:textStyle="italic"
+        android:textSize="12sp"
+        android:layout_below="@+id/menuItemPrice"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="3dp"
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/addMenuItemBtn"

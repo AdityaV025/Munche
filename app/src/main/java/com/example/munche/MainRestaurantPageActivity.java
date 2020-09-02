@@ -141,52 +141,66 @@ public class MainRestaurantPageActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onBindViewHolder(@NonNull MenuItemHolder holder, int position, @NonNull RestaurantMenuItems model) {
-
-                holder.mItemName.setText(model.getName());
-                holder.mItemCategory.setText(model.getCategory());
-                String specImage = String.valueOf(model.getSpecification());
-                if (specImage.equals("Veg")){
-                    Glide.with(Objects.requireNonNull(getApplicationContext()))
-                            .load(R.drawable.veg_symbol).into(holder.foodSpecification);
-                }else {
-                    Glide.with(Objects.requireNonNull(getApplicationContext()))
-                            .load(R.drawable.non_veg_symbol).into(holder.foodSpecification);
-                }
-                holder.mItemPrice.setText("\u20B9 " + model.getPrice());
-                holder.itemView.setOnClickListener(v -> {
-                });
-
-                String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-
-                holder.mItemAddBtn.setOnClickListener(view -> {
-                    String selectedItemName = holder.mItemName.getText().toString();
-                    addItemToCart(selectedItemName,model,uid);
-                    holder.mItemAddBtn.setVisibility(GONE);
-                    holder.mRemoveItemBtn.setVisibility(View.VISIBLE);
-                });
-
-                holder.mRemoveItemBtn.setOnClickListener(view -> {
-                    String selectedItemName = holder.mItemName.getText().toString();
-                    removeItemFromCart(selectedItemName,uid);
-                    holder.mRemoveItemBtn.setVisibility(GONE);
-                    holder.mItemAddBtn.setVisibility(View.VISIBLE);
-                });
-
-                DocumentReference docRef = db.collection("UserList").document(uid).collection("CartItems").document(holder.mItemName.getText().toString());
-                docRef.get().addOnCompleteListener(task -> {
-
-                    if (task.isSuccessful()){
-                        DocumentSnapshot documentSnapshot = task.getResult();
-                        if (Objects.requireNonNull(documentSnapshot).exists()){
-
-                            holder.mItemAddBtn.setVisibility(GONE);
-                            holder.mRemoveItemBtn.setVisibility(View.VISIBLE);
-
-                        }
+                if (model.getIs_active().equals("no")){
+                    holder.mItemName.setText(model.getName());
+                    holder.mItemCategory.setText(model.getCategory());
+                    String specImage = String.valueOf(model.getSpecification());
+                    if (specImage.equals("Veg")){
+                        Glide.with(Objects.requireNonNull(getApplicationContext()))
+                                .load(R.drawable.veg_symbol).into(holder.foodSpecification);
+                    }else {
+                        Glide.with(Objects.requireNonNull(getApplicationContext()))
+                                .load(R.drawable.non_veg_symbol).into(holder.foodSpecification);
                     }
+                    holder.mItemPrice.setText("\u20B9 " + model.getPrice());
+                    holder.mItemAddBtn.setClickable(false);
+                    holder.mNotAvailableText.setVisibility(View.VISIBLE);
+                }else if (model.getIs_active().equals("yes")){
+                    holder.mItemName.setText(model.getName());
+                    holder.mItemCategory.setText(model.getCategory());
+                    String specImage = String.valueOf(model.getSpecification());
+                    if (specImage.equals("Veg")){
+                        Glide.with(Objects.requireNonNull(getApplicationContext()))
+                                .load(R.drawable.veg_symbol).into(holder.foodSpecification);
+                    }else {
+                        Glide.with(Objects.requireNonNull(getApplicationContext()))
+                                .load(R.drawable.non_veg_symbol).into(holder.foodSpecification);
+                    }
+                    holder.mItemPrice.setText("\u20B9 " + model.getPrice());
+                    holder.itemView.setOnClickListener(v -> {
+                    });
 
-                });
+                    String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
+                    holder.mItemAddBtn.setOnClickListener(view -> {
+                        String selectedItemName = holder.mItemName.getText().toString();
+                        addItemToCart(selectedItemName,model,uid);
+                        holder.mItemAddBtn.setVisibility(GONE);
+                        holder.mRemoveItemBtn.setVisibility(View.VISIBLE);
+                    });
+
+                    holder.mRemoveItemBtn.setOnClickListener(view -> {
+                        String selectedItemName = holder.mItemName.getText().toString();
+                        removeItemFromCart(selectedItemName,uid);
+                        holder.mRemoveItemBtn.setVisibility(GONE);
+                        holder.mItemAddBtn.setVisibility(View.VISIBLE);
+                    });
+
+                    DocumentReference docRef = db.collection("UserList").document(uid).collection("CartItems").document(holder.mItemName.getText().toString());
+                    docRef.get().addOnCompleteListener(task -> {
+
+                        if (task.isSuccessful()){
+                            DocumentSnapshot documentSnapshot = task.getResult();
+                            if (Objects.requireNonNull(documentSnapshot).exists()){
+
+                                holder.mItemAddBtn.setVisibility(GONE);
+                                holder.mRemoveItemBtn.setVisibility(View.VISIBLE);
+
+                            }
+                        }
+
+                    });
+                }
             }
             @NotNull
             @Override
@@ -273,6 +287,8 @@ public class MainRestaurantPageActivity extends AppCompatActivity {
         Button mItemAddBtn;
         @BindView(R.id.removeMenuItemBtn)
         Button mRemoveItemBtn;
+        @BindView(R.id.notAvailableText)
+        TextView mNotAvailableText;
 
         public MenuItemHolder(View itemView) {
             super(itemView);
