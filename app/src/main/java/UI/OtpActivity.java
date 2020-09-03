@@ -26,6 +26,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.installations.FirebaseInstallationsRegistrar;
 
+import java.util.Objects;
+
 import Utils.ChangeStatusBarColor;
 import in.aabhasjindal.otptextview.OTPListener;
 import in.aabhasjindal.otptextview.OtpTextView;
@@ -59,9 +61,9 @@ public class OtpActivity extends AppCompatActivity {
             @Override
             public void onOTPComplete(String otp) {
 
-//                otp = mOtpText.getOTP();
-//                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mAuthVerificationId, otp);
-//                signInWithPhoneAuthCredential(credential);
+                otp = mOtpText.getOTP();
+                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mAuthVerificationId, otp);
+                signInWithPhoneAuthCredential(credential);
             }
         });
 
@@ -100,8 +102,8 @@ public class OtpActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
 
-                        FirebaseUser user = task.getResult().getUser();
-                        String uid = user.getUid();
+                        FirebaseUser user = Objects.requireNonNull(task.getResult()).getUser();
+                        String uid = Objects.requireNonNull(user).getUid();
                         final FirebaseFirestore db = FirebaseFirestore.getInstance();
                         final DocumentReference docRef = db.collection("UserList").document(uid);
 

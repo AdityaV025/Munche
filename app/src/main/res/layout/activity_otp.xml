@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="UI.OtpActivity"
-    android:padding="20dp">
+    android:padding="20dp"
+    android:background="@color/white">
 
     <TextView
         android:id="@+id/verificationLabel"
@@ -33,9 +34,11 @@
         android:id="@+id/otpView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
+        android:textColor="@color/colorAccent"
         android:layout_below="@id/userNum"
-        app:otp_box_background="@color/colorAccent"
+        app:otp_box_background="@color/white"
+        app:bar_enabled="true"
+        app:bar_height="1.5dp"
         app:length="6"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="80dp"/>

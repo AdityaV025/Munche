@@ -15,7 +15,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.List;
 import java.util.Objects;
 
-import Fragments.ExploreFragment;
+import Fragments.SearchFragment;
 import Fragments.FavouriteFragment;
 import Fragments.MyProfileFragment;
 import Fragments.RestaurantFragment;
@@ -60,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_restaurants:
                         selectedFragment = new RestaurantFragment();
                         break;
-                    case R.id.nav_explore:
-                        selectedFragment = new ExploreFragment();
+                    case R.id.nav_search:
+                        selectedFragment = new SearchFragment();
                         break;
                     case R.id.nav_favourites:
                         selectedFragment = new FavouriteFragment();

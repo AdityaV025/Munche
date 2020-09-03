@@ -1,6 +1,5 @@
 package com.example.munche;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -14,12 +13,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.hsalf.smileyrating.SmileyRating;
@@ -38,6 +36,7 @@ public class NewReviewActivity extends AppCompatActivity {
     private Button mSaveReviewBtn;
     private FirebaseFirestore db;
     private int rating;
+    private ImageView mGoBackBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +57,10 @@ public class NewReviewActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         ratingBar = findViewById(R.id.smiley_rating);
         mReviewEditText = findViewById(R.id.reviewEditText);
+        mGoBackBtn = findViewById(R.id.cartBackBtn);
+        mGoBackBtn.setOnClickListener(view -> {
+            onBackPressed();
+        });
         mRatingResName = findViewById(R.id.recommendLabel);
         mRatingResName.setText("Would you recommend " + resName + " ?");
         mRecommendBtn = findViewById(R.id.recommend);

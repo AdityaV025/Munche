@@ -22,4 +22,5 @@
     <string name="mapbox_access_token">pk.eyJ1IjoibXVrZXNoZ3V0a2EiLCJhIjoiY2tkeXI2azV1M2VwZjJ6cGFpOWI3ZWZyYSJ9.vc6s1I6_6dDvzaAKgXPAHg</string>
     <string name="write_a_review">Write a review</string>
     <string name="review_hint">Write your thoughts about the restaurant</string>
+    <string name="search_restaurants">Search Restaurants</string>
 </resources>

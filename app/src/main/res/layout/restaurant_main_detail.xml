@@ -19,7 +19,8 @@
                 android:id="@+id/resImage"
                 android:layout_width="match_parent"
                 android:layout_height="155dp"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                android:src="@drawable/restaurant_image_placeholder"/>
 
             <TextView
                 android:id="@+id/resName"
