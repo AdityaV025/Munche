@@ -31,7 +31,7 @@
                 android:layout_marginStart="11dp"
                 android:textSize="17sp"
                 android:textColor="@color/colorAccent"
-                android:fontFamily="@font/open_sans_semibold"/>
+                android:fontFamily="@font/open_sans"/>
 
             <TextView
                 android:id="@+id/resCuisine"

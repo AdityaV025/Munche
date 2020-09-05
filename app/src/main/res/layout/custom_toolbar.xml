@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorPrimaryDark"
+    android:background="@color/white"
     app:contentInsetLeft="0dp"
     app:contentInsetStart="0dp">
 
@@ -27,8 +27,8 @@
                 android:layout_height="wrap_content"
                 android:text="Delivering To"
                 android:textSize="20sp"
-                android:fontFamily="@font/open_sans_bold"
-                android:textColor="@color/lightWhite"/>
+                android:fontFamily="@font/open_sans_semibold"
+                android:textColor="@color/colorAccent"/>
 
             <TextView
                 android:id="@+id/userLocation"
@@ -36,7 +36,8 @@
                 android:layout_height="wrap_content"
                 android:text="getting location ..."
                 android:fontFamily="@font/open_sans"
-                android:textColor="@color/lightWhite"/>
+                android:textColor="@color/gray"
+                android:textSize="14sp"/>
 
         </LinearLayout>
 
@@ -52,7 +53,7 @@
             app:ibv_fixedBadgeRadius="7dp"
             app:ibv_badgeTextStyle="bold"
             app:ibv_badgeTextColor="#ffffff"
-            app:ibv_badgeColor="@color/colorAccent"
+            app:ibv_badgeColor="@color/colorPrimary"
             app:ibv_badgePosition="top_right"
             app:ibv_maxBadgeValue="99"/>
 

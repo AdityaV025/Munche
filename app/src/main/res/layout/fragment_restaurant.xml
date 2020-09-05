@@ -1,9 +1,8 @@
-<ScrollView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="Fragments.RestaurantFragment">
 
     <RelativeLayout
@@ -14,12 +13,35 @@
             android:id="@+id/toolBar"/>
 
         <TextView
+            android:id="@+id/cuisineTextLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Top cuisines for you"
+            android:fontFamily="@font/open_sans_semibold"
+            android:layout_below="@+id/toolBar"
+            android:layout_marginStart="12dp"
+            android:textSize="21sp"
+            android:textColor="@color/colorAccent"
+            />
+
+        <GridView
+            android:id="@+id/cuisineGridView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cuisineTextLabel"
+            android:layout_marginTop="7dp"
+            android:overScrollMode="never"
+            android:numColumns="3"
+            android:verticalSpacing="3dp"
+            android:horizontalSpacing="3dp"/>
+
+        <TextView
             android:id="@+id/trendingTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/trending"
-            android:layout_below="@+id/toolBar"
-            android:layout_marginTop="50dp"
+            android:layout_below="@+id/cuisineGridView"
+            android:layout_marginTop="21dp"
             android:layout_marginStart="12dp"
             android:textColor="@color/colorAccent"
             android:fontFamily="@font/open_sans_bold"
@@ -38,5 +60,5 @@
 
     </RelativeLayout>
 
-</ScrollView>
+</RelativeLayout>
 

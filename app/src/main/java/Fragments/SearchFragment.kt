@@ -19,7 +19,6 @@ import kotlinx.android.synthetic.main.fragment_search.*
 
 class SearchFragment : Fragment() {
 
-    private val firebaseAuth : FirebaseAuth = FirebaseAuth.getInstance()
     private val firebaseFirestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private var searchList : List<SearchItemDetails> = ArrayList()
     private val searchListAdapter  = SearchListAdapter(searchList)
@@ -72,7 +71,6 @@ class SearchFragment : Fragment() {
                         searchListAdapter.notifyDataSetChanged()
 
                     }else {
-                        Log.d("jkashdjkas", "Error CAME BITCH!")
                     }
                 }
 
