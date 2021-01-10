@@ -1,4 +1,4 @@
-<RelativeLayout
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -32,8 +32,8 @@
             android:layout_marginTop="7dp"
             android:overScrollMode="never"
             android:numColumns="3"
-            android:verticalSpacing="3dp"
-            android:horizontalSpacing="3dp"/>
+            android:verticalSpacing="1dp"
+            android:horizontalSpacing="1dp"/>
 
         <TextView
             android:id="@+id/trendingTextView"
@@ -60,5 +60,5 @@
 
     </RelativeLayout>
 
-</RelativeLayout>
+</androidx.core.widget.NestedScrollView>
 

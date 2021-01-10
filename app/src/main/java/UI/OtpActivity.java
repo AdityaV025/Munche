@@ -39,6 +39,7 @@ public class OtpActivity extends AppCompatActivity {
     private String mAuthVerificationId, phoneNum;
     private OtpTextView mOtpText;
     private Button mVerifyBtn;
+
 //    private ChangeStatusBarColor StatusBarColor = new ChangeStatusBarColor();
 
     @Override
