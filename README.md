@@ -16,8 +16,11 @@ Munche is an open source 🍔 food ordering android application developed in **J
 
 # Demo
 
-<img src="https://raw.githubusercontent.com/AdityaV025/Munche/master/assets/demo.gif?token=AJM5NN5DLJJTWLG73J3NNP3A53LJE" width=32% />
-<img src="https://raw.githubusercontent.com/AdityaV025/Munche/master/assets/demo2.gif?token=AJM5NN22BOVODRNRDUDQVUTA53LTS" width=32% />
+<p align="left">
+  <img src="https://raw.githubusercontent.com/AdityaV025/Munche/master/assets/demo.gif?token=AJM5NN5DLJJTWLG73J3NNP3A53LJE" alt="animated" width = 37%/>
+  <img src="https://raw.githubusercontent.com/AdityaV025/Munche/master/assets/demo2.gif?token=AJM5NN22BOVODRNRDUDQVUTA53LTS" alt="animated"
+  width = 37% />
+</p>
 
 # ☁️ Inspiration
 
