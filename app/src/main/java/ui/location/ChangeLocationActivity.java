@@ -1,4 +1,4 @@
-package UI;
+package ui.location;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -7,54 +7,46 @@ import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.BounceInterpolator;
-import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
+
 import androidx.annotation.NonNull;
-// Classes needed to initialize the map
-import com.example.munche.CartItemActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
+import ui.cart.CartItemActivity;
 import com.example.munche.MainActivity;
 import com.example.munche.R;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.location.LocationComponentOptions;
-import com.mapbox.mapboxsdk.maps.MapView;
-import com.mapbox.mapboxsdk.maps.MapboxMap;
-import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
-import com.mapbox.mapboxsdk.maps.Style;
-// Classes needed to handle location permissions
-import com.mapbox.android.core.permissions.PermissionsListener;
-import com.mapbox.android.core.permissions.PermissionsManager;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-// Classes needed to add the location engine
 import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.location.LocationEngineCallback;
 import com.mapbox.android.core.location.LocationEngineProvider;
 import com.mapbox.android.core.location.LocationEngineRequest;
 import com.mapbox.android.core.location.LocationEngineResult;
+import com.mapbox.android.core.permissions.PermissionsListener;
+import com.mapbox.android.core.permissions.PermissionsManager;
+import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.location.LocationComponent;
+import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
+import com.mapbox.mapboxsdk.location.LocationComponentOptions;
+import com.mapbox.mapboxsdk.location.modes.CameraMode;
+import com.mapbox.mapboxsdk.location.modes.RenderMode;
+import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import com.mapbox.mapboxsdk.maps.Style;
+
+import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-// Classes needed to add the location component
-import com.mapbox.mapboxsdk.location.LocationComponent;
-import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
-import com.mapbox.mapboxsdk.location.modes.CameraMode;
-import com.mapbox.mapboxsdk.location.modes.RenderMode;
 
 public class ChangeLocationActivity extends AppCompatActivity implements
         OnMapReadyCallback, PermissionsListener {
@@ -64,9 +56,14 @@ public class ChangeLocationActivity extends AppCompatActivity implements
     private LocationEngine locationEngine;
     private long DEFAULT_INTERVAL_IN_MILLISECONDS = 8000L;
     private long DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5;
-    private ChangeLocationCallback callback = new ChangeLocationCallback(this);
+    private final ChangeLocationCallback callback = new ChangeLocationCallback(this);
     private FirebaseFirestore db;
-    private String uid,address,city,state,country,postalCode,knownName,subLocality,subAdminArea,finalAddress,mIntentKey;
+    private String uid;
+    private String city;
+    private String postalCode;
+    private String knownName;
+    private String subLocality;
+    private String mIntentKey;
     private EditText mLocationText;
     private List<Address> addresses;
     private Geocoder geocoder;
@@ -148,6 +145,7 @@ public class ChangeLocationActivity extends AppCompatActivity implements
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
@@ -163,7 +161,7 @@ public class ChangeLocationActivity extends AppCompatActivity implements
                 enableLocationComponent(mapboxMap.getStyle());
             }
         } else {
-            Toast.makeText(this, "Je Baat", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Ye Baat", Toast.LENGTH_LONG).show();
             finish();
         }
     }
@@ -226,15 +224,11 @@ public class ChangeLocationActivity extends AppCompatActivity implements
         }
 
         if (addresses != null && addresses.size() > 0){
-            address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
             city = addresses.get(0).getLocality();
-            state = addresses.get(0).getAdminArea();
-            country = addresses.get(0).getCountryName();
             postalCode = addresses.get(0).getPostalCode();
             knownName = addresses.get(0).getFeatureName();
             subLocality = addresses.get(0).getSubLocality();
-            subAdminArea = addresses.get(0).getSubAdminArea();
-            finalAddress = knownName + ", " + subLocality +  ", " + city + ", " + postalCode;
+            String finalAddress = knownName + ", " + subLocality + ", " + city + ", " + postalCode;
             mLocationText.setText(finalAddress);
         }
 
@@ -252,18 +246,23 @@ public class ChangeLocationActivity extends AppCompatActivity implements
 
             db.collection("UserList").document(uid).update(updateLocMap).addOnSuccessListener(aVoid -> {
                 mProgressDialog.dismiss();
-                if (mIntentKey.equals("ONE")){
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }else if(mIntentKey.equals("TWO")){
-                    Intent intent = new Intent(getApplicationContext(), CartItemActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-                else if(mIntentKey.equals("THREE")){
-                   onBackPressed();
-                   finish();
+                switch (mIntentKey) {
+                    case "ONE": {
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                        break;
+                    }
+                    case "TWO": {
+                        Intent intent = new Intent(getApplicationContext(), CartItemActivity.class);
+                        startActivity(intent);
+                        finish();
+                        break;
+                    }
+                    case "THREE":
+                        onBackPressed();
+                        finish();
+                        break;
                 }
 
             });

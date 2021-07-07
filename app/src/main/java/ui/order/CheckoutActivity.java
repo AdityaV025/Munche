@@ -1,10 +1,4 @@
-package com.example.munche;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+package ui.order;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -20,8 +14,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import com.example.munche.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -40,19 +37,17 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import Utils.JSONParser;
+import utils.GenerateRandomNum;
+import utils.JSONParser;
 
 public class CheckoutActivity extends AppCompatActivity implements View.OnClickListener, PaymentStatusListener, PaytmPaymentTransactionCallback {
 
     private String mTotalAmount;
-    private TextView mAmountText;
     private LinearLayout mCODView,mCardView,mUpiView;
-    private Toolbar mPaymentToolBar;
     private FirebaseFirestore db;
     private String USER_LIST = "UserList";
     private String CART_ITEMS = "CartItems";
@@ -61,9 +56,8 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
     private String RES_ORDERS = "RestaurantOrders";
     private String[] getItemsArr, getOrderedItemsArr;
     private String upiID,resName,resUid,userAddress,mid,extraInst,userPhone,uid,userName,resSpotImage,resDelTime;
-    private EasyUpiPayment mEasyUPIPayment;
-    private long customerID, orderID,transactionId,transactionRefId;
-    private ImageView mGoBackBtn;
+    private long customerID;
+    private long orderID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +69,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
 
     @SuppressLint("SetTextI18n")
     private void init() {
-        mPaymentToolBar = findViewById(R.id.paymentMethodToolBar);
-        mGoBackBtn = findViewById(R.id.cartBackBtn);
+        ImageView mGoBackBtn = findViewById(R.id.cartBackBtn);
         resSpotImage = getIntent().getStringExtra("RES_IMAGE");
         getItemsArr = getIntent().getStringArrayExtra("ITEM_NAMES");
         getOrderedItemsArr = getIntent().getStringArrayExtra("ITEM_ORDERED_NAME");
@@ -90,7 +83,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         userPhone = getIntent().getStringExtra("USER_PHONE");
         db = FirebaseFirestore.getInstance();
         mTotalAmount = getIntent().getStringExtra("TOTAL_AMOUNT");
-        mAmountText = findViewById(R.id.totalAmountItems);
+        TextView mAmountText = findViewById(R.id.totalAmountItems);
         mAmountText.setText("Amount to be paid \u20b9" + mTotalAmount);
         showResPaymentMethods();
         mCODView = findViewById(R.id.cashMethodContainer);
@@ -100,9 +93,9 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         mCardView.setOnClickListener(this);
         mUpiView.setOnClickListener(this);
 
-        mid = "motuUW73726819251685";
-        customerID = (long) Math.floor(Math.random() * 9000000000000L) + 1000000000000L;
-        orderID = (long) Math.floor(Math.random() * 9000000000000L) + 1000000000000L;
+        mid = "YOUR_OWN_MID";
+        customerID = Long.parseLong(GenerateRandomNum.Companion.generateRandNum());
+        orderID = Long.parseLong(GenerateRandomNum.Companion.generateRandNum());
 
         if (ContextCompat.checkSelfPermission(CheckoutActivity.this, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(CheckoutActivity.this, new String[]{Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS}, 101);
@@ -174,22 +167,22 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void paytmGateway() {
-        sendUserDetailTOServerdd dl = new sendUserDetailTOServerdd();
+        sendUserDetailToServer dl = new sendUserDetailToServer();
         dl.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void upiPaymentMethod() {
-            transactionId = (long) Math.floor(Math.random() * 9000000000000L) + 1000000000000L;
-            transactionRefId = (long) Math.floor(Math.random() * 9000000000000L) + 1000000000000L;
-            mEasyUPIPayment = new EasyUpiPayment.Builder()
-                    .with(this)
-                    .setPayeeVpa(upiID)
-                    .setPayeeName(resName)
-                    .setTransactionId(String.valueOf(transactionId))
-                    .setTransactionRefId(String.valueOf(transactionRefId))
-                    .setDescription("Payment to " + resName + " for food ordering")
-                    .setAmount(mTotalAmount + ".00")
-                    .build();
+        long transactionId = Long.parseLong(GenerateRandomNum.Companion.generateRandNum());
+        long transactionRefId = Long.parseLong(GenerateRandomNum.Companion.generateRandNum());
+        EasyUpiPayment mEasyUPIPayment = new EasyUpiPayment.Builder()
+                .with(this)
+                .setPayeeVpa(upiID)
+                .setPayeeName(resName)
+                .setTransactionId(String.valueOf(transactionId))
+                .setTransactionRefId(String.valueOf(transactionRefId))
+                .setDescription("Payment to " + resName + " for food ordering")
+                .setAmount(mTotalAmount + ".00")
+                .build();
 
             mEasyUPIPayment.setPaymentStatusListener(this);
             mEasyUPIPayment.startPayment();
@@ -210,10 +203,10 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
     }
 
     @SuppressLint("StaticFieldLeak")
-    public class sendUserDetailTOServerdd extends AsyncTask<ArrayList<String>, Void, String> {
+    public class sendUserDetailToServer extends AsyncTask<ArrayList<String>, Void, String> {
         private ProgressDialog dialog = new ProgressDialog(CheckoutActivity.this);
         //private String orderId , mid, custid, amt;
-        String url ="https://surgical-atoms.000webhostapp.com/generateChecksum.php";
+        String url ="GENERATE_CHECKSUM_URL";
         String verifyurl = "https://pguat.paytm.com/paytmchecksum/paytmCallback.jsp";
         // "https://securegw-stage.paytm.in/theia/paytmCallback?ORDER_ID"+orderId;
         String CHECKSUMHASH ="";
@@ -231,16 +224,17 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
                             "&CHANNEL_ID=WAP&TXN_AMOUNT=" + mTotalAmount +"&WEBSITE=WEBSTAGING"+
                             "&CALLBACK_URL="+ verifyurl+"&INDUSTRY_TYPE_ID=Retail";
             JSONObject jsonObject = jsonParser.makeHttpRequest(url,"POST",param);
-            // yaha per checksum ke saht order id or status receive hoga..
+
+            /*
+                This will receive checksum and order_id
+             */
             Log.e("CheckSum result >>",jsonObject.toString());
-            if(jsonObject != null){
-                Log.e("CheckSum result >>",jsonObject.toString());
-                try {
-                    CHECKSUMHASH=jsonObject.has("CHECKSUMHASH")?jsonObject.getString("CHECKSUMHASH"):"";
-                    Log.e("CheckSum result >>",CHECKSUMHASH);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            Log.e("CheckSum result >>",jsonObject.toString());
+            try {
+                CHECKSUMHASH=jsonObject.has("CHECKSUMHASH")?jsonObject.getString("CHECKSUMHASH"):"";
+                Log.e("CheckSum result >>",CHECKSUMHASH);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
             return CHECKSUMHASH;
         }
@@ -250,7 +244,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
             if (dialog.isShowing()) {
                 dialog.dismiss();
             }
-            PaytmPGService Service = PaytmPGService.getStagingService();
+            PaytmPGService Service = PaytmPGService.getStagingService("YOUR_PAYTM_TEST_URL");
             // when app is ready to publish use production service
             // PaytmPGService  Service = PaytmPGService.getProductionService();
             // now call paytm service here
@@ -264,10 +258,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
             paramMap.put("TXN_AMOUNT", mTotalAmount);
             paramMap.put("WEBSITE", "WEBSTAGING");
             paramMap.put("CALLBACK_URL" ,verifyurl);
-            //paramMap.put( "EMAIL" , "abc@gmail.com");   // no need
-            // paramMap.put( "MOBILE_NO" , "9144040888");  // no need
             paramMap.put("CHECKSUMHASH" ,CHECKSUMHASH);
-            //paramMap.put("PAYMENT_TYPE_ID" ,"CC");    // no need
             paramMap.put("INDUSTRY_TYPE_ID", "Retail");
             PaytmOrder Order = new PaytmOrder(paramMap);
             Log.e("checksum ", "param "+ paramMap.toString());
@@ -282,7 +273,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         @SuppressLint("SimpleDateFormat") String timeStampDate1 = new SimpleDateFormat("dd MMM yyyy").format(Calendar.getInstance().getTime());
         @SuppressLint("SimpleDateFormat") String timeStampDate2 = new SimpleDateFormat("hh:mm a").format(Calendar.getInstance().getTime());
 
-        String orderID = String.valueOf((long) Math.floor(Math.random() * 9000000000000L) + 1000000000000L);
+        String orderID = GenerateRandomNum.Companion.generateRandNum();
 
         Map<String, Object> orderedItemsMap = new HashMap<>();
         orderedItemsMap.put("ordered_items", FieldValue.arrayUnion((Object[]) getOrderedItemsArr));
@@ -317,7 +308,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
 */
     @Override
     public void onTransactionCompleted(TransactionDetails transactionDetails) {
-        Log.d("TRDETAILS", String.valueOf(transactionDetails));
+
     }
 
     @Override
@@ -329,7 +320,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onTransactionSubmitted() {
-        Log.d("PENDING", "PENDINGGGGGG");
+
     }
 
     @Override

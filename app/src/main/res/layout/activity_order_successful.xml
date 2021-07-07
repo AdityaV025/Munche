@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OrderSuccessfulActivity"
+    tools:context="ui.order.OrderSuccessfulActivity"
     android:background="@color/white">
 
     <com.airbnb.lottie.LottieAnimationView

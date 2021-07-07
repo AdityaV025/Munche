@@ -1,19 +1,17 @@
-package Fragments
+package fragments
 
-import Adapters.SearchListAdapter
-import Models.SearchItemDetails
+import adapters.SearchListAdapter
+import models.SearchItemDetails
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.munche.R
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_search.*
 
@@ -60,17 +58,13 @@ class SearchFragment : Fragment() {
 
     @SuppressLint("LogNotTimber")
     private fun searchInFirestore(searchText: String) {
-
         firebaseFirestore.collection("RestaurantList").orderBy("search_restaurant")
                 .startAt(searchText)
                 .endAt("$searchText\uf8ff").get().addOnCompleteListener {
                     if (it.isSuccessful){
-
                         searchList = it.result!!.toObjects(SearchItemDetails::class.java)
                         searchListAdapter.searchList = searchList
                         searchListAdapter.notifyDataSetChanged()
-
-                    }else {
                     }
                 }
 

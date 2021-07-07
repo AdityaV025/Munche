@@ -1,20 +1,9 @@
-package Fragments;
+package fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.LinearSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SnapHelper;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +13,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.munche.CartItemActivity;
-import com.example.munche.EmptyCartActivity;
-import com.example.munche.MainRestaurantPageActivity;
+import ui.cart.CartItemActivity;
+import ui.cart.EmptyCartActivity;
+import ui.main.MainRestaurantPageActivity;
 import com.example.munche.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -43,30 +41,20 @@ import com.google.firebase.firestore.Query;
 
 import java.util.Objects;
 
-import Models.RestaurantDetail;
-import UI.ChangeLocationActivity;
+import models.RestaurantDetail;
+import ui.location.ChangeLocationActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.nikartm.support.ImageBadgeView;
-import timber.log.Timber;
-
-import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 public class RestaurantFragment extends Fragment {
 
-    private View view;
-    private FirebaseAuth mAuth;
-    private Toolbar mToolbar;
     private FirebaseUser mCurrentUser;
     private FirebaseFirestore db;
     private String address;
-    private FirestoreRecyclerAdapter<RestaurantDetail, RestaurantItemViewHolder> restaurantAdapter;
     LinearLayoutManager linearLayoutManager;
     private RecyclerView mRestaurantRecyclerView;
     private ImageBadgeView mImageBadgeView;
-    private TextView mTrendingTextView;
-    private LinearLayout mAddressContainer;
-    private GridView mCuisineFoodView;
     private String[] fruitNames = {"Biryani","North Indian","South Indian","Cakes","Desserts","Burgers","Chinese","Rolls","Pizza"};
     private String biryaniImg = "https://firebasestorage.googleapis.com/v0/b/munche-be7a5.appspot.com/o/cuisine_images%2Fbiryani.jpg?alt=media&token=6eceb101-07c1-49ff-95a3-e540b1e0fb35";
     private String southIndianImg = "https://firebasestorage.googleapis.com/v0/b/munche-be7a5.appspot.com/o/cuisine_images%2Fsouth_indian.jpg?alt=media&token=e925ee1d-5855-484a-9928-9716025ecc43";
@@ -86,7 +74,7 @@ public class RestaurantFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_restaurant, container, false);
+        View view = inflater.inflate(R.layout.fragment_restaurant, container, false);
         init(view);
         fetchLocation(view);
         getItemsInCartNo();
@@ -96,8 +84,8 @@ public class RestaurantFragment extends Fragment {
     }
 
     private void init(View view) {
-        mAddressContainer = view.findViewById(R.id.addressContainer);
-        mCuisineFoodView = view.findViewById(R.id.cuisineGridView);
+        LinearLayout mAddressContainer = view.findViewById(R.id.addressContainer);
+        GridView mCuisineFoodView = view.findViewById(R.id.cuisineGridView);
         CuisineImageAdapter adapter = new CuisineImageAdapter();
         mCuisineFoodView.setAdapter(adapter);
         mAddressContainer.setOnClickListener(view1 -> {
@@ -105,12 +93,11 @@ public class RestaurantFragment extends Fragment {
             intent.putExtra("INT", "ONE");
             startActivity(intent);
         });
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mCurrentUser = mAuth.getCurrentUser();
-        mTrendingTextView = view.findViewById(R.id.trendingTextView);
         db = FirebaseFirestore.getInstance();
-        mToolbar = view.findViewById(R.id.customToolBar);
-        ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(mToolbar);
+        Toolbar mToolbar = view.findViewById(R.id.customToolBar);
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(mToolbar);
         mRestaurantRecyclerView = view.findViewById(R.id.restaurant_recyclerView);
         linearLayoutManager = new LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false);
         mRestaurantRecyclerView.setLayoutManager(linearLayoutManager);
@@ -137,7 +124,7 @@ public class RestaurantFragment extends Fragment {
         db.collection("UserList").document(mCurrentUser.getUid()).collection("CartItems").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 int count = 0;
-                for (DocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                for (DocumentSnapshot ignored : Objects.requireNonNull(task.getResult())) {
                     count++;
                 }
                 mImageBadgeView.setBadgeValue(count);
@@ -177,7 +164,7 @@ public class RestaurantFragment extends Fragment {
             ImageView image = view1.findViewById(R.id.cuisineImage);
 
             name.setText(fruitNames[i]);
-            Glide.with(Objects.requireNonNull(getContext()))
+            Glide.with(requireContext())
                     .load(fruitImages[i])
                     .apply(new RequestOptions()
                             .override(200,200))
@@ -192,7 +179,7 @@ public class RestaurantFragment extends Fragment {
         FirestoreRecyclerOptions<RestaurantDetail> menuItemModel = new FirestoreRecyclerOptions.Builder<RestaurantDetail>()
                 .setQuery(query, RestaurantDetail.class)
                 .build();
-        restaurantAdapter = new FirestoreRecyclerAdapter<RestaurantDetail, RestaurantItemViewHolder>(menuItemModel) {
+        FirestoreRecyclerAdapter<RestaurantDetail, RestaurantItemViewHolder> restaurantAdapter = new FirestoreRecyclerAdapter<RestaurantDetail, RestaurantItemViewHolder>(menuItemModel) {
             @SuppressLint("SetTextI18n")
             @Override
             public void onBindViewHolder(@NonNull RestaurantItemViewHolder holder, int position, @NonNull RestaurantDetail model) {
@@ -206,7 +193,7 @@ public class RestaurantFragment extends Fragment {
                             Double mUserLong = (Double) documentSnapshot.get("longitude");
                             Double mResLat = model.getLatitude();
                             Double mResLong = model.getLongitude();
-                            int prepTime = Integer.parseInt(model.getRestaurant_prep_time().replace(" Mins" , ""));
+                            int prepTime = Integer.parseInt(Objects.requireNonNull(model.getRestaurant_prep_time()).replace(" Mins", ""));
                             Location userLocation = new Location("");
                             userLocation.setLatitude(mUserLat);
                             userLocation.setLongitude(mUserLong);
@@ -216,7 +203,7 @@ public class RestaurantFragment extends Fragment {
 
                             int distanceInMeters = (int) (userLocation.distanceTo(restaurantLocation));
                             int AvgDrivingSpeedPerKm = 666;
-                            int estimatedDriveTimeInMinutes = (int) (distanceInMeters / AvgDrivingSpeedPerKm);
+                            int estimatedDriveTimeInMinutes = distanceInMeters / AvgDrivingSpeedPerKm;
                             String deliveryTime = String.valueOf(estimatedDriveTimeInMinutes + prepTime);
                             holder.mRestaurantName.setText(model.getRestaurant_name());
                             String RUID = model.getRestaurant_uid();
@@ -225,19 +212,19 @@ public class RestaurantFragment extends Fragment {
                             Glide.with(requireActivity())
                                     .load(model.getRestaurant_spotimage())
                                     .into(holder.mRestaurantSpotImage);
-                            holder.mAveragePrice.setText("\u20B9" +  model.getAverage_price() + " Per Person | ");
+                            holder.mAveragePrice.setText("\u20B9" + model.getAverage_price() + " Per Person | ");
                             holder.itemView.setOnClickListener(view -> {
 
                                 Intent intent = new Intent(getActivity(), MainRestaurantPageActivity.class);
                                 intent.putExtra("RUID", RUID);
                                 intent.putExtra("NAME", model.getRestaurant_name());
-                                intent.putExtra("DISTANCE", String.valueOf(distanceInMeters/1000));
+                                intent.putExtra("DISTANCE", String.valueOf(distanceInMeters / 1000));
                                 intent.putExtra("TIME", deliveryTime);
                                 intent.putExtra("PRICE", model.getAverage_price());
                                 intent.putExtra("RES_IMAGE", model.getRestaurant_spotimage());
                                 intent.putExtra("RES_NUM", model.getRestaurant_phonenumber());
                                 startActivity(intent);
-                                Objects.requireNonNull(getActivity()).overridePendingTransition(0,0);
+                                requireActivity().overridePendingTransition(0, 0);
 
                             });
                         }
@@ -245,6 +232,7 @@ public class RestaurantFragment extends Fragment {
                 }
 
             }
+
             @NonNull
             @Override
             public RestaurantItemViewHolder onCreateViewHolder(@NonNull ViewGroup group, int i) {
@@ -252,9 +240,10 @@ public class RestaurantFragment extends Fragment {
                         .inflate(R.layout.restaurant_main_detail, group, false);
                 return new RestaurantItemViewHolder(view);
             }
+
             @Override
             public void onError(@NonNull @NotNull FirebaseFirestoreException e) {
-                Timber.e(Objects.requireNonNull(e.getMessage()));
+
             }
         };
         restaurantAdapter.startListening();
@@ -283,13 +272,13 @@ public class RestaurantFragment extends Fragment {
     private void sendUserToCheckOut() {
         Intent intent = new Intent(getActivity(), CartItemActivity.class);
         startActivity(intent);
-        Objects.requireNonNull(getActivity()).overridePendingTransition(0,0);
+        requireActivity().overridePendingTransition(0,0);
     }
 
     private void sendUserToEmptyCart() {
         Intent intent = new Intent(getActivity(), EmptyCartActivity.class);
         startActivity(intent);
-        Objects.requireNonNull(getActivity()).overridePendingTransition(0,0);
+        requireActivity().overridePendingTransition(0,0);
     }
 
 }

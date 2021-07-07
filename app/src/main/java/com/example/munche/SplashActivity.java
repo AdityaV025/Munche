@@ -1,12 +1,13 @@
-package UI;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.example.munche;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.WindowManager;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.munche.R;
+
+import ui.auth.LoginActivity;
 
 public class SplashActivity extends AppCompatActivity {
 

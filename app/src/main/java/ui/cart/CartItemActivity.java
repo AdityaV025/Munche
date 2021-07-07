@@ -1,12 +1,6 @@
-package com.example.munche;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+package ui.cart;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -20,12 +14,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
+import com.example.munche.MainActivity;
+import com.example.munche.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.annotations.NotNull;
@@ -38,27 +37,25 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import Fragments.RestaurantFragment;
-import Models.CartItemDetail;
-import UI.ChangeLocationActivity;
+import models.CartItemDetail;
+import ui.location.ChangeLocationActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ui.order.CheckoutActivity;
 
 public class CartItemActivity extends AppCompatActivity {
 
-    private AppBarLayout mToolBar;
     private FirebaseFirestore db;
     private FirestoreRecyclerAdapter<CartItemDetail, CartItemHolder> itemAdapter;
     LinearLayoutManager linearLayoutManager;
-    private RecyclerView mCartItemRecylerView;
-    private TextView mRestaurantCartName, mToolBarText, mUserAddressText, mTotalAmountText,mChangeAddressText;
+    private RecyclerView mCartItemRecyclerView;
+    private TextView mRestaurantCartName;
+    private TextView mUserAddressText;
+    private TextView mTotalAmountText;
     private String uid, userAddress,ruid,userName,userPhoneNum,resDeliveryTime,resSpotImage;
     private String extraIns = "none";
-    private ImageView mCartBackBtn;
     private String USER_LIST = "UserList";
     private String CART_ITEMS = "CartItems";
-    private BottomSheetBehavior mBottomSheetBehavior;
-    private Button mCheckoutBtn;
     private EditText mExtraInstructionsText;
 
     @Override
@@ -75,11 +72,10 @@ public class CartItemActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     private void init() {
         db = FirebaseFirestore.getInstance();
-        mToolBar = findViewById(R.id.cartItemToolBar);
-        mToolBarText = findViewById(R.id.confirmOrderText);
+        TextView mToolBarText = findViewById(R.id.confirmOrderText);
         mToolBarText.setText("Confirm Order");
         mRestaurantCartName = findViewById(R.id.restaurantCartName);
-        mChangeAddressText = findViewById(R.id.changeAddressText);
+        TextView mChangeAddressText = findViewById(R.id.changeAddressText);
         mChangeAddressText.setOnClickListener(view -> {
 
             Intent intent = new Intent(getApplicationContext(), ChangeLocationActivity.class);
@@ -88,20 +84,18 @@ public class CartItemActivity extends AppCompatActivity {
             finish();
 
         });
-        mCartBackBtn = findViewById(R.id.cartBackBtn);
+        ImageView mCartBackBtn = findViewById(R.id.cartBackBtn);
         mCartBackBtn.setOnClickListener(view -> {
             this.onBackPressed();
         });
         uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-        mCartItemRecylerView = findViewById(R.id.cartItemRecyclerView);
+        mCartItemRecyclerView = findViewById(R.id.cartItemRecyclerView);
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        mCartItemRecylerView.setLayoutManager(linearLayoutManager);
-        View bottomSheet = findViewById(R.id.bottomSheet);
-        mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        mCartItemRecyclerView.setLayoutManager(linearLayoutManager);
         mExtraInstructionsText = findViewById(R.id.extraInstructionEdiText);
         mUserAddressText = findViewById(R.id.userDeliveryAddress);
         mTotalAmountText = findViewById(R.id.totAmount);
-        mCheckoutBtn = findViewById(R.id.payAmountBtn);
+        Button mCheckoutBtn = findViewById(R.id.payAmountBtn);
         mCheckoutBtn.setOnClickListener(view -> {
             calculateTotalPriceAndMove();
         });
@@ -198,7 +192,7 @@ public class CartItemActivity extends AppCompatActivity {
         };
         itemAdapter.startListening();
         itemAdapter.notifyDataSetChanged();
-        mCartItemRecylerView.setAdapter(itemAdapter);
+        mCartItemRecyclerView.setAdapter(itemAdapter);
 
     }
 
@@ -226,14 +220,14 @@ public class CartItemActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void calculateTotalPrice() {
-        mCartItemRecylerView.postDelayed(() -> {
+        mCartItemRecyclerView.postDelayed(() -> {
             if (itemAdapter.getItemCount() == 0){
                 moveIfCartEmpty();
             }else {
-                if (Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(0)).itemView.findViewById(R.id.itemPriceCart) != null){
+                if (Objects.requireNonNull(mCartItemRecyclerView.findViewHolderForAdapterPosition(0)).itemView.findViewById(R.id.itemPriceCart) != null){
                     int totPrice = 0;
-                    for (int i = 0; i < Objects.requireNonNull(mCartItemRecylerView.getAdapter()).getItemCount() ; i++){
-                        TextView textView = Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(i)).itemView.findViewById(R.id.itemPriceCart);
+                    for (int i = 0; i < Objects.requireNonNull(mCartItemRecyclerView.getAdapter()).getItemCount() ; i++){
+                        TextView textView = Objects.requireNonNull(mCartItemRecyclerView.findViewHolderForAdapterPosition(i)).itemView.findViewById(R.id.itemPriceCart);
                         String priceText = textView.getText().toString().replace("\u20b9 " , "");
                         int price = Integer.parseInt(priceText);
                         totPrice = price + totPrice;
@@ -246,18 +240,18 @@ public class CartItemActivity extends AppCompatActivity {
     }
 
     private void calculateTotalPriceAndMove() {
-        mCartItemRecylerView.postDelayed(() -> {
+        mCartItemRecyclerView.postDelayed(() -> {
             if (itemAdapter.getItemCount() == 0){
                 moveIfCartEmpty();
             }else {
-                if (Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(0)).itemView.findViewById(R.id.itemPriceCart) != null){
+                if (Objects.requireNonNull(mCartItemRecyclerView.findViewHolderForAdapterPosition(0)).itemView.findViewById(R.id.itemPriceCart) != null){
                     int totPrice = 0;
-                    String[] itemsArr = new String[Objects.requireNonNull(mCartItemRecylerView.getAdapter()).getItemCount()];
-                    String[] orderedItemsArr = new String[mCartItemRecylerView.getAdapter().getItemCount()];
-                    for (int i = 0; i < Objects.requireNonNull(mCartItemRecylerView.getAdapter()).getItemCount() ; i++){
-                        TextView textView = Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(i)).itemView.findViewById(R.id.itemPriceCart);
-                        TextView textView2 = Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(i)).itemView.findViewById(R.id.itemNameCart);
-                        ElegantNumberButton elegantNumberButton = Objects.requireNonNull(mCartItemRecylerView.findViewHolderForAdapterPosition(i)).itemView.findViewById(R.id.quantityPicker);
+                    String[] itemsArr = new String[Objects.requireNonNull(mCartItemRecyclerView.getAdapter()).getItemCount()];
+                    String[] orderedItemsArr = new String[mCartItemRecyclerView.getAdapter().getItemCount()];
+                    for (int i = 0; i < Objects.requireNonNull(mCartItemRecyclerView.getAdapter()).getItemCount() ; i++){
+                        TextView textView = Objects.requireNonNull(mCartItemRecyclerView.findViewHolderForAdapterPosition(i)).itemView.findViewById(R.id.itemPriceCart);
+                        TextView textView2 = Objects.requireNonNull(mCartItemRecyclerView.findViewHolderForAdapterPosition(i)).itemView.findViewById(R.id.itemNameCart);
+                        ElegantNumberButton elegantNumberButton = Objects.requireNonNull(mCartItemRecyclerView.findViewHolderForAdapterPosition(i)).itemView.findViewById(R.id.quantityPicker);
                         String itemCount = elegantNumberButton.getNumber();
                         String priceText = textView.getText().toString().replace("\u20b9 " , "");
                         int price = Integer.parseInt(priceText);

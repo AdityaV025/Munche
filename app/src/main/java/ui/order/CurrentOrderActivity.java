@@ -1,10 +1,4 @@
-package com.example.munche;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
+package ui.order;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -12,19 +6,20 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
+
 import com.airbnb.lottie.LottieAnimationView;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.appbar.AppBarLayout;
+import com.example.munche.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -50,13 +45,13 @@ import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.mapbox.mapboxsdk.utils.BitmapUtils;
 
 import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 
 import ir.samanjafari.easycountdowntimer.CountDownInterface;
 import ir.samanjafari.easycountdowntimer.EasyCountDownTextview;
 import retrofit2.Callback;
 import retrofit2.Response;
-import timber.log.Timber;
 
 import static com.mapbox.core.constants.Constants.PRECISION_6;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
@@ -247,12 +242,12 @@ public class CurrentOrderActivity extends AppCompatActivity{
             @Override
             public void onResponse(retrofit2.Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
 // You can get the generic HTTP info about the response
-                Timber.d("Response code: " + response.code());
+
                 if (response.body() == null) {
-                    Timber.e("No routes found, make sure you set the right user and access token.");
+
                     return;
                 } else if (response.body().routes().size() < 1) {
-                    Timber.e("No routes found");
+
                     return;
                 }
 
@@ -279,7 +274,7 @@ public class CurrentOrderActivity extends AppCompatActivity{
 
             @Override
             public void onFailure(@NotNull retrofit2.Call<DirectionsResponse> call, @NotNull Throwable t) {
-                Timber.e("Error: %s", t.getMessage());
+
                 Toast.makeText(CurrentOrderActivity.this, "Error: " + t.getMessage(),
                         Toast.LENGTH_SHORT).show();
             }

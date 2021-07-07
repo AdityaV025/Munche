@@ -1,7 +1,4 @@
-package com.example.munche;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
+package ui.review;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -18,6 +15,11 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
+import com.example.munche.MainActivity;
+import com.example.munche.R;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.hsalf.smileyrating.SmileyRating;
@@ -28,15 +30,15 @@ import java.util.Objects;
 
 public class NewReviewActivity extends AppCompatActivity {
 
-    private String uid,userName,userImage,recommendText,review,resUid,resName;
-    private TextView mRatingResName;
+    private String uid;
+    private String userName;
+    private String userImage;
+    private String recommendText;
+    private String resUid;
     private SmileyRating ratingBar;
     private EditText mReviewEditText;
     private RadioButton mRecommendBtn,mNotRecommendBtn;
-    private Button mSaveReviewBtn;
     private FirebaseFirestore db;
-    private int rating;
-    private ImageView mGoBackBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,19 +55,19 @@ public class NewReviewActivity extends AppCompatActivity {
     private void init() {
         uid = getIntent().getStringExtra("UID");
         resUid = getIntent().getStringExtra("RUID");
-        resName = getIntent().getStringExtra("RES_NAME");
+        String resName = getIntent().getStringExtra("RES_NAME");
         db = FirebaseFirestore.getInstance();
         ratingBar = findViewById(R.id.smiley_rating);
         mReviewEditText = findViewById(R.id.reviewEditText);
-        mGoBackBtn = findViewById(R.id.cartBackBtn);
+        ImageView mGoBackBtn = findViewById(R.id.cartBackBtn);
         mGoBackBtn.setOnClickListener(view -> {
             onBackPressed();
         });
-        mRatingResName = findViewById(R.id.recommendLabel);
+        TextView mRatingResName = findViewById(R.id.recommendLabel);
         mRatingResName.setText("Would you recommend " + resName + " ?");
         mRecommendBtn = findViewById(R.id.recommend);
         mNotRecommendBtn = findViewById(R.id.notrecommend);
-        mSaveReviewBtn = findViewById(R.id.saveReviewBtn);
+        Button mSaveReviewBtn = findViewById(R.id.saveReviewBtn);
         mSaveReviewBtn.setOnClickListener(view -> {
             uploadReviewDetails();
         });
@@ -90,16 +92,16 @@ public class NewReviewActivity extends AppCompatActivity {
             }else if(mNotRecommendBtn.isChecked()){
                 recommendText = "NO";
             }
-            rating = ratingBar.getSelectedSmiley().getRating();
-            review = mReviewEditText.getText().toString();
+            int rating = ratingBar.getSelectedSmiley().getRating();
+            String review = mReviewEditText.getText().toString();
 
-            Map<String, String> uploadReviewMap = new HashMap<>();
+            HashMap<String, String> uploadReviewMap = new HashMap<>();
             uploadReviewMap.put("user_name",userName);
             uploadReviewMap.put("user_image", userImage);
             uploadReviewMap.put("uid", uid);
             uploadReviewMap.put("rating", String.valueOf(rating));
             uploadReviewMap.put("recommended", recommendText);
-            uploadReviewMap.put("review",review);
+            uploadReviewMap.put("review", review);
 
             db.collection("RestaurantList")
                     .document(resUid)

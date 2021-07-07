@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainRestaurantPageActivity">
+    tools:context="ui.main.MainRestaurantPageActivity">
 
     <include layout="@layout/main_restaurant_toolbar"
         android:id="@+id/mainResToolBar"/>
@@ -12,7 +12,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainRestaurantPageActivity"
+        tools:context="ui.main.MainRestaurantPageActivity"
         android:layout_below="@id/mainResToolBar"
         android:id="@+id/content1">
 

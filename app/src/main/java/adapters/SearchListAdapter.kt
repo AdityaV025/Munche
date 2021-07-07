@@ -1,6 +1,6 @@
-package Adapters
+package adapters
 
-import Models.SearchItemDetails
+import models.SearchItemDetails
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

@@ -1,11 +1,4 @@
-package UI;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+package ui.auth;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -26,6 +19,13 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.munche.MainActivity;
 import com.example.munche.R;
@@ -48,12 +48,18 @@ public class AddInfoActivity extends AppCompatActivity  implements LocationListe
         GoogleApiClient.OnConnectionFailedListener {
 
     private FirebaseFirestore db;
-    private String phoneNum,uid,devicetoken, address,city,state,country,postalCode,knownName,subLocality,subAdminArea,finalAddress;
+    private String phoneNum;
+    private String uid;
+    private String devicetoken;
+    private String city;
+    private String postalCode;
+    private String knownName;
+    private String subLocality;
+    private String finalAddress;
     private Double latitude,longitude;
     private EditText mUserName, mUserEmail, mUserAddress;
     private Button mSaveInfoBtn;
     private List<Address> addresses;
-    private Geocoder geocoder;
     final String TAG = "GPS";
     private long UPDATE_INTERVAL = 2 * 1000;  /* 10 secs */
     private long FASTEST_INTERVAL = 10000; /* 2 sec */
@@ -82,7 +88,7 @@ public class AddInfoActivity extends AppCompatActivity  implements LocationListe
             if (name.isEmpty() || email.isEmpty()) {
                 Toast.makeText(this, "Please Enter Valid Info", Toast.LENGTH_SHORT).show();
             } else{
-                Map userData = new HashMap<>();
+                HashMap<String,Object> userData = new HashMap<>();
                 userData.put("uid", uid);
                 userData.put("phonenumber", phoneNum);
                 userData.put("name", name);
@@ -157,7 +163,7 @@ public class AddInfoActivity extends AppCompatActivity  implements LocationListe
     }
 
     @Override
-    public void onLocationChanged(Location location) {
+    public void onLocationChanged(@NonNull Location location) {
         if (location != null) {
             updateUI(location);
         }
@@ -178,7 +184,7 @@ public class AddInfoActivity extends AppCompatActivity  implements LocationListe
         Log.d(TAG, "onConnected");
 
         Location ll = LocationServices.FusedLocationApi.getLastLocation(gac);
-        Log.d(TAG, "LastLocation: " + (ll == null ? "NO LastLocation" : ll.toString()));
+        Log.d(TAG, "LastLocation: " + ll.toString());
 
         LocationServices.FusedLocationApi.requestLocationUpdates(gac, locationRequest, this);
     }
@@ -187,12 +193,13 @@ public class AddInfoActivity extends AppCompatActivity  implements LocationListe
     public void onRequestPermissionsResult(
             int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    try{
+                    try {
                         LocationServices.FusedLocationApi.requestLocationUpdates(
                                 gac, locationRequest, this);
                     } catch (SecurityException e) {
@@ -220,7 +227,7 @@ public class AddInfoActivity extends AppCompatActivity  implements LocationListe
     @SuppressLint("SetTextI18n")
     private void updateUI(Location loc) {
         Log.d(TAG, "updateUI");
-        geocoder = new Geocoder(AddInfoActivity.this, Locale.getDefault());
+        Geocoder geocoder = new Geocoder(AddInfoActivity.this, Locale.getDefault());
 
         try {
             addresses = geocoder.getFromLocation(loc.getLatitude(), loc.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
@@ -233,14 +240,10 @@ public class AddInfoActivity extends AppCompatActivity  implements LocationListe
         }
 
         if (addresses != null && addresses.size() > 0){
-            address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
             city = addresses.get(0).getLocality();
-            state = addresses.get(0).getAdminArea();
-            country = addresses.get(0).getCountryName();
             postalCode = addresses.get(0).getPostalCode();
             knownName = addresses.get(0).getFeatureName();
             subLocality = addresses.get(0).getSubLocality();
-            subAdminArea = addresses.get(0).getSubAdminArea();
             finalAddress = knownName + ", " + subLocality +  ", " + city + ", " + postalCode;
             mUserAddress.setText(finalAddress);
 

@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".CartItemActivity"
+    tools:context="ui.cart.CartItemActivity"
     android:background="@color/blue_grey"
     android:fitsSystemWindows="false">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context="Fragments.CartItemFragment"
+        tools:context="fragments.CartItemFragment"
         android:id="@+id/viewContainer"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 

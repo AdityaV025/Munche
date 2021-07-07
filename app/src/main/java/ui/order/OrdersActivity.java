@@ -1,4 +1,13 @@
-package com.example.munche;
+package ui.order;
+
+import android.graphics.Typeface;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,18 +16,8 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.graphics.Typeface;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
-import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
+import com.example.munche.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,16 +27,13 @@ import com.google.firebase.firestore.Query;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import Models.CartItemDetail;
-import Models.OrderedItemDetail;
+import models.OrderedItemDetail;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class OrdersActivity extends AppCompatActivity {
 
-    private Toolbar mOrderItemToolBar;
     private FirebaseFirestore db;
-    private FirestoreRecyclerAdapter<OrderedItemDetail, OrderedItemHolder> orderAdapter;
     LinearLayoutManager linearLayoutManager;
     private RecyclerView mOrderItemRecyclerView;
     private String uid;
@@ -54,21 +50,16 @@ public class OrdersActivity extends AppCompatActivity {
         fetchOrderedItems();
 
     }
-
-//    TODO:Sort The OrderedItems By Latest To Oldest Orders.
-
+    
     private void init() {
         uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-        mOrderItemToolBar = findViewById(R.id.orderedItemsToolBar);
         db = FirebaseFirestore.getInstance();
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mOrderItemRecyclerView = findViewById(R.id.orderedItemsRecyclerView);
         mOrderItemRecyclerView.setLayoutManager(linearLayoutManager);
         mGoBackBtn = findViewById(R.id.cartBackBtn);
 
-        mGoBackBtn.setOnClickListener(view -> {
-            this.onBackPressed();
-        });
+        mGoBackBtn.setOnClickListener(view -> this.onBackPressed());
 
     }
 
@@ -78,12 +69,12 @@ public class OrdersActivity extends AppCompatActivity {
                 .setQuery(query, OrderedItemDetail.class)
                 .build();
 
-        orderAdapter = new FirestoreRecyclerAdapter<OrderedItemDetail, OrderedItemHolder>(orderedItemModel) {
+        FirestoreRecyclerAdapter<OrderedItemDetail, OrderedItemHolder> orderAdapter = new FirestoreRecyclerAdapter<OrderedItemDetail, OrderedItemHolder>(orderedItemModel) {
             @Override
             protected void onBindViewHolder(@NonNull OrderedItemHolder holder, int item, @NonNull OrderedItemDetail model) {
 
                 ArrayList<String> orderedItems = model.getOrdered_items();
-                for(int i = 0; i < orderedItems.size() ; i++){
+                for (int i = 0; i < (orderedItems != null ? orderedItems.size() : 0); i++) {
                     TextView tv = new TextView(getApplicationContext());
                     final Typeface typeface = ResourcesCompat.getFont(getApplicationContext(), R.font.open_sans);
                     tv.setText(orderedItems.get(i));

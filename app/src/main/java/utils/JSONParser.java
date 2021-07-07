@@ -1,4 +1,4 @@
-package Utils;
+package utils;
 
 import android.content.Context;
 import android.os.Handler;
@@ -14,9 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class JSONParser {
-    static InputStream is = null;
     static JSONObject jObj = null;
-    static String json = "";
 
     HttpURLConnection urlConnection = null;
     // variable to hold context
@@ -50,8 +48,6 @@ public class JSONParser {
             }
             InputStream in = urlConnection.getInputStream();
 
-            InputStreamReader isw = new InputStreamReader(in);
-
             byte[] bytes = new byte[10000];
             StringBuilder x = new StringBuilder();
             int numRead = 0;
@@ -60,24 +56,16 @@ public class JSONParser {
             }
             retSrc=x.toString();
 
-            // Log.e("json parse ", " the value is "+ retSrc);
-
             jObj = new JSONObject(retSrc);
         } catch (Exception e) {
             e.printStackTrace();
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(context, "Connectivity issue. Please try again later.", Toast.LENGTH_LONG).show();
-                }
-            });
+            new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, "Connectivity issue. Please try again later.", Toast.LENGTH_LONG).show());
             return null;
         }finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
             }
         }
-        // Log.e("jsonpardse ", "respone is "+ jObj.toString() );
         return jObj;
     }
 }

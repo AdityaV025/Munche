@@ -1,8 +1,4 @@
 package com.example.munche;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Build;
@@ -11,28 +7,28 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 import java.util.Objects;
 
-import Fragments.SearchFragment;
-import Fragments.FavouriteFragment;
-import Fragments.MyProfileFragment;
-import Fragments.RestaurantFragment;
-import UI.LoginActivity;
+import fragments.FavouriteFragment;
+import fragments.MyProfileFragment;
+import fragments.RestaurantFragment;
+import fragments.SearchFragment;
+import ui.auth.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
     private FirebaseUser mCurrentUser;
-    private FirebaseFirestore db;
-    private FirebaseUser firebaseUser;
     private BottomNavigationView bottomNav;
-    private String uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +45,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
-        mAuth = FirebaseAuth.getInstance();
-        firebaseUser = mAuth.getCurrentUser();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mCurrentUser = mAuth.getCurrentUser();
-        db = FirebaseFirestore.getInstance();
-        uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
     }
 
     private void changestatusbarcolor() {

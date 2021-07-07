@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/blue_grey"
-    tools:context=".CurrentOrderActivity">
+    tools:context="ui.order.CurrentOrderActivity">
 
     <include layout="@layout/custom_current_order_toolbar"
         android:id="@+id/currentOrderToolBar"/>

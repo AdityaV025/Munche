@@ -1,32 +1,4 @@
-package Models;
+package models
 
-public class SearchItemDetails {
-
-    private String restaurant_name;
-    private String restaurant_spotimage;
-
-    public SearchItemDetails() {
-    }
-
-    public SearchItemDetails(String restaurant_name, String restaurant_spotimage) {
-        this.restaurant_name = restaurant_name;
-        this.restaurant_spotimage = restaurant_spotimage;
-    }
-
-    public String getRestaurant_name() {
-        return restaurant_name;
-    }
-
-    public void setRestaurant_name(String restaurant_name) {
-        this.restaurant_name = restaurant_name;
-    }
-
-    public String getRestaurant_spotimage() {
-        return restaurant_spotimage;
-    }
-
-    public void setRestaurant_spotimage(String restaurant_spotimage) {
-        this.restaurant_spotimage = restaurant_spotimage;
-    }
-
-}
+data class SearchItemDetails(var restaurant_name: String? = null,
+                        var restaurant_spotimage: String? = null)

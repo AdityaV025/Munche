@@ -1,11 +1,4 @@
-package com.example.munche;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.core.widget.NestedScrollView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+package ui.main;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -19,15 +12,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.airbnb.lottie.LottieAnimationView;
-import com.airbnb.lottie.LottieDrawable;
 import com.bumptech.glide.Glide;
-import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
+import com.example.munche.MainActivity;
+import com.example.munche.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,20 +39,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import Models.RestaurantMenuItems;
+import models.RestaurantMenuItems;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ui.cart.CartItemActivity;
+import ui.review.ReviewsActivity;
 
 import static android.view.View.GONE;
 
 public class MainRestaurantPageActivity extends AppCompatActivity {
 
-    private AppBarLayout mToolBar;
     private String uid,mRestaurantUid, mResName, mResDistance, mResPrice, mResDeliveryTime, mResImage, mResNum;
-    private TextView mResNameToolBar, mResNameText, mResDistanceText,mResAvgPriceText, mResDeliveryTimeText, mReviewsText;
-    private ImageView mBackBtnView;
     private FirebaseFirestore db;
-    private FirestoreRecyclerAdapter<RestaurantMenuItems, MenuItemHolder> adapter;
     LinearLayoutManager linearLayoutManager;
     private RecyclerView mMenuItemRecyclerView;
     private NestedScrollView mRootView;
@@ -84,13 +79,12 @@ public class MainRestaurantPageActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void init() {
-        mRootView = (NestedScrollView) findViewById(R.id.content1);
+        mRootView = findViewById(R.id.content1);
         db = FirebaseFirestore.getInstance();
         uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-        mToolBar = findViewById(R.id.mainResToolBar);
-        mResNameToolBar = findViewById(R.id.restaurantTitleToolbar);
-        mResNameText = findViewById(R.id.mainResName);
-        mReviewsText=  findViewById(R.id.reviewText);
+        TextView mResNameToolBar = findViewById(R.id.restaurantTitleToolbar);
+        TextView mResNameText = findViewById(R.id.mainResName);
+        TextView mReviewsText = findViewById(R.id.reviewText);
         mReviewsText.setOnClickListener(view -> {
             Intent intent = new Intent(this, ReviewsActivity.class);
             intent.putExtra("RUID", mRestaurantUid);
@@ -112,15 +106,15 @@ public class MainRestaurantPageActivity extends AppCompatActivity {
                 favRes();
             }
         });
-        mResDistanceText = findViewById(R.id.mainResDistance);
-        mResAvgPriceText = findViewById(R.id.restaurantAvgPrice);
-        mResDeliveryTimeText = findViewById(R.id.restaurantDeliveryTime);
+        TextView mResDistanceText = findViewById(R.id.mainResDistance);
+        TextView mResAvgPriceText = findViewById(R.id.restaurantAvgPrice);
+        TextView mResDeliveryTimeText = findViewById(R.id.restaurantDeliveryTime);
         mResNameToolBar.setText(mResName);
         mResNameText.setText(mResName);
         mResDeliveryTimeText.setText(mResDeliveryTime + " mins");
         mResAvgPriceText.setText("\u20b9" + mResPrice);
         mResDistanceText.setText(mResDistance + " kms");
-        mBackBtnView = findViewById(R.id.backBtn);
+        ImageView mBackBtnView = findViewById(R.id.backBtn);
         mBackBtnView.setOnClickListener(view -> {
             this.onBackPressed();
             this.overridePendingTransition(0,0);
@@ -137,32 +131,32 @@ public class MainRestaurantPageActivity extends AppCompatActivity {
         FirestoreRecyclerOptions<RestaurantMenuItems> menuItemModel = new FirestoreRecyclerOptions.Builder<RestaurantMenuItems>()
                 .setQuery(query, RestaurantMenuItems.class)
                 .build();
-        adapter = new FirestoreRecyclerAdapter<RestaurantMenuItems, MenuItemHolder>(menuItemModel) {
+        FirestoreRecyclerAdapter<RestaurantMenuItems, MenuItemHolder> adapter = new FirestoreRecyclerAdapter<RestaurantMenuItems, MenuItemHolder>(menuItemModel) {
             @SuppressLint("SetTextI18n")
             @Override
             public void onBindViewHolder(@NonNull MenuItemHolder holder, int position, @NonNull RestaurantMenuItems model) {
-                if (model.getIs_active().equals("no")){
+                if (model.is_active().equals("no")) {
                     holder.mItemName.setText(model.getName());
                     holder.mItemCategory.setText(model.getCategory());
                     String specImage = String.valueOf(model.getSpecification());
-                    if (specImage.equals("Veg")){
+                    if (specImage.equals("Veg")) {
                         Glide.with(Objects.requireNonNull(getApplicationContext()))
                                 .load(R.drawable.veg_symbol).into(holder.foodSpecification);
-                    }else {
+                    } else {
                         Glide.with(Objects.requireNonNull(getApplicationContext()))
                                 .load(R.drawable.non_veg_symbol).into(holder.foodSpecification);
                     }
                     holder.mItemPrice.setText("\u20B9 " + model.getPrice());
                     holder.mItemAddBtn.setClickable(false);
                     holder.mNotAvailableText.setVisibility(View.VISIBLE);
-                }else if (model.getIs_active().equals("yes")){
+                } else if (model.is_active().equals("yes")) {
                     holder.mItemName.setText(model.getName());
                     holder.mItemCategory.setText(model.getCategory());
                     String specImage = String.valueOf(model.getSpecification());
-                    if (specImage.equals("Veg")){
+                    if (specImage.equals("Veg")) {
                         Glide.with(Objects.requireNonNull(getApplicationContext()))
                                 .load(R.drawable.veg_symbol).into(holder.foodSpecification);
-                    }else {
+                    } else {
                         Glide.with(Objects.requireNonNull(getApplicationContext()))
                                 .load(R.drawable.non_veg_symbol).into(holder.foodSpecification);
                     }
@@ -174,14 +168,14 @@ public class MainRestaurantPageActivity extends AppCompatActivity {
 
                     holder.mItemAddBtn.setOnClickListener(view -> {
                         String selectedItemName = holder.mItemName.getText().toString();
-                        addItemToCart(selectedItemName,model,uid);
+                        addItemToCart(selectedItemName, model, uid);
                         holder.mItemAddBtn.setVisibility(GONE);
                         holder.mRemoveItemBtn.setVisibility(View.VISIBLE);
                     });
 
                     holder.mRemoveItemBtn.setOnClickListener(view -> {
                         String selectedItemName = holder.mItemName.getText().toString();
-                        removeItemFromCart(selectedItemName,uid);
+                        removeItemFromCart(selectedItemName, uid);
                         holder.mRemoveItemBtn.setVisibility(GONE);
                         holder.mItemAddBtn.setVisibility(View.VISIBLE);
                     });
@@ -189,9 +183,9 @@ public class MainRestaurantPageActivity extends AppCompatActivity {
                     DocumentReference docRef = db.collection("UserList").document(uid).collection("CartItems").document(holder.mItemName.getText().toString());
                     docRef.get().addOnCompleteListener(task -> {
 
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             DocumentSnapshot documentSnapshot = task.getResult();
-                            if (Objects.requireNonNull(documentSnapshot).exists()){
+                            if (Objects.requireNonNull(documentSnapshot).exists()) {
 
                                 holder.mItemAddBtn.setVisibility(GONE);
                                 holder.mRemoveItemBtn.setVisibility(View.VISIBLE);
@@ -202,6 +196,7 @@ public class MainRestaurantPageActivity extends AppCompatActivity {
                     });
                 }
             }
+
             @NotNull
             @Override
             public MenuItemHolder onCreateViewHolder(@NotNull ViewGroup group, int i) {
@@ -209,6 +204,7 @@ public class MainRestaurantPageActivity extends AppCompatActivity {
                         .inflate(R.layout.restaurant_menuitems_view, group, false);
                 return new MenuItemHolder(view);
             }
+
             @Override
             public void onError(@NotNull FirebaseFirestoreException e) {
                 Log.e("error", Objects.requireNonNull(e.getMessage()));
@@ -235,7 +231,7 @@ public class MainRestaurantPageActivity extends AppCompatActivity {
 
                         if (task.isSuccessful()){
                             int count = 0;
-                            for (DocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                            for (DocumentSnapshot ignored : Objects.requireNonNull(task.getResult())) {
                                 count++;
                             }
                             Snackbar snackbar = Snackbar
@@ -254,7 +250,7 @@ public class MainRestaurantPageActivity extends AppCompatActivity {
                 }).addOnFailureListener(e -> {
         });
 
-        Map<String, Object> resNameMap = new HashMap<>();
+        HashMap<String, Object> resNameMap = new HashMap<>();
         resNameMap.put("restaurant_cart_name", mResName);
         resNameMap.put("restaurant_cart_uid", mRestaurantUid);
         resNameMap.put("restaurant_delivery_time", mResDeliveryTime);
@@ -269,9 +265,8 @@ public class MainRestaurantPageActivity extends AppCompatActivity {
     }
 
     private void removeItemFromCart(String selectedItemName,String uid) {
-        db.collection("UserList").document(uid).collection("CartItems").document(selectedItemName).delete().addOnCompleteListener(task -> {
-            Toast.makeText(getApplicationContext(), "Item Removed From Cart", Toast.LENGTH_SHORT).show();
-        });
+        db.collection("UserList").document(uid).collection("CartItems").document(selectedItemName).delete().addOnCompleteListener(task ->
+                Toast.makeText(getApplicationContext(), "Item Removed From Cart", Toast.LENGTH_SHORT).show());
     }
 
     public static class MenuItemHolder extends RecyclerView.ViewHolder {

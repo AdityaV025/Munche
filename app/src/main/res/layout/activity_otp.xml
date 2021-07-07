@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="UI.OtpActivity"
+    tools:context="ui.auth.OtpActivity"
     android:padding="20dp"
     android:background="@color/white">
 
@@ -27,8 +27,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:textColor="@color/colorAccent"
-        android:fontFamily="@font/open_sans"/>
-
+        android:fontFamily="@font/open_sans" />
 
     <in.aabhasjindal.otptextview.OtpTextView
         android:id="@+id/otpView"
@@ -41,7 +40,7 @@
         app:bar_height="1.5dp"
         app:length="6"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"/>
+        android:layout_marginTop="80dp" />
 
     <Button
         android:id="@+id/verifyOTP"

@@ -1,7 +1,4 @@
-package com.example.munche;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
+package ui.order;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -12,7 +9,11 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
 import com.airbnb.lottie.LottieAnimationView;
+import com.example.munche.R;
 
 public class OrderSuccessfulActivity extends AppCompatActivity {
 

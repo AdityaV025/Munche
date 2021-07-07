@@ -1,21 +1,21 @@
-package Fragments;
+package fragments;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+
 import com.bumptech.glide.Glide;
-import com.example.munche.OrdersActivity;
+import ui.order.OrdersActivity;
 import com.example.munche.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,8 +32,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import UI.ChangeLocationActivity;
-import UI.LoginActivity;
+import ui.location.ChangeLocationActivity;
+import ui.auth.LoginActivity;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MyProfileFragment extends Fragment implements View.OnClickListener {
@@ -43,7 +43,8 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
     private FirebaseAuth mAuth;
     private String uid;
     private FirebaseFirestore db;
-    private ImageView mMyOrdersText, mChangeAddressView, mEditProfileView;
+    private ImageView mMyOrdersText;
+    private ImageView mChangeAddressView;
     private CircleImageView mUserProfileImage;
     Uri mImageUri;
     private ProgressDialog mProgressDialog;
@@ -82,7 +83,6 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
         mMyOrdersText = view.findViewById(R.id.myOrdersImage);
         mChangeAddressView = view.findViewById(R.id.changeAddressImage);
         mUserProfileAddress = view.findViewById(R.id.userProfileAddress);
-        mEditProfileView = view.findViewById(R.id.editProfile);
         mUserProfileImage = view.findViewById(R.id.userProfileImage);
         mUserImageRef = FirebaseStorage.getInstance().getReference();
         mUserRef = db.collection("UserList").document(uid);
@@ -96,7 +96,7 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
                 String userName = (String) docRef.get("name");
                 String userPhoneNum = (String) docRef.get("phonenumber");
                 String userAddress = (String) docRef.get("address");
-                Glide.with(Objects.requireNonNull(getActivity()))
+                Glide.with(requireActivity())
                         .load(imageRef)
                         .placeholder(R.drawable.user_placeholder)
                         .into(mUserProfileImage);
@@ -116,7 +116,7 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
                 break;
 
             case R.id.logOutText:
-                new AlertDialog.Builder(Objects.requireNonNull(getContext()))
+                new AlertDialog.Builder(requireContext())
                         .setMessage("Are you sure you want to log out ?")
                         .setPositiveButton("Log Out", (dialog, which) -> {
 
@@ -174,21 +174,17 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
                     filePath = mUserImageRef.child("user_profile_image").child(uid + ".jpg");
                     filePath.putFile(mImageUri).addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            mUserImageRef.child("user_profile_image").child(uid + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    final String downloadUrl = uri.toString();
-                                    UploadTask uploadTask = filePath.putFile(mImageUri);
-                                    uploadTask.addOnSuccessListener(taskSnapshot -> {
-                                        if (task.isSuccessful()){
-                                            Map updateHashmap = new HashMap<>();
-                                            updateHashmap.put("user_profile_image", downloadUrl);
-                                            mUserRef.update(updateHashmap).addOnSuccessListener(o -> {
-                                                mProgressDialog.dismiss();
-                                            });
-                                        }
-                                    });
-                                }
+                            mUserImageRef.child("user_profile_image").child(uid + ".jpg").getDownloadUrl().addOnSuccessListener(uri -> {
+                                final String downloadUrl = uri.toString();
+                                UploadTask uploadTask = filePath.putFile(mImageUri);
+                                uploadTask.addOnSuccessListener(taskSnapshot -> {
+                                    if (task.isSuccessful()){
+                                        HashMap<String,Object> updateHashmap = new HashMap<>();
+                                        updateHashmap.put("user_profile_image", downloadUrl);
+                                        mUserRef.update(updateHashmap).addOnSuccessListener(o ->
+                                                mProgressDialog.dismiss());
+                                    }
+                                });
                             });
                         }
                     });

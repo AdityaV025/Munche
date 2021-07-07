@@ -6,12 +6,12 @@ buildscript {
     repositories {
         google()
         jcenter()
-
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.1'
-        classpath 'com.google.gms:google-services:4.3.4'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.4.1'
+        classpath 'com.android.tools.build:gradle:4.2.2'
+        classpath 'com.google.gms:google-services:4.3.8'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.7.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
 
@@ -24,9 +24,9 @@ allprojects {
     repositories {
         google()
         jcenter()
+        mavenCentral()
         maven { url 'https://jitpack.io' }
         maven { url "https://maven.google.com" }
-        maven { url 'https://dl.bintray.com/samanjafaridotir/easyCountDownTimerTextview' }
         maven {
             url 'https://api.mapbox.com/downloads/v2/releases/maven'
             authentication {
@@ -38,7 +38,6 @@ allprojects {
                 password = project.properties['MAPBOX_DOWNLOADS_TOKEN'] ?: ""
             }
         }
-        maven { url 'https://mapbox.bintray.com/mapbox' }
     }
 }
 

@@ -1,64 +1,11 @@
-package Models;
+package models
 
-import java.util.ArrayList;
+import java.util.*
 
-public class OrderedItemDetail {
+data class OrderedItemDetail(var ordered_items: ArrayList<String>? = null,
+                        var ordered_restaurant_name: String? = null,
+                        var ordered_time: String? = null,
+                        var total_amount: String? = null,
+                        var ordered_restaurant_spotimage: String? = null)
 
-    private ArrayList<String> ordered_items;
-    private String ordered_restaurant_name;
-    private String ordered_time;
-    private String total_amount;
-    private String ordered_restaurant_spotimage;
 
-    public OrderedItemDetail(ArrayList<String> ordered_items, String ordered_restaurant_name, String ordered_time, String total_amount, String ordered_restaurant_spotimage) {
-        this.ordered_items = ordered_items;
-        this.ordered_restaurant_name = ordered_restaurant_name;
-        this.ordered_time = ordered_time;
-        this.total_amount = total_amount;
-        this.ordered_restaurant_spotimage = ordered_restaurant_spotimage;
-    }
-
-    public OrderedItemDetail() {
-    }
-
-    public ArrayList<String> getOrdered_items() {
-        return ordered_items;
-    }
-
-    public void setOrdered_items(ArrayList<String> ordered_items) {
-        this.ordered_items = ordered_items;
-    }
-
-    public String getOrdered_restaurant_name() {
-        return ordered_restaurant_name;
-    }
-
-    public void setOrdered_restaurant_name(String ordered_restaurant_name) {
-        this.ordered_restaurant_name = ordered_restaurant_name;
-    }
-
-    public String getOrdered_time() {
-        return ordered_time;
-    }
-
-    public void setOrdered_time(String ordered_time) {
-        this.ordered_time = ordered_time;
-    }
-
-    public String getTotal_amount() {
-        return total_amount;
-    }
-
-    public void setTotal_amount(String total_amount) {
-        this.total_amount = total_amount;
-    }
-
-    public String getOrdered_restaurant_spotimage() {
-        return ordered_restaurant_spotimage;
-    }
-
-    public void setOrdered_restaurant_spotimage(String ordered_restaurant_spotimage) {
-        this.ordered_restaurant_spotimage = ordered_restaurant_spotimage;
-    }
-
-}

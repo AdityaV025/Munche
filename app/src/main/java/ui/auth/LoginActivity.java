@@ -1,21 +1,18 @@
-package UI;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
+package ui.auth;
 
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.munche.MainActivity;
 import com.example.munche.R;
@@ -29,8 +26,6 @@ import com.hbb20.CountryCodePicker;
 
 import java.util.concurrent.TimeUnit;
 
-import Utils.ChangeStatusBarColor;
-
 public class LoginActivity extends AppCompatActivity {
 
     private Button mSendOtpBtn;
@@ -39,7 +34,6 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser mCurrentUser;
     private String finalPhoneNumber;
-//    private ChangeStatusBarColor StatusBarColor = new ChangeStatusBarColor();
 
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallBacks;
 
@@ -48,7 +42,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-//        StatusBarColor.changestatusbarcolor();
         changestatusbarcolor();
         initialiseViews();
         mSendOtpBtn.setOnClickListener(view -> {
