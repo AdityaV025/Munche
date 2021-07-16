@@ -2,6 +2,10 @@
 
 ### Show some ❤️ and star the repo to show support for the project
 
+<p align="center">
+<img src="https://raw.githubusercontent.com/AdityaV025/Munche/master/assets/do_it.gif">
+</p>
+
 <h1 align="center"> Munche Android App </h1>
 
 <p align="center">
