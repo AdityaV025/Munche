@@ -20,6 +20,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import ui.cart.CartItemActivity;
 import com.example.munche.MainActivity;
 import com.example.munche.R;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mapbox.android.core.location.LocationEngine;
@@ -35,9 +38,7 @@ import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
 import com.mapbox.mapboxsdk.location.LocationComponentOptions;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.location.modes.RenderMode;
-import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
-import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 
 import java.io.IOException;
@@ -93,7 +94,6 @@ public class ChangeLocationActivity extends AppCompatActivity implements
         mSaveLocationBtn = findViewById(R.id.saveLocationBtn);
     }
 
-    @Override
     public void onMapReady(@NonNull final MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
 
@@ -164,6 +164,11 @@ public class ChangeLocationActivity extends AppCompatActivity implements
             Toast.makeText(this, "Ye Baat", Toast.LENGTH_LONG).show();
             finish();
         }
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+
     }
 
     private class ChangeLocationCallback

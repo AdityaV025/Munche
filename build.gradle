@@ -38,6 +38,7 @@ allprojects {
                 password = project.properties['MAPBOX_DOWNLOADS_TOKEN'] ?: ""
             }
         }
+        maven { url 'https://mapbox.bintray.com/mapbox' }
     }
 }
 
