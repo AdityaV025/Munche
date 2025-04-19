@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/AdityaV025/Munche/master/assets/Cover_Image.png?token=AJM5NN7OGBC4SNJPEJ76BR3A52VFW">
+<img src="https://raw.githubusercontent.com/AdityaV025/Munche/refs/heads/master/assets/Cover_Image.png">
 
 ### Show some ❤️ and star the repo to show support for the project
 
@@ -14,16 +14,15 @@
   <a href="https://github.com/AdityaV025/Munche/pulls"><img alt="Contributions Welcome" src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square"></a>
 </p>
 
-Munche is an open source 🍔 food ordering android application developed in **Java** and **Kotlin**. Munche is mainly developed so I can improve my android development skills by building a real world application and experiment with different android components.
+Munche is an open-source 🍔 food ordering Android application developed in **Java** and **Kotlin**. Munche is mainly developed So I can improve my Android development skills by building a real-world application and experimenting with different Android components.
 
 *Please Note:* Munche is developed when I was still learning good android development practices so please don't expect the code to be great and follow design guidelines and practices.
 
 # Demo
 
 <p align="left">
-  <img src="https://raw.githubusercontent.com/AdityaV025/Munche/master/assets/demo.gif?token=AJM5NN5DLJJTWLG73J3NNP3A53LJE" alt="animated" width = 37%/>
-  <img src="https://raw.githubusercontent.com/AdityaV025/Munche/master/assets/demo2.gif?token=AJM5NN22BOVODRNRDUDQVUTA53LTS" alt="animated"
-  width = 37% />
+  <img src="https://github.com/AdityaV025/Munche/blob/master/assets/demo.gif" alt="animated" width = 37%/>
+  <img src="https://github.com/AdityaV025/Munche/blob/master/assets/demo2.gif" alt="animated" width = 37% />
 </p>
 
 # ☁️ Inspiration
